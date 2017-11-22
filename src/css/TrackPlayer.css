@@ -1,0 +1,8 @@
+#TrackPlayer{
+    position: fixed;
+    width: 100vw;
+    background: hotpink;
+    height: 5em;
+    bottom: 0em;
+    left: 0em;
+}
