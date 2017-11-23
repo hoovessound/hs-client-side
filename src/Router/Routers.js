@@ -6,12 +6,16 @@ import {
 } from 'react-router-dom';
 
 import Tracks from '../Pages/Tracks';
+import Track from '../Pages/Track';
 
 export default class Routers extends React.Component {
     render() {
         return (
             <Router>
-                <Route path="/" component={Tracks}></Route>
+                <div>
+                    <Route exact path="/" component={Tracks}></Route>
+                    <Route path="/track/:id" component={Track}></Route>
+                </div>
             </Router>
         )
     }
