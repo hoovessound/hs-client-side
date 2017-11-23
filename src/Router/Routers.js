@@ -5,13 +5,13 @@ import {
     Route,
 } from 'react-router-dom';
 
-import Layout from '../Pages/Layout';
+import Tracks from '../Pages/Tracks';
 
 export default class Routers extends React.Component {
     render() {
         return (
             <Router>
-                <Route path="/" component={Layout}></Route>
+                <Route path="/" component={Tracks}></Route>
             </Router>
         )
     }
