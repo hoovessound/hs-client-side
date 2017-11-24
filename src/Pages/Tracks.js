@@ -1,7 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import Header from './Header';
-import Footer from './Footer';
 import TrackContainer from '../Component/TrackContainer';
 import getApiurl from '../Util/getApiUrl';
 
@@ -35,9 +33,7 @@ export default class Tracks extends React.Component {
     render() {
         return (
             <div>
-                <Header/>
                 {this.state.trackEl}
-                <Footer/>
             </div>
         )
     }
