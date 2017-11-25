@@ -15,7 +15,7 @@ export default class Tracks extends React.Component {
     componentDidMount() {
         axios.get(getApiurl('api', `/tracks?offset=0&bypass=true&oauth_token=${token}`))
         .then(response => {
-            const tracks = response.data.tracks;
+            const tracks = response.data;
             const trackEl = tracks.map(track => {
                 return (
                     <TrackContainer key={track.id} title={track.title} coverImage={track.coverImage} trackId={track.id} author_username={track.author.username} author_fullName={track.author.fullName}/>

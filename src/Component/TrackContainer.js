@@ -42,12 +42,13 @@ export default class TrackContainer extends React.Component {
 
     render() {
 
-        if (!this.props.withouttitle) {
+        if (this.props.notitle) {
+            trackTitle = "";
+        }else{
             trackTitle = <h3>{this.props.author_fullName} - {this.props.title}</h3>;
         }
 
         if(this.props.nolink){
-
             body =
                 <div>
                     {this.playButton()}

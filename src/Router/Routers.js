@@ -19,7 +19,7 @@ export default class Routers extends React.Component {
                 <div>
                     <Route component={Header}/>
                     <Route exact path="/" component={Tracks}></Route>
-                    <Route path="/track/:id" component={Track}></Route>
+                    <Route exact path="/track/:id" component={Track}></Route>
                     <Route component={TrackPlayer}/>
                     <Route component={Footer}/>
                 </div>

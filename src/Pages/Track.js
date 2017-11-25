@@ -5,6 +5,7 @@ import TrackContainer from '../Component/TrackContainer';
 import getApiurl from '../Util/getApiUrl';
 import renderHTML from 'react-render-html';
 import {url} from '../Util/textFormat';
+import Comment from '../Component/Comment';
 
 const token = 'e7671b56aca42828b5da68aad722f8c4f441d76dcef9f747d3aebd371dc10c18af6ac5c6297094500fe69578904c95eacca8';
 export default class Track extends React.Component {
@@ -34,31 +35,27 @@ export default class Track extends React.Component {
                         </p>
                         <TrackContainer key={track.id} title={track.title} coverImage={track.coverImage}
                                         trackId={track.id} author_username={track.author.username}
-                                        author_fullName={track.author.fullName} withouttitle nolink/>
+                                        author_fullName={track.author.fullName} notitle nolink/>
 
                         <div className="description">
                             {renderHTML(description)}
                         </div>
 
-                        <div className="commentSession">
-                            <input />
-                        </div>
+                        <Comment trackId={this.props.match.params.id}/>
                     </div>
                 )
             }
             this.setState({
                 trackInfo: trackInfo(),
             })
-            console.log('componentDidMount')
         } catch (e) {
             console.log(e)
         }
     }
 
     render() {
-        console.log('render')
         return (
-            <div ref={this.props.trackId} key={this.props.trackId}>
+            <div ref={this.props.match.params.id} key={this.props.match.params.id}>
                 {this.state.trackInfo}
             </div>
         )
