@@ -3,10 +3,25 @@ import '../css/TrackContainer.css';
 import {Link} from 'react-router-dom';
 import getApiUrl from '../Util/getApiUrl';
 let trackTitle;
+let body;
 const audio = new Audio();
 let playing = false;
 
 export default class TrackContainer extends React.Component {
+
+    playButton(){
+        return (
+            <div
+                ref="playPauseButton"
+                className="playPauseButton material-icons"
+                onClick={() => { this.playMusic() }}
+                style={{
+                    "cursor": "pointer"
+                }}
+            >play_arrow
+            </div>
+        )
+    }
 
     playMusic() {
         const trackId = this.props.trackId;
@@ -26,19 +41,30 @@ export default class TrackContainer extends React.Component {
     }
 
     render() {
+
         if (!this.props.withouttitle) {
             trackTitle = <h3>{this.props.author_fullName} - {this.props.title}</h3>;
         }
-        return (
-            <div key={this.props.id} className="TrackContainer">
+
+        if(this.props.nolink){
+
+            body =
+                <div>
+                    {this.playButton()}
+                    <img ref="coverImage" src={this.props.coverImage} alt={"This cover image for track " + this.props.trackId}/>
+                    {trackTitle}
+                </div>
+        }else{
+            body =
                 <Link to={"/track/" + this.props.trackId}>
-                    <div ref="playPauseButton" className="playPauseButton material-icons" onClick={() => {
-                        this.playMusic()
-                    }}>play_arrow
-                    </div>
+                    {this.playButton()}
                     <img ref="coverImage" src={this.props.coverImage} alt={"This cover image for track " + this.props.trackId}/>
                     {trackTitle}
                 </Link>
+        }
+        return (
+            <div key={this.props.id} className="TrackContainer">
+                {body}
             </div>
         )
     }
