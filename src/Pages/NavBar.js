@@ -9,7 +9,7 @@ export default class NavBar extends React.Component{
         return (
             <div>
                 <Link to="/">Home</Link>
-                <Link to="/fave">Fave</Link>
+                <Link to="/favorite">Favorite</Link>
             </div>
         )
     }
