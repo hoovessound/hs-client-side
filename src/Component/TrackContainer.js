@@ -2,19 +2,22 @@ import React from 'react';
 import '../css/TrackContainer.css';
 import {Link} from 'react-router-dom';
 import getApiUrl from '../Util/getApiUrl';
+import store from '../Redux/store';
+
 let trackTitle;
 let body;
-const audio = new Audio();
 let playing = false;
 
 export default class TrackContainer extends React.Component {
 
-    playButton(){
+    playButton() {
         return (
             <div
                 ref="playPauseButton"
                 className="playPauseButton material-icons"
-                onClick={() => { this.playMusic() }}
+                onClick={() => {
+                    this.playMusic()
+                }}
                 style={{
                     "cursor": "pointer"
                 }}
@@ -26,40 +29,52 @@ export default class TrackContainer extends React.Component {
     playMusic() {
         const trackId = this.props.trackId;
         const src = getApiUrl('stream', `/${trackId}`);
-        if(audio.src !== src){
-            audio.src = src;
-        }
-        if(playing) {
-            playing = false;
-            audio.pause();
-            this.refs.playPauseButton.textContent = 'play_arrow';
-        }else{
-            playing = true;
-            audio.play();
-            this.refs.playPauseButton.textContent = 'pause';
-        }
+
+        store.dispatch({
+            type: 'UPDATE_TRACK_DETAILS',
+            payload: {
+                ...this.props,
+            }
+        });
+
+        // if(audio.src !== src){
+        //     audio.src = src;
+        // }
+        // if(playing) {
+        //     playing = false;
+        //     audio.pause();
+        //     this.refs.playPauseButton.textContent = 'play_arrow';
+        //     // playPauseButton.textContent = 'play_arrow';
+        // }else{
+        //     playing = true;
+        //     audio.play();
+        //     this.refs.playPauseButton.textContent = 'pause';
+        //     // playPauseButton.textContent = 'pause';
+        // }
     }
 
     render() {
 
         if (this.props.notitle) {
             trackTitle = "";
-        }else{
+        } else {
             trackTitle = <h3>{this.props.author_fullName} - {this.props.title}</h3>;
         }
 
-        if(this.props.nolink){
+        if (this.props.nolink) {
             body =
                 <div>
                     {this.playButton()}
-                    <img ref="coverImage" src={this.props.coverImage} alt={"This cover image for track " + this.props.trackId}/>
+                    <img ref="coverImage" src={this.props.coverImage}
+                         alt={"This cover image for track " + this.props.trackId}/>
                     {trackTitle}
                 </div>
-        }else{
+        } else {
             body =
                 <Link to={"/track/" + this.props.trackId}>
                     {this.playButton()}
-                    <img ref="coverImage" src={this.props.coverImage} alt={"This cover image for track " + this.props.trackId}/>
+                    <img ref="coverImage" src={this.props.coverImage}
+                         alt={"This cover image for track " + this.props.trackId}/>
                     {trackTitle}
                 </Link>
         }

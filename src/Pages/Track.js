@@ -36,7 +36,7 @@ export default class Track extends React.Component {
                         </p>
                         <TrackContainer key={track.id} title={track.title} coverImage={track.coverImage}
                                         trackId={track.id} author_username={track.author.username}
-                                        author_fullName={track.author.fullName} notitle nolink/>
+                                        author_fullName={track.author.fullname} notitle nolink/>
 
                         <div className="description">
                             {renderHTML(description)}

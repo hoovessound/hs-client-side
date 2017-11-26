@@ -35,6 +35,7 @@ export default class Comment extends React.Component {
         if(event.keyCode === 13){
             const trackId = this.props.trackId;
             const value = this.refs.input.value;
+            this.refs.input.value = '';
             const response = await axios.post(getApiurl('api', `/track/comment/${trackId}?offset=0&bypass=true&oauth_token=${token}`), {
                 comment: value,
             })
@@ -44,7 +45,6 @@ export default class Comment extends React.Component {
             this.setState({
                 comments,
             });
-            this.refs.input.value = '';
         }
     }
 
