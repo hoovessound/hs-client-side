@@ -6,7 +6,6 @@ import store from '../Redux/store';
 
 let trackTitle;
 let body;
-let playing = false;
 
 export default class TrackContainer extends React.Component {
 
@@ -36,21 +35,6 @@ export default class TrackContainer extends React.Component {
                 ...this.props,
             }
         });
-
-        // if(audio.src !== src){
-        //     audio.src = src;
-        // }
-        // if(playing) {
-        //     playing = false;
-        //     audio.pause();
-        //     this.refs.playPauseButton.textContent = 'play_arrow';
-        //     // playPauseButton.textContent = 'play_arrow';
-        // }else{
-        //     playing = true;
-        //     audio.play();
-        //     this.refs.playPauseButton.textContent = 'pause';
-        //     // playPauseButton.textContent = 'pause';
-        // }
     }
 
     render() {

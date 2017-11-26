@@ -2,7 +2,10 @@ import React from 'react';
 import '../css/TrackPlayer.css';
 import store from '../Redux/store';
 import {Link} from 'react-router-dom';
+import getApiUrl from '../Util/getApiUrl';
 
+let playing = false;
+const audio = new Audio();
 export default class TrackPlayer extends React.Component {
 
     constructor() {
@@ -17,8 +20,28 @@ export default class TrackPlayer extends React.Component {
             const MusicPlayer = store.getState().MusicPlayer;
             this.setState({
                 MusicPlayer,
-            })
+            }, () => {
+                this.playMusic(this.state.MusicPlayer.trackId);
+            });
         })
+    }
+
+    playMusic(trackId){
+        const source = getApiUrl('stream', `/${trackId}`);
+
+        if(audio.src !== source){
+            audio.src = source;
+        }
+
+        if(playing) {
+            playing = false;
+            audio.pause();
+            this.refs.playPauseButton.textContent = 'play_arrow';
+        }else{
+            playing = true;
+            audio.play();
+            this.refs.playPauseButton.textContent = 'pause';
+        }
     }
 
     render() {
