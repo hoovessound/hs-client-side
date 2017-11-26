@@ -6,49 +6,55 @@ import {Link} from 'react-router-dom';
 
 const token = 'e7671b56aca42828b5da68aad722f8c4f441d76dcef9f747d3aebd371dc10c18af6ac5c6297094500fe69578904c95eacca8';
 export default class Comment extends React.Component {
-
-    constructor() {
+    constructor(){
         super();
         this.state = {
-            comments: [],
+            comments: []
         }
     }
 
-    async componentDidMount() {
+    async componentDidMount(){
         const trackId = this.props.trackId;
-        const response = await axios.get(getApiurl('api', `/track/comment/${trackId}?bypass=true&oauth_token=${token}`));
+        const response = await axios.get(getApiurl('api', `/track/comment/${trackId}?offset=0&bypass=true&oauth_token=${token}`))
         const body = response.data;
+        this.setState({
+            comments: body,
+        })
+    }
 
-        if (body.length >= 1) {
-            // Have comment
-            const comments = body.map(comment => {
-                const context = url(comment.comment);
-                return (
-                    <span className="commentBlock" key={comment.postDate + comment.author.username}>
-                        <Link to={'/@' + comment.author.username}>{'@' + comment.author.username}</Link>
-                        <br/>
-                        {context}
-                        </span>
-                )
+    eachComment(comment, index){
+        return (
+            <div key={comment.id}>
+                <Link to={"/@" + comment.author.username}>{"@" + comment.author.username}</Link>
+                <p>{url(comment.comment)}</p>
+            </div>
+        )
+    }
+
+    async postComment(event){
+        if(event.keyCode === 13){
+            const trackId = this.props.trackId;
+            const value = this.refs.input.value;
+            const response = await axios.post(getApiurl('api', `/track/comment/${trackId}?offset=0&bypass=true&oauth_token=${token}`), {
+                comment: value,
             })
+            const body = response.data;
+            const comments = this.state.comments;
+            comments.push(body);
             this.setState({
                 comments,
-            })
-        } else {
-            // No comment
-            this.setState({
-                comments: <span>No one is saying anything, will ya?</span>
-            })
+            });
+            this.refs.input.value = '';
         }
-
     }
 
-    render() {
+    render(){
         return (
-            <div id="Comment" ref="Comment">
-                <input ref={"commentInput"} onKeyDown={this.postComment}/>
-                <div className="comments" ref="comments">
-                    {this.state.comments}
+            <div className="commentSession">
+                <input ref="input" onKeyDown={this.postComment.bind(this)} />
+
+                <div className="comments">
+                    {this.state.comments.map(this.eachComment.bind(this))}
                 </div>
             </div>
         )
