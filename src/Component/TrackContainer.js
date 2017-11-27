@@ -14,9 +14,7 @@ export default class TrackContainer extends React.Component {
             <div
                 ref="playPauseButton"
                 className="playPauseButton material-icons"
-                onClick={() => {
-                    this.playMusic()
-                }}
+                onClick={this.playMusic.bind(this)}
                 style={{
                     "cursor": "pointer"
                 }}
@@ -47,7 +45,7 @@ export default class TrackContainer extends React.Component {
 
         if (this.props.nolink) {
             body =
-                <div>
+                <div key={this.props.trackId}>
                     {this.playButton()}
                     <img ref="coverImage" src={this.props.coverImage}
                          alt={"This cover image for track " + this.props.trackId}/>
@@ -55,12 +53,14 @@ export default class TrackContainer extends React.Component {
                 </div>
         } else {
             body =
-                <Link to={"/track/" + this.props.trackId}>
+                <div key={this.props.trackId}>
                     {this.playButton()}
-                    <img ref="coverImage" src={this.props.coverImage}
-                         alt={"This cover image for track " + this.props.trackId}/>
-                    {trackTitle}
-                </Link>
+                    <Link to={"/track/" + this.props.trackId}>
+                        <img ref="coverImage" src={this.props.coverImage}
+                             alt={"This cover image for track " + this.props.trackId}/>
+                        {trackTitle}
+                    </Link>
+                </div>
         }
         return (
             <div key={this.props.id} className="TrackContainer">

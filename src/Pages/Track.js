@@ -20,7 +20,7 @@ export default class Track extends React.Component {
     async componentDidMount(trackId) {
         try {
             const trackId = this.props.match.params.id;
-            const response = await axios.get(getApiurl('api', `/track/${trackId}?bypass=true&oauth_token=${token}`))
+            const response = await axios.get(getApiurl('api', `/track/${trackId}?`))
             const track = response.data;
             const description = track.description ? url(track.description) : '';
             const trackInfo = () => {

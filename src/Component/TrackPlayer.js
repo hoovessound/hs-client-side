@@ -15,7 +15,13 @@ export default class TrackPlayer extends React.Component {
         };
     }
 
+    async fetchInitTrack(){
+
+    }
+
     async componentDidMount() {
+        // See if the user already have a last track
+        this.fetchInitTrack();
         store.subscribe(() => {
             const MusicPlayer = store.getState().MusicPlayer;
             this.setState({
@@ -26,7 +32,8 @@ export default class TrackPlayer extends React.Component {
         })
     }
 
-    playMusic(trackId){
+    playMusic(){
+        const trackId = this.state.MusicPlayer.trackId;
         const source = getApiUrl('stream', `/${trackId}`);
 
         if(audio.src !== source){
@@ -48,7 +55,15 @@ export default class TrackPlayer extends React.Component {
         return (
             <div id="TrackPlayer">
                 <input ref="volume" type="range" className="timeStamp" defaultValue="0" max="100" id="volume"/>
-                <div ref="playPauseButton" id="playPauseButton" className="playPauseButton material-icons">play_arrow
+                <div
+                    ref="playPauseButton"
+                    id="playPauseButton"
+                    className="playPauseButton material-icons"
+                    onClick={this.playMusic.bind(this)}
+                    style={{
+                        "cursor": "pointer",
+                    }}
+                >play_arrow
                 </div>
                 <Link to={"/track/" + this.state.MusicPlayer.trackId}>{this.state.MusicPlayer.title}</Link>
                 <br/>
