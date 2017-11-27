@@ -59,7 +59,7 @@ export default class TrackPlayer extends React.Component {
                     ref="playPauseButton"
                     id="playPauseButton"
                     className="playPauseButton material-icons"
-                    onClick={() => {this.playMusic.bind(this)}}
+                    onClick={this.playMusic.bind(this)}
                     style={{
                         "cursor": "pointer",
                     }}
