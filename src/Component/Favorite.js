@@ -15,7 +15,7 @@ export default class Favorite extends React.Component {
         } else {
             heart.classList.add('favorite')
         }
-        axios.post(getApiurl('api', `/track/favorite/${trackId}?bypass=true`));
+        axios.post(getApiurl('api', `/track/favorite/${trackId}?`));
     }
 
     render() {

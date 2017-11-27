@@ -34,7 +34,7 @@ export default class TrackPlayer extends React.Component {
 
     playMusic(){
         const trackId = this.state.MusicPlayer.trackId;
-        const source = getApiUrl('stream', `/${trackId}`);
+        const source = getApiUrl('stream', `/${trackId}?`);
 
         if(audio.src !== source){
             audio.src = source;
@@ -59,7 +59,7 @@ export default class TrackPlayer extends React.Component {
                     ref="playPauseButton"
                     id="playPauseButton"
                     className="playPauseButton material-icons"
-                    onClick={this.playMusic.bind(this)}
+                    onClick={() => {this.playMusic.bind(this)}}
                     style={{
                         "cursor": "pointer",
                     }}

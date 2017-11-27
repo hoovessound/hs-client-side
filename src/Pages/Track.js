@@ -8,7 +8,6 @@ import {url} from '../Util/textFormat';
 import Comment from '../Component/Comment';
 import Favorite from '../Component/Favorite'
 
-const token = 'e7671b56aca42828b5da68aad722f8c4f441d76dcef9f747d3aebd371dc10c18af6ac5c6297094500fe69578904c95eacca8';
 export default class Track extends React.Component {
     constructor() {
         super();

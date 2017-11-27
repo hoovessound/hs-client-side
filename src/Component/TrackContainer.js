@@ -1,7 +1,6 @@
 import React from 'react';
 import '../css/TrackContainer.css';
 import {Link} from 'react-router-dom';
-import getApiUrl from '../Util/getApiUrl';
 import store from '../Redux/store';
 
 let trackTitle;
@@ -24,9 +23,6 @@ export default class TrackContainer extends React.Component {
     }
 
     playMusic() {
-        const trackId = this.props.trackId;
-        const src = getApiUrl('stream', `/${trackId}`);
-
         store.dispatch({
             type: 'UPDATE_TRACK_DETAILS',
             payload: {
