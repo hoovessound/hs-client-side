@@ -28,7 +28,10 @@ export default class Tracks extends React.Component {
             }, function () {
                 store.dispatch({
                     type: 'UPDATE_TRACK_DETAILS',
-                    payload: this.state.trackEl[0].props,
+                    payload: {
+                        ...this.state.trackEl[0].props,
+                        playitnow: false,
+                    },
                 });
             })
         })

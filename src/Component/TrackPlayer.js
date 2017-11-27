@@ -15,19 +15,15 @@ export default class TrackPlayer extends React.Component {
         };
     }
 
-    async fetchInitTrack(){
-
-    }
-
     async componentDidMount() {
-        // See if the user already have a last track
-        this.fetchInitTrack();
         store.subscribe(() => {
             const MusicPlayer = store.getState().MusicPlayer;
             this.setState({
                 MusicPlayer,
             }, () => {
-                this.playMusic(this.state.MusicPlayer.trackId);
+                if(this.state.MusicPlayer.playitnow){
+                    this.playMusic();
+                }
             });
         })
     }

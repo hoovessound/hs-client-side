@@ -27,6 +27,7 @@ export default class TrackContainer extends React.Component {
             type: 'UPDATE_TRACK_DETAILS',
             payload: {
                 ...this.props,
+                playitnow: true,
             }
         });
     }
