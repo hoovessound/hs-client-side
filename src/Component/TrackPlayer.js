@@ -3,6 +3,7 @@ import '../css/TrackPlayer.css';
 import store from '../Redux/store';
 import {Link} from 'react-router-dom';
 import getApiUrl from '../Util/getApiUrl';
+import axios from 'axios';
 
 let playing = false;
 const audio = new Audio();
@@ -21,30 +22,47 @@ export default class TrackPlayer extends React.Component {
             this.setState({
                 MusicPlayer,
             }, () => {
-                if(this.state.MusicPlayer.playitnow){
+                if (this.state.MusicPlayer.playitnow) {
                     this.playMusic();
                 }
             });
         })
     }
 
-    playMusic(){
+    playMusic() {
         const trackId = this.state.MusicPlayer.trackId;
         const source = getApiUrl('stream', `/${trackId}?`);
 
-        if(audio.src !== source){
+        if (audio.src !== source) {
             audio.src = source;
         }
 
-        if(playing) {
+        if (playing) {
             playing = false;
             audio.pause();
             this.refs.playPauseButton.textContent = 'play_arrow';
-        }else{
+        } else {
             playing = true;
             audio.play();
             this.refs.playPauseButton.textContent = 'pause';
         }
+        this.updateLastPlay();
+    }
+
+    async updateLastPlay(){
+        // Update the user's lastPlay field
+        const response = await axios.post(getApiUrl('api', `/events?`), {
+            event: 'UPDATE_LAST_PLAY',
+            payload: {
+                volume: 100,
+                trackID: store.getState().MusicPlayer.trackId,
+                playtime: {
+                    currentTime: audio.currentTime,
+                    duration: audio.duration,
+                },
+                isPlaying: playing,
+            }
+        })
     }
 
     render() {
@@ -63,7 +81,8 @@ export default class TrackPlayer extends React.Component {
                 </div>
                 <Link to={"/track/" + this.state.MusicPlayer.trackId}>{this.state.MusicPlayer.title}</Link>
                 <br/>
-                <Link to={"/@" + this.state.MusicPlayer.author_username}>{"@" + this.state.MusicPlayer.author_username}</Link>
+                <Link
+                    to={"/@" + this.state.MusicPlayer.author_username}>{"@" + this.state.MusicPlayer.author_username}</Link>
             </div>
         )
     }
