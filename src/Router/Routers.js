@@ -22,17 +22,30 @@ export default class Routers extends React.Component {
         const response = await axios.get(getApiUrl('api', '/me?'));
         const body = response.data;
         const trackID = body.history.trackID;
-        // Get the track info
-        const trackResponse = await axios.get(getApiUrl('api', `/track/${trackID}?`));
-        store.dispatch({
-            type: 'UPDATE_TRACK_DETAILS',
-            payload: {
-                trackId: trackID,
-                title: trackResponse.data.title,
-                author_username: trackResponse.data.author.username,
-                playitnow: false,
-            }
-        });
+        if(trackID){
+            // Get the track info
+            const trackResponse = await axios.get(getApiUrl('api', `/track/${trackID}?`));
+            store.dispatch({
+                type: 'UPDATE_TRACK_DETAILS',
+                payload: {
+                    trackId: trackID,
+                    title: trackResponse.data.title,
+                    author_username: trackResponse.data.author.username,
+                    playitnow: false,
+                }
+            });
+        }else{
+            const response = await axios.get(getApiUrl('api', '/tracks?offset=0'))
+            store.dispatch({
+                type: 'UPDATE_TRACK_DETAILS',
+                payload: {
+                    trackId: response.data[0].id,
+                    title: response.data[0].title,
+                    author_username: response.data[0].author.username,
+                    playitnow: false,
+                }
+            });
+        }
     }
 
     render() {
