@@ -2,7 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import TrackContainer from '../Component/TrackContainer';
 import getApiurl from '../Util/getApiUrl';
-import store from '../Redux/store';
 
 export default class Tracks extends React.Component {
     constructor() {

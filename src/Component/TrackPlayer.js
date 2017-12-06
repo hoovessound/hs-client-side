@@ -51,7 +51,7 @@ export default class TrackPlayer extends React.Component {
 
     async updateLastPlay(){
         // Update the user's lastPlay field
-        const response = await axios.post(getApiUrl('api', `/events?`), {
+        axios.post(getApiUrl('api', `/events?`), {
             event: 'UPDATE_LAST_PLAY',
             payload: {
                 volume: 100,
