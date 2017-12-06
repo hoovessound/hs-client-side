@@ -14,6 +14,7 @@ import {
 
 import Tracks from '../Pages/Tracks';
 import Track from '../Pages/Track';
+import Favorite from '../Pages/Favorite';
 
 export default class Routers extends React.Component {
 
@@ -56,6 +57,7 @@ export default class Routers extends React.Component {
                     <Route component={Header}/>
                     <Route exact path="/" component={Tracks}></Route>
                     <Route path="/track/:id" component={Track}></Route>
+                    <Route path="/favorite" component={Favorite}></Route>
                     <Route component={TrackPlayer}/>
                     <Route component={Footer}/>
                 </div>
