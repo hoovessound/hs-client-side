@@ -6,6 +6,7 @@
     "axios": "^0.17.1",
     "history": "^4.7.2",
     "react": "^16.1.1",
+    "react-cookies": "^0.1.0",
     "react-dom": "^16.1.1",
     "react-redux": "^5.0.6",
     "react-render-html": "^0.6.0",
