@@ -10,7 +10,7 @@ RUN apt-get clean
 
 COPY . .
 
-CMD [ "npm", "build" ]
+RUN npm run build
 
 RUN npm install -g serve
 
