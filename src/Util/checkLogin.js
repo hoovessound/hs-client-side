@@ -1,12 +1,16 @@
 import cookie from 'react-cookies';
 
-export default (subdomain='api', path='/') => {
-    if(process.env.NODE_ENV === 'production'){
-        // Get the user's oauth-token
-        const token = cookie.load('oauth-token');
-        return (`https://${subdomain}.hoovessound.ml${path}&oauth_token=${token}&bypass=true`);
+export default () => {
+    const token = cookie.load('oauth-token');
+    const currentUrl = window.location;
+    if(!token){
+        if(process.env.NDOE_ENV === 'production'){
+            window.location = `https://id.hoovessound.ml/login?service=hs_service_login&redirect=${currentUrl}`;
+        }else{
+            window.location = `http://id.hoovessound.app:3000/login?service=hs_service_login&redirect=${currentUrl}`;
+        }
+        return false;
     }else{
-        const token = 'e7671b56aca42828b5da68aad722f8c4f441d76dcef9f747d3aebd371dc10c18af6ac5c6297094500fe69578904c95eacca8';
-        return (`http://${subdomain}.hoovessound.app:3000${path}&oauth_token=${token}&bypass=true`);
+        return true;
     }
 }

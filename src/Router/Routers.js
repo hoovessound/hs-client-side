@@ -2,10 +2,12 @@ import React from 'react';
 
 import Header from '../Pages/Header';
 import Footer from '../Pages/Footer';
+import Logout from '../Pages/Logout';
 import TrackPlayer from '../Component/TrackPlayer';
 import axios from 'axios';
 import getApiUrl from '../Util/getApiUrl';
 import store from '../Redux/store';
+import checkLogin from '../Util/checkLogin';
 
 import {
     BrowserRouter as Router,
@@ -23,7 +25,7 @@ export default class Routers extends React.Component {
         const response = await axios.get(getApiUrl('api', '/me?'));
         const body = response.data;
         const trackID = body.history.trackID;
-        if(trackID){
+        if (trackID) {
             // Get the track info
             const trackResponse = await axios.get(getApiUrl('api', `/track/${trackID}?`));
             store.dispatch({
@@ -35,7 +37,7 @@ export default class Routers extends React.Component {
                     playitnow: false,
                 }
             });
-        }else{
+        } else {
             const response = await axios.get(getApiUrl('api', '/tracks?offset=0'))
             store.dispatch({
                 type: 'UPDATE_TRACK_DETAILS',
@@ -51,17 +53,24 @@ export default class Routers extends React.Component {
 
     render() {
         this.setInitialTrackState();
-        return (
-            <Router>
-                <div>
-                    <Route component={Header}/>
-                    <Route exact path="/" component={Tracks}></Route>
-                    <Route path="/track/:id" component={Track}></Route>
-                    <Route path="/favorite" component={Favorite}></Route>
-                    <Route component={TrackPlayer}/>
-                    <Route component={Footer}/>
-                </div>
-            </Router>
-        )
+        if(checkLogin()){
+            return (
+                <Router>
+                    <div>
+                        <Route component={Header}/>
+                        <Route exact path="/" component={Tracks}></Route>
+                        <Route path="/track/:id" component={Track}></Route>
+                        <Route path="/favorite" component={Favorite}></Route>
+                        <Route path="/logout" component={Logout}></Route>
+                        <Route component={TrackPlayer}/>
+                        <Route component={Footer}/>
+                    </div>
+                </Router>
+            )
+        }else{
+            return (
+                <h1>You have to login before you continue this action.</h1>
+            )
+        }
     }
 }
