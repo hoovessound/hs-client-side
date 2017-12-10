@@ -6,8 +6,6 @@ COPY package.json .
 
 RUN npm install --production
 
-RUN apt-get clean
-
 COPY . .
 
 RUN npm run build
