@@ -52,8 +52,8 @@ export default class Routers extends React.Component {
     }
 
     render() {
-        this.setInitialTrackState();
         if(checkLogin()){
+            this.setInitialTrackState();
             return (
                 <Router>
                     <div>
