@@ -1,5 +1,5 @@
 export default (state={
-    playing: false,
+
 }, action) => {
     switch(action.type){
 
@@ -7,7 +7,7 @@ export default (state={
             return state;
         }
 
-        case 'UPDATE_TRACK_DETAILS': {
+        case 'UPDATE_USER_STACK': {
             state = {
                 ...state,
                 ...action.payload,

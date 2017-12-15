@@ -18,37 +18,51 @@ import Tracks from '../Pages/Tracks';
 import Track from '../Pages/Track';
 import Favorite from '../Pages/Favorite';
 
-export default class Routers extends React.Component {
+let setInitUserStack = false;
 
+export default class Routers extends React.Component {
     async setInitialTrackState() {
-        // Fetch the user last known track
-        const response = await axios.get(getApiUrl('api', '/me?'));
-        const body = response.data;
-        const trackID = body.history.trackID;
-        if (trackID) {
-            // Get the track info
-            const trackResponse = await axios.get(getApiUrl('api', `/track/${trackID}?`));
-            store.dispatch({
-                type: 'UPDATE_TRACK_DETAILS',
-                payload: {
-                    trackId: trackID,
-                    title: trackResponse.data.title,
-                    author_username: trackResponse.data.author.username,
-                    playitnow: false,
+
+        store.subscribe(() => {
+            const user = store.getState().User;
+            // Get the user last known track
+            const trackID = user.history.trackID;
+            if(!setInitUserStack){
+                if(trackID){
+                    // Get the track info
+                    async function getTrackInfo(trackId) {
+                        const response = await axios.get(getApiUrl('api', `/track/${trackId}?`));
+                        const track = response.data;
+
+                        store.dispatch({
+                            type: 'UPDATE_TRACK_DETAILS',
+                            payload: {
+                                trackId,
+                                title: track.title,
+                                author_username: track.author.username,
+                                playitnow: false,
+                            }
+                        });
+                    }
+                    getTrackInfo(trackID);
+                }else{
+                    async function getLatestTrackInfo() {
+                        const response = await axios.get(getApiUrl('api', '/tracks?offset=0'))
+                        store.dispatch({
+                            type: 'UPDATE_TRACK_DETAILS',
+                            payload: {
+                                trackId: response.data[0].id,
+                                title: response.data[0].title,
+                                author_username: response.data[0].author.username,
+                                playitnow: false,
+                            }
+                        });
+                    }
+                    getLatestTrackInfo();
                 }
-            });
-        } else {
-            const response = await axios.get(getApiUrl('api', '/tracks?offset=0'))
-            store.dispatch({
-                type: 'UPDATE_TRACK_DETAILS',
-                payload: {
-                    trackId: response.data[0].id,
-                    title: response.data[0].title,
-                    author_username: response.data[0].author.username,
-                    playitnow: false,
-                }
-            });
-        }
+                setInitUserStack = true;
+            }
+        })
     }
 
     render() {
@@ -58,10 +72,12 @@ export default class Routers extends React.Component {
                 <Router>
                     <div>
                         <Route component={Header}/>
-                        <Route exact path="/" component={Tracks}></Route>
-                        <Route path="/track/:id" component={Track}></Route>
-                        <Route path="/favorite" component={Favorite}></Route>
-                        <Route path="/logout" component={Logout}></Route>
+                        <div className="container">
+                            <Route exact path="/" component={Tracks}></Route>
+                            <Route path="/track/:id" component={Track}></Route>
+                            <Route path="/favorite" component={Favorite}></Route>
+                            <Route path="/logout" component={Logout}></Route>
+                        </div>
                         <Route component={TrackPlayer}/>
                         <Route component={Footer}/>
                     </div>
