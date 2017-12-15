@@ -18,7 +18,7 @@ export default class Favorite extends React.Component {
             const trackEl = () => {
                 return (
                     <TrackContainer key={track.id} title={track.title} coverImage={track.coverImage} trackId={track.id}
-                                    author_username={track.author.username} author_fullName={track.author.fullName}/>
+                                    author_username={track.author.username} author_fullName={track.author.fullname}/>
                 )
             }
             this.setState({
