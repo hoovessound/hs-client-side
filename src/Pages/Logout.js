@@ -3,7 +3,7 @@ import cookie from 'react-cookies';
 
 export default class Favorite extends React.Component {
     render() {
-        if(process.env.NODE_ENV === 'proudction'){
+        if(process.env.NODE_ENV === 'production'){
             cookie.remove('oauth-token', {
                 path: '/',
                 domain: '.hoovessound.ml'
