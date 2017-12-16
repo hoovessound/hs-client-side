@@ -32,7 +32,12 @@ export default class NavBar extends React.Component {
         return (
             <div>
 
-                <nav className="navbar navbar-toggleable-md navbar-light bg-faded">
+                <nav
+                    className="navbar navbar-toggleable-md navbar-light bg-faded"
+                    style={{
+                        padding: '1em',
+                    }}
+                >
                     <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                             data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                             aria-label="Toggle navigation">
@@ -45,7 +50,7 @@ export default class NavBar extends React.Component {
 
                         <ul className="navbar-nav">
 
-                            <li className="nav-item active">
+                            <li className="nav-item">
                                 <div className="nav-link">
                                     <Link to={"/"}>Home</Link>
                                 </div>
@@ -61,16 +66,23 @@ export default class NavBar extends React.Component {
 
                         <ul className="navbar-nav ml-auto">
 
-                            <li className="nav-item dropdown">
+                            <li
+                                className="nav-item dropdown"
+                            >
                                 <a className="nav-link" id="navbarDropdown" data-toggle="dropdown"
-                                   aria-haspopup="true" aria-expanded="false">
+                                   aria-haspopup="true" aria-expanded="false"
+                                   style={{
+                                       display: 'inline',
+                                   }}
+                                >
                                     <img
                                         src={this.state.userIcon}
                                         alt="Your profile icon"
                                         style={{
                                             borderRadius: '50%',
-                                            width: '3em',
+                                            width: '2.5em',
                                             cursor: 'pointer',
+                                            display: 'inline',
                                         }}
                                     />
                                 </a>
