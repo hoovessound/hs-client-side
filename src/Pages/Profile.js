@@ -1,7 +1,5 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import axios from 'axios';
-import getApiurl from '../Util/getApiUrl';
 import store from '../Redux/store';
 
 export default class Profile extends React.Component {
@@ -13,13 +11,18 @@ export default class Profile extends React.Component {
     }
 
     async componentDidMount() {
+        const user = store.getState().User;
+        this.updateInfo(user);
         store.subscribe(() => {
             const user = store.getState().User;
-            console.log(user)
-            this.setState({
-                user,
-            });
+            this.updateInfo(user);
         })
+    }
+
+    updateInfo(user){
+        this.setState({
+            user,
+        });
     }
 
     render() {
