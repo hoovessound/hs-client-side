@@ -4,7 +4,7 @@ export default class Layout extends React.Component{
     render(){
         return (
             <footer>
-                <p>Footer</p>
+                <a href="https://github.com/hoovessound" className="fa fa-github">GitHub</a>
             </footer>
         )
     }
