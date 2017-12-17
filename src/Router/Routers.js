@@ -73,7 +73,13 @@ export default class Routers extends React.Component {
                 <Router>
                     <div>
                         <Route component={Header}/>
-                        <div className="container">
+                        <div
+                            className="container"
+                            style={{
+                                marginBottom: '4em',
+                                marginTop: '1em',
+                            }}
+                        >
                             <Route exact path="/" component={Tracks}></Route>
                             <Route path="/track/:id" component={Track}></Route>
                             <Route path="/favorite" component={Favorite}></Route>

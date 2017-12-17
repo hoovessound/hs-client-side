@@ -67,7 +67,12 @@ export default class TrackPlayer extends React.Component {
 
     render() {
         return (
-            <div id="TrackPlayer">
+            <div
+                id="TrackPlayer"
+                style={{
+                    marginTop: '1em',
+                }}
+            >
                 <input ref="volume" type="range" className="timeStamp" defaultValue="0" max="100" id="volume"/>
                 <div
                     ref="playPauseButton"
