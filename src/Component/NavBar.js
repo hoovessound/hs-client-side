@@ -33,7 +33,7 @@ export default class NavBar extends React.Component {
             <div>
 
                 <nav
-                    className="navbar navbar-toggleable-md navbar-light bg-faded"
+                    className="navbar navbar-toggleable-md navbar-light bg-faded fixed-top"
                     style={{
                         padding: '1em',
                     }}

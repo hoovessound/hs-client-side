@@ -77,7 +77,7 @@ export default class Routers extends React.Component {
                             className="container"
                             style={{
                                 marginBottom: '4em',
-                                marginTop: '1em',
+                                marginTop: '4.5em',
                             }}
                         >
                             <Route exact path="/" component={Tracks}></Route>
