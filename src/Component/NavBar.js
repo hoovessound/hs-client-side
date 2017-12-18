@@ -62,6 +62,12 @@ export default class NavBar extends React.Component {
                                 </div>
                             </li>
 
+                            <li className="nav-item">
+                                <div className="nav-link">
+                                    <Link to={"/doodle"}>Doodle</Link>
+                                </div>
+                            </li>
+
                         </ul>
 
                         <ul className="navbar-nav ml-auto">
