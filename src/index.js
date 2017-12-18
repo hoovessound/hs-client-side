@@ -9,4 +9,3 @@ const app = document.getElementById('app');
 ReactDom.render(<Provider store={store}>
     <Routers />
 </Provider>, app);
-registerServiceWorker();
