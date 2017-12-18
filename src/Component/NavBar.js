@@ -85,24 +85,42 @@ export default class NavBar extends React.Component {
                             <li
                                 className="nav-item dropdown"
                             >
-                                <a className="nav-link" id="navbarDropdown" data-toggle="dropdown"
-                                   aria-haspopup="true" aria-expanded="false"
+                                <a className="nav-link"
+                                   id="navbarDropdown"
+                                   data-toggle="dropdown"
+                                   aria-haspopup="true"
+                                   aria-expanded="false"
                                    style={{
                                        display: 'inline',
                                    }}
                                 >
-                                    <img
-                                        src={this.state.userIcon}
-                                        alt="Your profile icon"
+
+                                    <span
                                         style={{
-                                            borderRadius: '50%',
-                                            width: '2.5em',
                                             cursor: 'pointer',
-                                            display: 'inline',
                                         }}
-                                    />
+                                        id={'dropdown-wraper'}
+                                    >
+                                        <img
+                                            src={this.state.userIcon}
+                                            alt="Your profile icon"
+                                            style={{
+                                                borderRadius: '50%',
+                                                width: '2.5em',
+                                                display: 'inline',
+                                            }}
+                                        />
+                                        <span
+                                            className="fa fa-chevron-down"
+                                            style={{
+                                                fontSize: '0.7em',
+                                                margin: '0.5em',
+                                            }}
+                                        ></span>
+                                    </span>
+
                                 </a>
-                                <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" >
 
                                     <div className="nav-link">
                                         <Link to={"/profile"}>Profile</Link>

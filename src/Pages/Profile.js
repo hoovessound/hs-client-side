@@ -69,7 +69,7 @@ export default class Profile extends React.Component {
                     backgroundAttachment: 'fixed',
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
-                    padding: '5em 3em'
+                    padding: '5em 3em',
                 }}
             >
 
@@ -79,11 +79,11 @@ export default class Profile extends React.Component {
                     style={{
                         display: 'none',
                         position: 'fixed',
-                        top: '0em',
-                        left: '0em',
-                        background: 'rgba(0,0,0, 0.5)',
+                        background: 'rgba(255,255,255, 0.5)',
                         height: '100vh',
                         width: '100vw',
+                        top: 0,
+                        left: 0,
                     }}
                     onClick={this.closeOverLay.bind(this)}
                 ></div>
@@ -115,18 +115,19 @@ export default class Profile extends React.Component {
                             margin: '0.5em',
                         }}
                     />
+                    <p>Your name</p>
                     <input
                         ref="userFullName_Edit"
                         type={'text'}
                         style={{
                             cursor: 'pointer',
                             display: 'block',
-                            border: 'none',
-                            boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)',
+                            border: '1px solid #000',
                             textAlign: 'center',
                             position: 'relative',
                             margin: 'auto',
                             padding: '0.5em',
+                            borderRadius: '3px',
                         }}
                         value={this.state.user.fullname}
                         onChange={this.fullNameOnChange.bind(this)}
