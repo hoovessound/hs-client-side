@@ -2,22 +2,38 @@ import React from 'react';
 import axios from 'axios';
 import getApiUrl from '../Util/getApiUrl';
 let offset = 0;
+
 export default class Doodle extends React.Component {
     constructor() {
         super();
         this.state = {
-            doodles: [],
+            doodles: {},
         }
     }
 
     async fetchDoodles(){
         const apiUrl = getApiUrl('api', `/doodle/collections/${offset}?`);
         const response = await axios.get(apiUrl);
-        const doodles = response.data;
-        const arrayOfDoodles = []
-        doodles.map(doodle => {
-            arrayOfDoodles.push(
-                <div className="card">
+        let doodles = this.state.doodles;
+        response.data.map(doodle => {
+            return doodles[doodle.id] = doodle;
+        })
+        this.setState({
+            doodles,
+        })
+        offset += 5;
+    }
+
+    componentDidMount(){
+        this.fetchDoodles();
+    }
+
+    eachArtWork(doodles){
+        const render = [];
+        for(let key in doodles){
+            const doodle = doodles[key];
+            render.push(
+                <div className="card" key={doodle.id}>
                     <img
                         className="card-img-top"
                         src={doodle.image}
@@ -33,17 +49,26 @@ export default class Doodle extends React.Component {
                     </div>
                 </div>
             )
-        });
-        this.setState({
-            doodles: arrayOfDoodles,
-        })
+        }
+        return (
+            <div>
+                {render}
+            </div>
+        )
     }
 
     render() {
-        this.fetchDoodles();
         return (
             <div id={'doodles'}>
-                {this.state.doodles}
+                {this.eachArtWork(this.state.doodles)}
+                <div
+                    className="btn btn-info"
+                    style={{
+                        margin: '0.5em',
+                        cursor: 'pointer',
+                    }}
+                    onClick={this.fetchDoodles.bind(this)}
+                >More</div>
             </div>
         )
     }
