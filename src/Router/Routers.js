@@ -18,6 +18,7 @@ import Tracks from '../Pages/Tracks';
 import Track from '../Pages/Track';
 import Favorite from '../Pages/Favorite';
 import Profile from '../Pages/Profile';
+import Upload from '../Pages/Upload';
 
 let setInitUserStack = false;
 
@@ -84,6 +85,7 @@ export default class Routers extends React.Component {
                             <Route path="/track/:id" component={Track}></Route>
                             <Route path="/favorite" component={Favorite}></Route>
                             <Route path="/profile" component={Profile}></Route>
+                            <Route path="/upload" component={Upload}></Route>
                             <Route path="/logout" component={Logout}></Route>
                         </div>
                         <Route component={TrackPlayer}/>
