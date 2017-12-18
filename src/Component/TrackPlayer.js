@@ -7,6 +7,7 @@ import axios from 'axios';
 
 let playing = false;
 const audio = new Audio();
+let updateLastPlayEvent;
 export default class TrackPlayer extends React.Component {
 
     constructor() {
@@ -62,18 +63,22 @@ export default class TrackPlayer extends React.Component {
 
     async updateLastPlay(){
         // Update the user's lastPlay field
-        axios.post(getApiUrl('api', `/events?`), {
-            event: 'UPDATE_LAST_PLAY',
-            payload: {
-                volume: 100,
-                trackID: store.getState().MusicPlayer.trackId,
-                playtime: {
-                    currentTime: audio.currentTime,
-                    duration: audio.duration,
-                },
-                isPlaying: playing,
-            }
-        })
+
+        if(updateLastPlayEvent) clearTimeout(updateLastPlayEvent);
+        updateLastPlayEvent = setTimeout(() => {
+            axios.post(getApiUrl('api', `/events?`), {
+                event: 'UPDATE_LAST_PLAY',
+                payload: {
+                    volume: 100,
+                    trackID: store.getState().MusicPlayer.trackId,
+                    playtime: {
+                        currentTime: audio.currentTime,
+                        duration: audio.duration,
+                    },
+                    isPlaying: playing,
+                }
+            })
+        }, 750);
     }
 
     render() {
