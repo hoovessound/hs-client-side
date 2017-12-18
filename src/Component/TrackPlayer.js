@@ -16,6 +16,17 @@ export default class TrackPlayer extends React.Component {
         };
     }
 
+    hotKey(evt){
+        const active = document.activeElement;
+        const charCode = evt.which || evt.charCode || evt.keyCode || 0;
+        if(active.tagName !== 'TEXTAREA' && active.tagName !== 'INPUT' && active.id !== 'volumeBar'){
+            evt.preventDefault();
+            if(charCode === 32){
+                this.playMusic();
+            }
+        }
+    }
+
     async componentDidMount() {
         store.subscribe(() => {
             const MusicPlayer = store.getState().MusicPlayer;
@@ -66,6 +77,7 @@ export default class TrackPlayer extends React.Component {
     }
 
     render() {
+        window.onkeypress = (event) => this.hotKey(event);
         return (
             <div
                 id="TrackPlayer"
