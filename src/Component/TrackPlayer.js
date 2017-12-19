@@ -5,10 +5,8 @@ import {Link} from 'react-router-dom';
 import getApiUrl from '../Util/getApiUrl';
 import axios from 'axios';
 
-let playing = false;
 const audio = new Audio();
 let updateLastPlayEvent;
-
 export default class TrackPlayer extends React.Component {
 
     constructor() {
@@ -42,6 +40,14 @@ export default class TrackPlayer extends React.Component {
                 this.refs.time.max = User.history.playtime.duration;
                 this.refs.time.value = User.history.playtime.currentTime;
             }
+
+            // If the data contain coverImage, than use the coverImage
+
+            if(MusicPlayer.coverImage){
+                MusicPlayer.coverArt = MusicPlayer.coverImage;
+                delete MusicPlayer.coverImage;
+            }
+
             this.setState({
                 MusicPlayer,
             }, () => {
@@ -55,23 +61,24 @@ export default class TrackPlayer extends React.Component {
     playMusic() {
         const trackId = this.state.MusicPlayer.trackId;
         const source = getApiUrl('stream', `/${trackId}?`);
-
         if (audio.src !== source) {
+
+            // A new audio source
+
             audio.src = source;
             audio.onloadedmetadata = () => {
                 this.refs.time.max = audio.duration;
             }
         }
 
-        if (playing) {
-            playing = false;
+        if(audio.paused){
+            audio.play()
+            this.refs.playPauseButton.textContent = 'pause';
+        }else{
             audio.pause();
             this.refs.playPauseButton.textContent = 'play_arrow';
-        } else {
-            playing = true;
-            audio.play();
-            this.refs.playPauseButton.textContent = 'pause';
         }
+
         this.updateLastPlay();
     }
 
@@ -97,7 +104,7 @@ export default class TrackPlayer extends React.Component {
                         currentTime: audio.currentTime,
                         duration: audio.duration,
                     },
-                    isPlaying: playing,
+                    isPlaying: !audio.paused,
                 }
             })
         }, 750);
