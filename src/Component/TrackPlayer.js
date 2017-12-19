@@ -8,6 +8,7 @@ import axios from 'axios';
 let playing = false;
 const audio = new Audio();
 let updateLastPlayEvent;
+
 export default class TrackPlayer extends React.Component {
 
     constructor() {
@@ -38,6 +39,8 @@ export default class TrackPlayer extends React.Component {
                 // Set the correct timestamp and volume
 
                 audio.currentTime = User.history.playtime.currentTime;
+                this.refs.time.max = User.history.playtime.duration;
+                this.refs.time.value = User.history.playtime.currentTime;
             }
             this.setState({
                 MusicPlayer,
@@ -55,6 +58,9 @@ export default class TrackPlayer extends React.Component {
 
         if (audio.src !== source) {
             audio.src = source;
+            audio.onloadedmetadata = () => {
+                this.refs.time.max = audio.duration;
+            }
         }
 
         if (playing) {
@@ -67,6 +73,14 @@ export default class TrackPlayer extends React.Component {
             this.refs.playPauseButton.textContent = 'pause';
         }
         this.updateLastPlay();
+    }
+
+    updateTimeStamp(updateAudio=false){
+        if(!updateAudio){
+            this.refs.time.value = audio.currentTime;
+        }else{
+            audio.currentTime = this.refs.time.value;
+        }
     }
 
     async updateLastPlay(){
@@ -91,6 +105,7 @@ export default class TrackPlayer extends React.Component {
 
     render() {
         window.onkeypress = (event) => this.hotKey(event);
+        audio.ontimeupdate = () => this.updateTimeStamp();
         return (
             <div
                 id="TrackPlayer"
@@ -98,21 +113,83 @@ export default class TrackPlayer extends React.Component {
                     marginTop: '1em',
                 }}
             >
-                <input ref="volume" type="range" className="timeStamp" defaultValue="0" max="100" id="volume"/>
-                <div
-                    ref="playPauseButton"
-                    id="playPauseButton"
-                    className="playPauseButton material-icons"
-                    onClick={this.playMusic.bind(this)}
-                    style={{
-                        "cursor": "pointer",
-                    }}
-                >play_arrow
+
+                <div id="trackInfo">
+
+                    <div
+                        ref={'coverArt'}
+                        style={{
+                            backgroundImage: `url(${this.state.MusicPlayer.coverArt})`,
+                            backgroundSize: 'cover',
+                            backgroundRepeat: 'no-repeat',
+                            width: '5em',
+                            height: '5em',
+                            display: 'inline-block',
+                            position: 'relative',
+                        }}
+                    >
+                        <div
+                            ref="playPauseButton"
+                            id="playPauseButton"
+                            className="playPauseButton material-icons"
+                            onClick={this.playMusic.bind(this)}
+                            style={{
+                                cursor: 'pointer',
+                                position: 'absolute',
+                                background: 'skyblue',
+                                borderRadius: '50%',
+                                padding: '0.2em',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                            }}
+                        >play_arrow
+                        </div>
+                    </div>
+
+                    <Link to={"/track/" + this.state.MusicPlayer.trackId}>
+                        <span
+                            style={{
+                                position: 'absolute',
+                                top: '1.5em',
+                                left: '6em',
+                            }}
+                        >{this.state.MusicPlayer.title}</span>
+                    </Link>
+
+                    <br/>
+
+                    <Link to={"/@" + this.state.MusicPlayer.author_username}>
+                        <span
+                            style={{
+                                position: 'absolute',
+                                top: '0.1em',
+                                left: '6em',
+                                color: '#dbdbdb',
+                            }}
+                        >{"@" + this.state.MusicPlayer.author_username}</span>
+                    </Link>
+
                 </div>
-                <Link to={"/track/" + this.state.MusicPlayer.trackId}>{this.state.MusicPlayer.title}</Link>
-                <br/>
-                <Link
-                    to={"/@" + this.state.MusicPlayer.author_username}>{"@" + this.state.MusicPlayer.author_username}</Link>
+
+
+                <input
+                    ref="time"
+                    type="range"
+                    className="timeStamp"
+                    defaultValue="0"
+                    max="100"
+                    style={{
+                        position: 'absolute',
+                        top: '3em',
+                        left: '6em',
+                        background: 'none',
+                        width: '90%',
+                        outline: 'none',
+                    }}
+                    onInput={() => this.updateTimeStamp(true)}
+                />
+
             </div>
         )
     }
