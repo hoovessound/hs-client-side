@@ -59,6 +59,33 @@ export default class Profile extends React.Component {
         this.closeOverLay();
     }
 
+    updateUserIcon(){
+        const userIcon = this.refs.userIcon_Edit;
+        userIcon.click();
+        userIcon.onchange = () => this.uploadUserIcon()
+    }
+
+    async uploadUserIcon(){
+        const userIcon = this.refs.userIcon_Edit;
+        const form = new FormData();
+        form.append('image', userIcon.files[0]);
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+        };
+        const apiUrl  = getApiUrl('api', '/settings/profilepicture?');
+        const response = await axios.post(apiUrl, form, config);
+        if(!response.data.error){
+            const user = this.state.user;
+            user.icon = response.data.icon;
+            this.setState({
+                user,
+            });
+            this.closeOverLay();
+        }
+    }
+
     render() {
         return (
 
@@ -114,7 +141,11 @@ export default class Profile extends React.Component {
                             cursor: 'pointer',
                             margin: '0.5em',
                         }}
+                        onClick={this.updateUserIcon.bind(this)}
                     />
+
+                    <input type="file" ref={'userIcon_Edit'} hidden={'true'} style={{display: 'none'}}/>
+
                     <p>Your name</p>
                     <input
                         ref="userFullName_Edit"
