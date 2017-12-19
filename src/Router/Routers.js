@@ -44,6 +44,7 @@ export default class Routers extends React.Component {
                                 title: track.title,
                                 author_username: track.author.username,
                                 playitnow: false,
+                                isHistory: true,
                             }
                         });
                     }

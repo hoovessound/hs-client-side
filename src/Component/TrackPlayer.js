@@ -31,6 +31,14 @@ export default class TrackPlayer extends React.Component {
     async componentDidMount() {
         store.subscribe(() => {
             const MusicPlayer = store.getState().MusicPlayer;
+            if(MusicPlayer.isHistory) {
+                const User = store.getState().User;
+                // Track is come from the user's history
+
+                // Set the correct timestamp and volume
+
+                audio.currentTime = User.history.playtime.currentTime;
+            }
             this.setState({
                 MusicPlayer,
             }, () => {
