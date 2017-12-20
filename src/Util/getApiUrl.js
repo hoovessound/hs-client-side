@@ -10,6 +10,6 @@ export default (subdomain='api', path='/', needAuth=true) => {
     if(process.env.NODE_ENV === 'production'){
         return (`https://${subdomain}.hoovessound.ml${path}${tail}`);
     }else{
-        return (`http://${subdomain}.hoovessound.app:3000${path}${tail}`);
+        return (`http://${subdomain}.hoovessound.me:3000${path}${tail}`);
     }
 }

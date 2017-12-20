@@ -50,7 +50,7 @@ export default class Layout extends React.Component {
                 }}
             >
                 <hr/>
-                <a href="https://github.com/hoovessound" className="fa fa-github" target="_blank"> Open Source</a>
+                <a href="https://github.com/hoovessound" className="fa fa-github" target="_blank" rel="noopener noreferrer"> Open Source</a>
 
                 <div
                     id="buildinfo"
