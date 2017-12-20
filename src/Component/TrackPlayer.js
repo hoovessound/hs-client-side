@@ -7,6 +7,8 @@ import axios from 'axios';
 
 const audio = new Audio();
 let updateLastPlayEvent;
+let oldTitle = document.title;
+
 export default class TrackPlayer extends React.Component {
 
     constructor() {
@@ -62,21 +64,21 @@ export default class TrackPlayer extends React.Component {
         const trackId = this.state.MusicPlayer.trackId;
         const source = getApiUrl('stream', `/${trackId}?`);
         if (audio.src !== source) {
-
             // A new audio source
-
             audio.src = source;
             audio.onloadedmetadata = () => {
                 this.refs.time.max = audio.duration;
-            }
+            };
         }
 
         if(audio.paused){
-            audio.play()
+            audio.play();
             this.refs.playPauseButton.textContent = 'pause';
+            document.title = `${this.state.MusicPlayer.author_fullname} - ${this.state.MusicPlayer.title}`;
         }else{
             audio.pause();
             this.refs.playPauseButton.textContent = 'play_arrow';
+            document.title = oldTitle;
         }
 
         this.updateLastPlay();

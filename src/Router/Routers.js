@@ -43,6 +43,7 @@ export default class Routers extends React.Component {
                                 trackId,
                                 title: track.title,
                                 author_username: track.author.username,
+                                author_fullname: track.author.fullname,
                                 coverArt: track.coverImage,
                                 playitnow: false,
                                 isHistory: true,
@@ -59,6 +60,7 @@ export default class Routers extends React.Component {
                                 trackId: response.data[0].id,
                                 title: response.data[0].title,
                                 author_username: response.data[0].author.username,
+                                author_fullname: response.data[0].author.fullname,
                                 coverArt: response.data[0].coverImage,
                                 playitnow: false,
                             }
