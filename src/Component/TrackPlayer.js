@@ -123,45 +123,43 @@ export default class TrackPlayer extends React.Component {
                 }}
             >
 
-                <div id="trackInfo">
-
+                <div
+                    ref={'coverArt'}
+                    style={{
+                        backgroundImage: `url(${this.state.MusicPlayer.coverArt})`,
+                        backgroundSize: 'cover',
+                        backgroundRepeat: 'no-repeat',
+                        width: '5em',
+                        height: '5em',
+                        display: 'inline-block',
+                        position: 'relative',
+                    }}
+                >
                     <div
-                        ref={'coverArt'}
+                        ref="playPauseButton"
+                        id="playPauseButton"
+                        className="playPauseButton material-icons"
+                        onClick={this.playMusic.bind(this)}
                         style={{
-                            backgroundImage: `url(${this.state.MusicPlayer.coverArt})`,
-                            backgroundSize: 'cover',
-                            backgroundRepeat: 'no-repeat',
-                            width: '5em',
-                            height: '5em',
-                            display: 'inline-block',
-                            position: 'relative',
+                            cursor: 'pointer',
+                            position: 'absolute',
+                            background: 'skyblue',
+                            borderRadius: '50%',
+                            padding: '0.2em',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
                         }}
-                    >
-                        <div
-                            ref="playPauseButton"
-                            id="playPauseButton"
-                            className="playPauseButton material-icons"
-                            onClick={this.playMusic.bind(this)}
-                            style={{
-                                cursor: 'pointer',
-                                position: 'absolute',
-                                background: 'skyblue',
-                                borderRadius: '50%',
-                                padding: '0.2em',
-                                top: '50%',
-                                left: '50%',
-                                transform: 'translate(-50%, -50%)',
-                            }}
-                        >play_arrow
-                        </div>
+                    >play_arrow
                     </div>
+                </div>
+
+                <div id="trackInfo">
 
                     <Link to={"/track/" + this.state.MusicPlayer.trackId}>
                         <span
                             style={{
-                                position: 'absolute',
-                                top: '1.5em',
-                                left: '6em',
+                                color: '#CCC'
                             }}
                         >{this.state.MusicPlayer.title}</span>
                     </Link>
@@ -169,14 +167,7 @@ export default class TrackPlayer extends React.Component {
                     <br/>
 
                     <Link to={"/@" + this.state.MusicPlayer.author_username}>
-                        <span
-                            style={{
-                                position: 'absolute',
-                                top: '0.1em',
-                                left: '6em',
-                                color: '#dbdbdb',
-                            }}
-                        >{"@" + this.state.MusicPlayer.author_username}</span>
+                        <span>{"@" + this.state.MusicPlayer.author_username}</span>
                     </Link>
 
                 </div>
@@ -188,16 +179,11 @@ export default class TrackPlayer extends React.Component {
                     className="timeStamp"
                     defaultValue="0"
                     max="100"
-                    style={{
-                        position: 'absolute',
-                        top: '3em',
-                        left: '6em',
-                        background: 'none',
-                        width: '90%',
-                        outline: 'none',
-                    }}
+                    id="time"
                     onInput={() => this.updateTimeStamp(true)}
                 />
+
+
 
             </div>
         )

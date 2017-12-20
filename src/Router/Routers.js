@@ -30,8 +30,8 @@ export default class Routers extends React.Component {
             const user = store.getState().User;
             // Get the user last known track
             const trackID = user.history.trackID;
-            if(!setInitUserStack){
-                if(trackID){
+            if (!setInitUserStack) {
+                if (trackID) {
                     // Get the track info
                     async function getTrackInfo(trackId) {
                         const response = await axios.get(getApiUrl('api', `/track/${trackId}?`));
@@ -50,8 +50,9 @@ export default class Routers extends React.Component {
                             }
                         });
                     }
+
                     getTrackInfo(trackID);
-                }else{
+                } else {
                     async function getLatestTrackInfo() {
                         const response = await axios.get(getApiUrl('api', '/tracks?offset=0'))
                         store.dispatch({
@@ -66,6 +67,7 @@ export default class Routers extends React.Component {
                             }
                         });
                     }
+
                     getLatestTrackInfo();
                 }
                 setInitUserStack = true;
@@ -74,7 +76,7 @@ export default class Routers extends React.Component {
     }
 
     render() {
-        if(checkLogin()){
+        if (checkLogin()) {
             this.setInitialTrackState();
             return (
                 <Router>
@@ -100,7 +102,7 @@ export default class Routers extends React.Component {
                     </div>
                 </Router>
             )
-        }else{
+        } else {
             return (
                 <h1>You have to login before you continue this action.</h1>
             )

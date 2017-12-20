@@ -6,3 +6,23 @@
     bottom: 0em;
     left: 0em;
 }
+
+#trackInfo{
+    position: absolute;
+    top: 0;
+    left: 6em;
+}
+
+#time{
+    position: absolute;
+    bottom: 0.5em;
+    left: 6em;
+    width: 90%;
+    margin: auto;
+}
+
+@media (max-width: 415px) {
+    #time{
+        width: 70%;
+    }
+}
