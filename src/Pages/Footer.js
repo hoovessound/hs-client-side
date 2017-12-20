@@ -79,7 +79,7 @@ export default class Layout extends React.Component {
                                     background: 'lightgreen',
                                     padding: '0.2em',
                                 }}
-                            >tags</span>
+                            >redux</span>
                         </p>
 
                         <p>
