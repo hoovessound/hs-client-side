@@ -3,9 +3,9 @@ import axios from 'axios';
 import store from '../Redux/store';
 import getApiUrl from '../Util/getApiUrl';
 
-import {
-    Link,
-} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+
+const devUrl = getApiUrl('console.developer', '/', false);
 
 export default class NavBar extends React.Component {
 
@@ -124,6 +124,10 @@ export default class NavBar extends React.Component {
 
                                     <div className="nav-link">
                                         <Link to={"/profile"}>Profile</Link>
+                                    </div>
+
+                                    <div className="nav-link">
+                                        <a href={devUrl}>Developer</a>
                                     </div>
 
                                     <div className="nav-link">
