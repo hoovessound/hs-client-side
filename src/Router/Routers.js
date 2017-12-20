@@ -83,8 +83,8 @@ export default class Routers extends React.Component {
                         <div
                             className="container"
                             style={{
-                                marginBottom: '4em',
-                                marginTop: '4.5em',
+                                marginBottom: '6em',
+                                marginTop: '6.5em',
                             }}
                         >
                             <Route exact path="/" component={Tracks}></Route>
@@ -94,9 +94,9 @@ export default class Routers extends React.Component {
                             <Route path="/upload" component={Upload}></Route>
                             <Route path="/doodle" component={Doodle}></Route>
                             <Route path="/logout" component={Logout}></Route>
+                            <Route component={Footer}/>
                         </div>
                         <Route component={TrackPlayer}/>
-                        <Route component={Footer}/>
                     </div>
                 </Router>
             )
