@@ -15,13 +15,14 @@ export default class Layout extends React.Component {
                         name: 'fetching...', // commit author
                         link: 'fetching...', // author GitHub link
                     },
-                }
-            }
+                },
+            },
+            activeDevelopmentBranch: 'redux',
         }
     }
 
     async componentDidMount() {
-        const apiUrl = 'https://api.github.com/repos/hoovessound/hs-client-side/commits';
+        const apiUrl = `https://api.github.com/repos/hoovessound/hs-client-side/commits?sha=${this.state.activeDevelopmentBranch}`;
         const response = await axios.get(apiUrl);
         const data = response.data;
         const buildInfo = {
@@ -79,7 +80,7 @@ export default class Layout extends React.Component {
                                     background: 'lightgreen',
                                     padding: '0.2em',
                                 }}
-                            >redux</span>
+                            >{this.state.activeDevelopmentBranch}</span>
                         </p>
 
                         <p>
