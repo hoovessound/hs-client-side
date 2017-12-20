@@ -182,6 +182,7 @@ export default class Profile extends React.Component {
                     src={this.state.user.icon}
                     style={{
                         borderRadius: '50%',
+                        width: '4em',
                     }}
                 />
                 <h1 ref="userFullName">{this.state.user.fullname}</h1>
