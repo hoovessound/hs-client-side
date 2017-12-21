@@ -8,23 +8,47 @@ export default class Profile extends React.Component {
     constructor() {
         super();
         this.state = {
-            user: {}
+            user: {},
+            isOwner: false,
         }
     }
 
-    async componentDidMount() {
-        const user = store.getState().User;
-        this.updateInfo(user);
-        store.subscribe(() => {
-            const user = store.getState().User;
-            this.updateInfo(user);
+    async fetchUserData(fetchUsername){
+        const isOwner = this.state.isOwner;
+        const response = await axios.get(getApiUrl('api', `/search/${fetchUsername}?`))
+        let userObject = response.data.users[0];
+        userObject.fullname = userObject.fullName;
+        delete userObject.fullName;
+        this.setState({
+            user: userObject,
+            isOwner,
         })
     }
 
-    updateInfo(user) {
-        this.setState({
-            user,
-        });
+    async componentDidMount() {
+        const username = this.props.match.params.username;
+        let fetchUsername = '';
+        let isOwner = false;
+        store.subscribe(() => {
+            const user = store.getState().User;
+            if(user.username === username){
+                // Is owner
+                isOwner = true;
+            }
+
+            if(isOwner){
+                fetchUsername = user.username;
+                this.setState({
+                    user,
+                    isOwner,
+                })
+            }else{
+                fetchUsername = username;
+                this.fetchUserData(fetchUsername)
+            }
+
+
+        })
     }
 
     closeOverLay() {
@@ -87,6 +111,20 @@ export default class Profile extends React.Component {
     }
 
     render() {
+
+        const editButton = () => {
+            const allowToEdit = this.state.isOwner;
+            if(allowToEdit){
+                return (
+                    <div className="btn btn-info" onClick={this.openOverLay.bind(this)} style={{cursor: 'pointer'}}>Edit</div>
+                )
+            }else{
+                return (
+                    <div message="You are not he owner of this account, so you are not allow to edit this profile"></div>
+                )
+            }
+        }
+
         return (
 
             <div
@@ -186,8 +224,7 @@ export default class Profile extends React.Component {
                     }}
                 />
                 <h1 ref="userFullName">{this.state.user.fullname}</h1>
-                <div className="btn btn-info" onClick={this.openOverLay.bind(this)} style={{cursor: 'pointer'}}>Edit
-                </div>
+                {editButton()}
             </div>
         )
     }

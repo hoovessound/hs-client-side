@@ -44,9 +44,17 @@ export default class TrackContainer extends React.Component {
     render() {
 
         if (this.props.notitle) {
-            trackTitle = "";
+            trackTitle = () => {
+                return (
+                    <div></div>
+                )
+            }
         } else {
-            trackTitle = <h3>{this.props.author_fullName} - {this.props.title}</h3>;
+            trackTitle = () => {
+                return (
+                    <h3>{this.props.author_fullName} - {this.props.title}</h3>
+                )
+            }
         }
 
         const image = () => {
@@ -70,13 +78,9 @@ export default class TrackContainer extends React.Component {
         if (this.props.nolink) {
             body = () => {
                 return (
-                    <div key={this.props.trackId}
-                        style={{
-                            position: 'relative',
-                        }}
-                    >
+                    <div key={this.props.trackId}>
                         {image()}
-                        {trackTitle}
+                        {trackTitle()}
                     </div>
                 )
             }
@@ -86,14 +90,20 @@ export default class TrackContainer extends React.Component {
                     <div key={this.props.trackId}>
                         <Link to={"/track/" + this.props.trackId}>
                             {image()}
-                            {trackTitle}
+                            {trackTitle()}
                         </Link>
                     </div>
                 )
             }
         }
         return (
-            <div key={this.props.id} className="TrackContainer">
+            <div
+                key={this.props.id}
+                className="TrackContainer"
+                style={{
+                    margin: '3em',
+                }}
+            >
                 {body()}
             </div>
         )

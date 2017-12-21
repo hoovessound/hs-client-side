@@ -13,6 +13,7 @@ export default class NavBar extends React.Component {
         super();
         this.state = {
             userIcon: '',
+            username: '',
         }
     }
 
@@ -20,6 +21,7 @@ export default class NavBar extends React.Component {
         const response = await axios.get(getApiUrl('api', '/me?'));
         this.setState({
             userIcon: response.data.icon,
+            username: response.data.username
         }, () => {
             store.dispatch({
                 type: 'UPDATE_USER_STACK',
@@ -123,7 +125,7 @@ export default class NavBar extends React.Component {
                                 <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" >
 
                                     <div className="nav-link">
-                                        <Link to={"/profile"}>Profile</Link>
+                                        <Link to={`/profile/${this.state.username}`}>Profile</Link>
                                     </div>
 
                                     <div className="nav-link">

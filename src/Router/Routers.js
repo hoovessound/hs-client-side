@@ -92,7 +92,7 @@ export default class Routers extends React.Component {
                             <Route exact path="/" component={Tracks}></Route>
                             <Route path="/track/:id" component={Track}></Route>
                             <Route path="/favorite" component={Favorite}></Route>
-                            <Route path="/profile" component={Profile}></Route>
+                            <Route path="/@:username" component={Profile}></Route>
                             <Route path="/upload" component={Upload}></Route>
                             <Route path="/doodle" component={Doodle}></Route>
                             <Route path="/logout" component={Logout}></Route>
