@@ -13,42 +13,35 @@ export default class Profile extends React.Component {
         }
     }
 
-    async fetchUserData(fetchUsername){
-        const isOwner = this.state.isOwner;
-        const response = await axios.get(getApiUrl('api', `/search/${fetchUsername}?`))
+    async fetchUserData(username){
+        const response = await axios.get(getApiUrl('api', `/search/${username}?`))
         let userObject = response.data.users[0];
         userObject.fullname = userObject.fullName;
         delete userObject.fullName;
-        this.setState({
+        this.updateInfo({
             user: userObject,
-            isOwner,
+        })
+        store.subscribe(() => {
+            const User = store.getState().User;
+            if(User.username === userObject.username){
+                this.setState({
+                    isOwner: true,
+                })
+            }
         })
     }
 
-    async componentDidMount() {
+    updateInfo(data){
+        this.setState({
+            ...data,
+        })
+    }
+
+    componentDidMount() {
         const username = this.props.match.params.username;
         let fetchUsername = '';
         let isOwner = false;
-        store.subscribe(() => {
-            const user = store.getState().User;
-            if(user.username === username){
-                // Is owner
-                isOwner = true;
-            }
-
-            if(isOwner){
-                fetchUsername = user.username;
-                this.setState({
-                    user,
-                    isOwner,
-                })
-            }else{
-                fetchUsername = username;
-                this.fetchUserData(fetchUsername)
-            }
-
-
-        })
+        this.fetchUserData(username);
     }
 
     closeOverLay() {
@@ -111,7 +104,6 @@ export default class Profile extends React.Component {
     }
 
     render() {
-
         const editButton = () => {
             const allowToEdit = this.state.isOwner;
             if(allowToEdit){
@@ -170,7 +162,7 @@ export default class Profile extends React.Component {
                     }}
                 >
                     <img
-                        alt="User profile icon"
+                        alt=""
                         ref={"userIcon_Edit"}
                         src={this.state.user.icon}
                         style={{
@@ -215,7 +207,7 @@ export default class Profile extends React.Component {
                 </div>
 
                 <img
-                    alt="User profile icon"
+                    alt=""
                     ref={"userIcon"}
                     src={this.state.user.icon}
                     style={{

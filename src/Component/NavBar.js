@@ -125,7 +125,7 @@ export default class NavBar extends React.Component {
                                 <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" >
 
                                     <div className="nav-link">
-                                        <Link to={`/profile/${this.state.username}`}>Profile</Link>
+                                        <Link to={`/@${this.state.username}`}>Profile</Link>
                                     </div>
 
                                     <div className="nav-link">
