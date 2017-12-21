@@ -1,10 +1,10 @@
-.TrackContainer img{
+.TrackContainer{
      width: 30em;
      height: 30em;
  }
 
 @media (max-width: 415px) {
-    .TrackContainer img{
+    .TrackContainer{
         width: 20em;
         height: 20em;
     }

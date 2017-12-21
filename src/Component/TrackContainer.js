@@ -15,14 +15,23 @@ export default class TrackContainer extends React.Component {
                 className="playPauseButton material-icons"
                 onClick={this.playMusic.bind(this)}
                 style={{
-                    "cursor": "pointer"
+                    cursor: 'pointer',
+                    background: 'skyblue',
+                    padding: '0.5em',
+                    borderRadius: '50%',
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, 50%)',
+                    color: '#161616'
                 }}
             >play_arrow
             </div>
         )
     }
 
-    playMusic() {
+    playMusic(e) {
+        e.preventDefault();
         store.dispatch({
             type: 'UPDATE_TRACK_DETAILS',
             payload: {
@@ -40,28 +49,52 @@ export default class TrackContainer extends React.Component {
             trackTitle = <h3>{this.props.author_fullName} - {this.props.title}</h3>;
         }
 
+        const image = () => {
+            return (
+                <div
+                    className={'coverArt'}
+                    style={{
+                        backgroundImage: `url(${this.props.coverImage})`,
+                        backgroundRepeat: 'no-repeat',
+                        backgroundSize: 'cover',
+                        width: '30em',
+                        height: '30em',
+                        position: 'relative',
+                    }}
+                >
+                    {this.playButton()}
+                </div>
+            )
+        }
+
         if (this.props.nolink) {
-            body =
-                <div key={this.props.trackId}>
-                    {this.playButton()}
-                    <img ref="coverImage" src={this.props.coverImage}
-                         alt={"This cover image for track " + this.props.trackId}/>
-                    {trackTitle}
-                </div>
-        } else {
-            body =
-                <div key={this.props.trackId}>
-                    {this.playButton()}
-                    <Link to={"/track/" + this.props.trackId}>
-                        <img ref="coverImage" src={this.props.coverImage}
-                             alt={"This cover image for track " + this.props.trackId}/>
+            body = () => {
+                return (
+                    <div key={this.props.trackId}
+                        style={{
+                            position: 'relative',
+                        }}
+                    >
+                        {image()}
                         {trackTitle}
-                    </Link>
-                </div>
+                    </div>
+                )
+            }
+        } else {
+            body = () => {
+                return (
+                    <div key={this.props.trackId}>
+                        <Link to={"/track/" + this.props.trackId}>
+                            {image()}
+                            {trackTitle}
+                        </Link>
+                    </div>
+                )
+            }
         }
         return (
             <div key={this.props.id} className="TrackContainer">
-                {body}
+                {body()}
             </div>
         )
     }
