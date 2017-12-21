@@ -24,7 +24,12 @@ export default class TrackPlayer extends React.Component {
         if(active.tagName !== 'TEXTAREA' && active.tagName !== 'INPUT' && active.id !== 'volumeBar'){
             evt.preventDefault();
             if(charCode === 32){
+                // Space bar
                 this.playMusic();
+            }
+            if(charCode === 109){
+                // M
+                this.mute()
             }
         }
     }
@@ -112,6 +117,15 @@ export default class TrackPlayer extends React.Component {
         }, 750);
     }
 
+    mute(){
+        audio.muted = !audio.muted;
+        if(audio.muted){
+            this.refs.volume.className = 'fa fa-volume-off'
+        }else{
+            this.refs.volume.className = 'fa fa-volume-up'
+        }
+    }
+
     render() {
         window.onkeypress = (event) => this.hotKey(event);
         audio.ontimeupdate = () => this.updateTimeStamp();
@@ -171,6 +185,16 @@ export default class TrackPlayer extends React.Component {
                     </Link>
 
                 </div>
+
+                <span
+                    className="fa fa-volume-up"
+                    id="volume"
+                    ref={'volume'}
+                    style={{
+                        cursor: 'pointer',
+                    }}
+                    onClick={this.mute.bind(this)}
+                ></span>
 
 
                 <input

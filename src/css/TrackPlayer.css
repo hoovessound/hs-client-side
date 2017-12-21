@@ -21,6 +21,12 @@
     margin: auto;
 }
 
+#volume{
+    position: absolute;
+    right: 1em;
+    bottom: 0.5em;
+}
+
 @media (max-width: 415px) {
     #time{
         width: 70%;
