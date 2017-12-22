@@ -21,14 +21,15 @@ export default class Profile extends React.Component {
         this.updateInfo({
             user: userObject,
         })
-        store.subscribe(() => {
-            const User = store.getState().User;
-            if(User.username === userObject.username){
-                this.setState({
-                    isOwner: true,
-                })
-            }
-        })
+        const User = store.getState().User;
+        if(User.username === userObject.username){
+            console.log('i am the owner')
+            this.setState({
+                isOwner: true,
+            })
+        }else{
+            console.log('i am NOT the owner')
+        }
     }
 
     updateInfo(data){
