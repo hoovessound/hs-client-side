@@ -38,8 +38,6 @@ export default class Profile extends React.Component {
 
     componentDidMount() {
         const username = this.props.match.params.username;
-        let fetchUsername = '';
-        let isOwner = false;
         this.fetchUserData(username);
     }
 

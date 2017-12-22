@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import store from '../Redux/store';
 import getApiUrl from '../Util/getApiUrl';
+import Notifications from '../Component/Notifications';
 
 import {Link} from 'react-router-dom';
 
@@ -83,6 +84,44 @@ export default class NavBar extends React.Component {
                                     }}
                                 />
                             </li>
+
+                            {/*Notification*/}
+
+                            <li
+                                className="nav-item dropdown"
+                            >
+                                <a className="nav-link"
+                                   id="notification"
+                                   data-toggle="dropdown"
+                                   aria-haspopup="true"
+                                   aria-expanded="false"
+                                   style={{
+                                       display: 'inline',
+                                   }}
+                                >
+
+                                    <span
+                                        style={{
+                                            cursor: 'pointer',
+                                        }}
+                                        id={'dropdown-wraper'}
+                                    >
+                                        <span
+                                            className="fa fa-bell"
+                                            style={{
+                                                fontSize: '2em',
+                                                display: 'inline-block',
+                                            }}
+                                        ></span>
+                                    </span>
+
+                                </a>
+                                <div className="dropdown-menu dropdown-menu-right" >
+                                    <Notifications/>
+                                </div>
+                            </li>
+
+                            {/*Profile*/}
 
                             <li
                                 className="nav-item dropdown"
