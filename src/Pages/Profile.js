@@ -23,12 +23,10 @@ export default class Profile extends React.Component {
         })
         const User = store.getState().User;
         if(User.username === userObject.username){
-            console.log('i am the owner')
             this.setState({
                 isOwner: true,
             })
         }else{
-            console.log('i am NOT the owner')
         }
     }
 
