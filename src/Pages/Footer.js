@@ -58,8 +58,11 @@ export default class Layout extends React.Component {
                         fontSize: '0.6em',
                     }}
                 >
-                    <p>
-                        Stage:
+
+                    <div>
+                        <p>
+                            Stage:
+                        </p>
                         <span
                             style={{
                                 color: '#FFF',
@@ -67,25 +70,23 @@ export default class Layout extends React.Component {
                                 padding: '0.2em',
                             }}
                         >Active Development(Open Beta)</span>
-                    </p>
+                    </div>
 
-                    <p>
-                        Build info:
 
-                        <p>
-                            Active Development Branch:
-                            <span
-                                style={{
-                                    color: '#FFF',
-                                    background: 'lightgreen',
-                                    padding: '0.2em',
-                                }}
-                            >{this.state.activeDevelopmentBranch}</span>
-                        </p>
+                    <div>
 
-                        <p>
-                            Last Commit:
-                            <a href={this.state.buildInfo.commit.url} target="_blank">
+                        <p>Build info:</p>
+                        <p>Active Development Branch:</p>
+                        <span
+                            style={{
+                                color: '#FFF',
+                                background: 'lightgreen',
+                                padding: '0.2em',
+                            }}
+                        >{this.state.activeDevelopmentBranch}</span>
+
+                        <p>Last Commit:</p>
+                        <a href={this.state.buildInfo.commit.url} target="_blank">
                                 <span
                                     style={{
                                         color: '#FFF',
@@ -93,12 +94,10 @@ export default class Layout extends React.Component {
                                         padding: '0.2em',
                                     }}
                                 >{this.state.buildInfo.lastCommit}</span>
-                            </a>
-                        </p>
+                        </a>
 
-                        <p>
-                            Commit Message:
-                            <a href={this.state.buildInfo.commit.url} target="_blank">
+                        <p>Commit Message:</p>
+                        <a href={this.state.buildInfo.commit.url} target="_blank">
                                 <span
                                     style={{
                                         color: '#FFF',
@@ -106,12 +105,10 @@ export default class Layout extends React.Component {
                                         padding: '0.2em',
                                     }}
                                 >{this.state.buildInfo.commit.message}</span>
-                            </a>
-                        </p>
+                        </a>
 
-                        <p>
-                            Commit Author:
-                            <a href={this.state.buildInfo.commit.author.link} target="_blank">
+                        <p>Commit Author:</p>
+                        <a href={this.state.buildInfo.commit.author.link} target="_blank">
                                 <span
                                     style={{
                                         color: '#FFF',
@@ -119,10 +116,9 @@ export default class Layout extends React.Component {
                                         padding: '0.2em',
                                     }}
                                 >{this.state.buildInfo.commit.author.name}</span>
-                            </a>
-                        </p>
+                        </a>
+                    </div>
 
-                    </p>
                 </div>
 
             </footer>
