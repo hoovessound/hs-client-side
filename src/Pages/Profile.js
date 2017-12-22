@@ -13,7 +13,7 @@ export default class Profile extends React.Component {
         }
     }
 
-    async fetchUserData(username){
+    async fetchUserData(username) {
         const response = await axios.get(getApiUrl('api', `/search/${username}?`))
         let userObject = response.data.users[0];
         userObject.fullname = userObject.fullName;
@@ -22,15 +22,15 @@ export default class Profile extends React.Component {
             user: userObject,
         })
         const User = store.getState().User;
-        if(User.username === userObject.username){
+        if (User.username === userObject.username) {
             this.setState({
                 isOwner: true,
             })
-        }else{
+        } else {
         }
     }
 
-    updateInfo(data){
+    updateInfo(data) {
         this.setState({
             ...data,
         })
@@ -51,7 +51,7 @@ export default class Profile extends React.Component {
         this.refs.updateBox.style.display = 'block';
     }
 
-    fullNameOnChange(){
+    fullNameOnChange() {
         const user = this.state.user;
         user.fullname = this.refs.userFullName_Edit.value;
         this.setState({
@@ -59,7 +59,7 @@ export default class Profile extends React.Component {
         })
     }
 
-    async save(){
+    async save() {
         const apiUrl = getApiUrl('api', '/settings?');
         await axios.post(apiUrl, {
             settings: {
@@ -73,13 +73,13 @@ export default class Profile extends React.Component {
         this.closeOverLay();
     }
 
-    updateUserIcon(){
+    updateUserIcon() {
         const userIcon = this.refs.userIcon_Edit;
         userIcon.click();
         userIcon.onchange = () => this.uploadUserIcon()
     }
 
-    async uploadUserIcon(){
+    async uploadUserIcon() {
         const userIcon = this.refs.userIcon_Edit;
         const form = new FormData();
         form.append('image', userIcon.files[0]);
@@ -88,9 +88,9 @@ export default class Profile extends React.Component {
                 'Content-Type': 'multipart/form-data'
             },
         };
-        const apiUrl  = getApiUrl('api', '/settings/profilepicture?');
+        const apiUrl = getApiUrl('api', '/settings/profilepicture?');
         const response = await axios.post(apiUrl, form, config);
-        if(!response.data.error){
+        if (!response.data.error) {
             const user = this.state.user;
             user.icon = response.data.icon;
             this.setState({
@@ -103,16 +103,18 @@ export default class Profile extends React.Component {
     render() {
         const editButton = () => {
             const allowToEdit = this.state.isOwner;
-            if(allowToEdit){
+            if (allowToEdit) {
                 return (
-                    <div className="btn btn-info" onClick={this.openOverLay.bind(this)} style={{cursor: 'pointer'}}>Edit</div>
+                    <div className="btn btn-info" onClick={this.openOverLay.bind(this)}
+                         style={{cursor: 'pointer'}}>Edit</div>
                 )
-            }else{
+            } else {
                 return (
-                    <div message="You are not he owner of this account, so you are not allow to edit this profile"></div>
+                    <div
+                        message="You are not he owner of this account, so you are not allow to edit this profile"></div>
                 )
             }
-        }
+        };
 
         return (
 

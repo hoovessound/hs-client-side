@@ -20,6 +20,7 @@ import Favorite from '../Pages/Favorite';
 import Profile from '../Pages/Profile';
 import Upload from '../Pages/Upload';
 import Doodle from '../Pages/Doodle';
+import DoodleSubmit from "../Pages/DoodleSubmit";
 
 let setInitUserStack = false;
 
@@ -94,7 +95,8 @@ export default class Routers extends React.Component {
                             <Route path="/favorite" component={Favorite}></Route>
                             <Route path="/@:username" component={Profile}></Route>
                             <Route path="/upload" component={Upload}></Route>
-                            <Route path="/doodle" component={Doodle}></Route>
+                            <Route exact path="/doodle" component={Doodle}></Route>
+                            <Route exact path="/doodle/submit" component={DoodleSubmit}></Route>
                             <Route path="/logout" component={Logout}></Route>
                             <Route component={Footer}/>
                         </div>

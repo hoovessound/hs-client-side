@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import getApiUrl from '../Util/getApiUrl';
+import {Link} from 'react-router-dom';
+
 let offset = 0;
 
 export default class Doodle extends React.Component {
@@ -11,7 +13,7 @@ export default class Doodle extends React.Component {
         }
     }
 
-    async fetchDoodles(){
+    async fetchDoodles() {
         const apiUrl = getApiUrl('api', `/doodle/collections/${offset}?`);
         const response = await axios.get(apiUrl);
         let doodles = this.state.doodles;
@@ -24,13 +26,13 @@ export default class Doodle extends React.Component {
         offset += 5;
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.fetchDoodles();
     }
 
-    eachArtWork(doodles){
+    eachArtWork(doodles) {
         const render = [];
-        for(let key in doodles){
+        for (let key in doodles) {
             const doodle = doodles[key];
             render.push(
                 <div className="card" key={doodle.id}>
@@ -60,6 +62,14 @@ export default class Doodle extends React.Component {
     render() {
         return (
             <div id={'doodles'}>
+                <Link to={'/doodle/submit'}>
+                    <div
+                        className="btn btn-success"
+                        style={{
+                            margin: '0.5em',
+                        }}
+                    >Submit</div>
+                </Link>
                 {this.eachArtWork(this.state.doodles)}
                 <div
                     className="btn btn-info"
@@ -68,7 +78,8 @@ export default class Doodle extends React.Component {
                         cursor: 'pointer',
                     }}
                     onClick={this.fetchDoodles.bind(this)}
-                >More</div>
+                >More
+                </div>
             </div>
         )
     }
