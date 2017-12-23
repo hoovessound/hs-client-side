@@ -15,6 +15,7 @@ export default class NavBar extends React.Component {
         this.state = {
             userIcon: '',
             username: '',
+            notification: '',
         }
     }
 
@@ -29,6 +30,12 @@ export default class NavBar extends React.Component {
                 payload: response.data,
             });
         })
+    }
+
+    showNotification(){
+        this.setState({
+            notification: <Notifications/>
+        });
     }
 
     render() {
@@ -112,12 +119,13 @@ export default class NavBar extends React.Component {
                                                 fontSize: '2em',
                                                 display: 'inline-block',
                                             }}
+                                            onClick={this.showNotification.bind(this)}
                                         ></span>
                                     </span>
 
                                 </a>
-                                <div className="dropdown-menu dropdown-menu-right" >
-                                    <Notifications/>
+                                <div className="dropdown-menu dropdown-menu-right" ref={'notification'}>
+                                    {this.state.notification}
                                 </div>
                             </li>
 
