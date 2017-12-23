@@ -18,26 +18,53 @@ export default class TrackPlayer extends React.Component {
         };
     }
 
-    hotKey(evt){
+    hotKey(evt) {
         const active = document.activeElement;
         const charCode = evt.which || evt.charCode || evt.keyCode || 0;
-        if(active.tagName !== 'TEXTAREA' && active.tagName !== 'INPUT' && active.id !== 'volumeBar'){
+        let action = true;
+        // Check if the element is an input or textarea field
+        if(active.tagName === 'INPUT' || active.tagName === 'TEXTAREA'){
+            // Check if the input element have an ID call #time
+            if(active.id !== 'time'){
+                action = false;
+            }
+        }
+
+        if(action){
             evt.preventDefault();
-            if(charCode === 32){
+            if (charCode === 32) {
                 // Space bar
                 this.playMusic();
             }
-            if(charCode === 109){
+            if (charCode === 109) {
                 // M
-                this.mute()
+                this.mute();
+            }
+
+            if(charCode === 37){
+                // Left arrow
+                this.goBackward();
+            }
+
+            if(charCode === 39){
+                // Right arrow
+                this.goForward();
             }
         }
+    }
+
+    goBackward(){
+        audio.currentTime = (audio.currentTime - 5);
+    }
+
+    goForward(){
+        audio.currentTime = (audio.currentTime + 5);
     }
 
     async componentDidMount() {
         store.subscribe(() => {
             const MusicPlayer = store.getState().MusicPlayer;
-            if(MusicPlayer.isHistory) {
+            if (MusicPlayer.isHistory) {
                 const User = store.getState().User;
                 // Track is come from the user's history
 
@@ -50,7 +77,7 @@ export default class TrackPlayer extends React.Component {
 
             // If the data contain coverImage, than use the coverImage
 
-            if(MusicPlayer.coverImage){
+            if (MusicPlayer.coverImage) {
                 MusicPlayer.coverArt = MusicPlayer.coverImage;
                 delete MusicPlayer.coverImage;
             }
@@ -76,11 +103,11 @@ export default class TrackPlayer extends React.Component {
             };
         }
 
-        if(audio.paused){
+        if (audio.paused) {
             audio.play();
             this.refs.playPauseButton.textContent = 'pause';
             document.title = `${this.state.MusicPlayer.author_fullname} - ${this.state.MusicPlayer.title}`;
-        }else{
+        } else {
             audio.pause();
             this.refs.playPauseButton.textContent = 'play_arrow';
             document.title = oldTitle;
@@ -89,18 +116,18 @@ export default class TrackPlayer extends React.Component {
         this.updateLastPlay();
     }
 
-    updateTimeStamp(updateAudio=false){
-        if(!updateAudio){
+    updateTimeStamp(updateAudio = false) {
+        if (!updateAudio) {
             this.refs.time.value = audio.currentTime;
-        }else{
+        } else {
             audio.currentTime = this.refs.time.value;
         }
     }
 
-    async updateLastPlay(){
+    async updateLastPlay() {
         // Update the user's lastPlay field
 
-        if(updateLastPlayEvent) clearTimeout(updateLastPlayEvent);
+        if (updateLastPlayEvent) clearTimeout(updateLastPlayEvent);
         updateLastPlayEvent = setTimeout(() => {
             axios.post(getApiUrl('api', `/events?`), {
                 event: 'UPDATE_LAST_PLAY',
@@ -117,17 +144,17 @@ export default class TrackPlayer extends React.Component {
         }, 750);
     }
 
-    mute(){
+    mute() {
         audio.muted = !audio.muted;
-        if(audio.muted){
+        if (audio.muted) {
             this.refs.volume.className = 'fa fa-volume-off'
-        }else{
+        } else {
             this.refs.volume.className = 'fa fa-volume-up'
         }
     }
 
     render() {
-        window.onkeypress = (event) => this.hotKey(event);
+        window.onkeydown = (event) => this.hotKey(event);
         audio.ontimeupdate = () => this.updateTimeStamp();
         return (
             <div
@@ -206,7 +233,6 @@ export default class TrackPlayer extends React.Component {
                     id="time"
                     onInput={() => this.updateTimeStamp(true)}
                 />
-
 
 
             </div>

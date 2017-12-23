@@ -41,6 +41,7 @@ export default class NavBar extends React.Component {
                         padding: '1em',
                     }}
                 >
+                    <input type="text"/>
                     <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                             data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
                             aria-label="Toggle navigation">
