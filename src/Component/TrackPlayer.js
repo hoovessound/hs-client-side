@@ -36,7 +36,7 @@ export default class TrackPlayer extends React.Component {
                 // Space bar
                 this.playMusic();
             }
-            if (charCode === 109) {
+            if (charCode === 109 || 77) {
                 // M
                 this.mute();
             }
