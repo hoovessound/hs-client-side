@@ -28,51 +28,74 @@ let setInitUserStack = false;
 export default class Routers extends React.Component {
     async setInitialTrackState() {
 
+        async function getUserHistory(trackID) {
+            if(!setInitUserStack){
+                const response = await axios.get(getApiUrl('api', `/track/${trackID}?`));
+                const track = response.data;
+                store.dispatch({
+                    type: 'UPDATE_TRACK_DETAILS',
+                    payload: {
+                        trackId: trackID,
+                        title: track.title,
+                        author_username: track.author.username,
+                        author_fullname: track.author.fullname,
+                        coverArt: track.coverImage,
+                        playitnow: false,
+                        isHistory: true,
+                    }
+                });
+            }
+        }
+
+        async function getLatestTrackInfo() {
+            if(!setInitUserStack){
+                const response = await axios.get(getApiUrl('api', '/tracks?offset=0'))
+                store.dispatch({
+                    type: 'UPDATE_TRACK_DETAILS',
+                    payload: {
+                        trackId: response.data[0].id,
+                        title: response.data[0].title,
+                        author_username: response.data[0].author.username,
+                        author_fullname: response.data[0].author.fullname,
+                        coverArt: response.data[0].coverImage,
+                        playitnow: false,
+                    }
+                });
+            }
+        }
+
         store.subscribe(() => {
+            const errorMessage = 'Out service is running out of service, please contact one of our support, and we are more then welcome to help you out';
             const user = store.getState().User;
-            // Get the user last known track
-            const trackID = user.history.trackID;
-            if (!setInitUserStack) {
-                if (trackID) {
-                    // Get the track info
-                    async function getTrackInfo(trackId) {
-                        const response = await axios.get(getApiUrl('api', `/track/${trackId}?`));
-                        const track = response.data;
-
-                        store.dispatch({
-                            type: 'UPDATE_TRACK_DETAILS',
-                            payload: {
-                                trackId,
-                                title: track.title,
-                                author_username: track.author.username,
-                                author_fullname: track.author.fullname,
-                                coverArt: track.coverImage,
-                                playitnow: false,
-                                isHistory: true,
-                            }
-                        });
-                    }
-
-                    getTrackInfo(trackID);
-                } else {
-                    async function getLatestTrackInfo() {
-                        const response = await axios.get(getApiUrl('api', '/tracks?offset=0'))
-                        store.dispatch({
-                            type: 'UPDATE_TRACK_DETAILS',
-                            payload: {
-                                trackId: response.data[0].id,
-                                title: response.data[0].title,
-                                author_username: response.data[0].author.username,
-                                author_fullname: response.data[0].author.fullname,
-                                coverArt: response.data[0].coverImage,
-                                playitnow: false,
-                            }
-                        });
-                    }
-
-                    getLatestTrackInfo();
-                }
-                setInitUserStack = true;
+            // Check if the user have an history
+            if(user.history){
+                const trackID = user.history.trackID;
+                // Get the track info
+                getUserHistory(trackID)
+                .then(() => {
+                    setInitUserStack = true;
+                })
+                .catch(error => {
+                    console.log(error);
+                    getLatestTrackInfo()
+                    .then(() => {
+                        setInitUserStack = true;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        alert(errorMessage);
+                    })
+                })
+            }else{
+                // User is new, and have no history before
+                getLatestTrackInfo()
+                .then(() => {
+                    setInitUserStack = true;
+                })
+                .catch(error => {
+                    console.log(error);
+                    alert(errorMessage);
+                })
             }
         })
     }
