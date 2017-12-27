@@ -1,7 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import getApiUrl from '../Util/getApiUrl';
-import {Redirect} from 'react-router-dom';
 
 export default class Status extends React.Component {
 
@@ -120,7 +118,7 @@ export default class Status extends React.Component {
                         <h2>Server Status</h2>
                         <h4>HoovesSound is hosted on DigitalOcean</h4>
                         <h4>
-                            <a href="https://status.digitalocean.com/" target="_blank">DigitalOcean Status Page</a>
+                            <a href="https://status.digitalocean.com/" target="_blank" rel="noopener noreferrer">DigitalOcean Status Page</a>
                         </h4>
                     </div>
 
@@ -130,7 +128,7 @@ export default class Status extends React.Component {
                         <h2>Google Cloud Storage</h2>
                         <h4>HoovesSound is using GCS to storage any kind of static files</h4>
                         <h4>
-                            <a href="https://status.cloud.google.com/" target="_blank">Google Cloud Platform Status Page</a>
+                            <a href="https://status.cloud.google.com/" target="_blank" rel="noopener noreferrer">Google Cloud Platform Status Page</a>
                         </h4>
                     </div>
 
@@ -141,7 +139,7 @@ export default class Status extends React.Component {
                         <h2>mLab</h2>
                         <h4>HoovesSound is using mLab as database provider</h4>
                         <h4>
-                            <a href="https://status.mlab.com/" target="_blank">mLab Status Page</a>
+                            <a href="https://status.mlab.com/" target="_blank" rel="noopener noreferrer">mLab Status Page</a>
                         </h4>
                     </div>
                 </div>
