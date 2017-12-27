@@ -13,18 +13,19 @@ export default class Favorite extends React.Component {
 
     async componentDidMount() {
         const response = await axios.get(getApiurl('api', `/me/favorites?offset=0`));
-
-        for(let track of response.data){
+        const tracks = this.state.trackEl;
+        response.data.map(track => {
             const trackEl = () => {
                 return (
                     <TrackContainer key={track.id} title={track.title} coverImage={track.coverImage} trackId={track.id}
                                     author_username={track.author.username} author_fullName={track.author.fullname}/>
                 )
             }
-            this.setState({
-                trackEl: trackEl(),
-            });
-        }
+            tracks.push(trackEl());
+        });
+        this.setState({
+            tracks: tracks.reverse(),
+        })
     }
 
     render() {
