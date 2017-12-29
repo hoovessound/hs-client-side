@@ -99,6 +99,7 @@ export default class TrackPlayer extends React.Component {
         if (audio.src !== source) {
             // A new audio source
             audio.src = source;
+            this.refs.time.value = 0;
             audio.onloadedmetadata = () => {
                 this.refs.time.max = audio.duration;
             };
