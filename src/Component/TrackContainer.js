@@ -62,11 +62,9 @@ export default class TrackContainer extends React.Component {
                 <div
                     className={'coverArt'}
                     style={{
-                        backgroundImage: `url(${this.props.coverImage})`,
+                        backgroundImage: `url(${this.props.coverImage}?width=500)`,
                         backgroundRepeat: 'no-repeat',
                         backgroundSize: 'cover',
-                        width: '30em',
-                        height: '30em',
                         position: 'relative',
                     }}
                 >
@@ -78,7 +76,10 @@ export default class TrackContainer extends React.Component {
         if (this.props.nolink) {
             body = () => {
                 return (
-                    <div key={this.props.trackId}>
+                    <div key={this.props.trackId} className={'trackBody'} style={{
+                        width: '100%',
+                        height: '100%',
+                    }}>
                         {image()}
                         {trackTitle()}
                     </div>
@@ -87,7 +88,10 @@ export default class TrackContainer extends React.Component {
         } else {
             body = () => {
                 return (
-                    <div key={this.props.trackId}>
+                    <div key={this.props.trackId} className={'trackBody'} style={{
+                        width: '100%',
+                        height: '100%',
+                    }}>
                         <Link to={"/track/" + this.props.trackId}>
                             {image()}
                             {trackTitle()}
@@ -101,7 +105,7 @@ export default class TrackContainer extends React.Component {
                 key={this.props.id}
                 className="TrackContainer"
                 style={{
-                    margin: '3em',
+                    marginBottom: '3em',
                 }}
             >
                 {body()}

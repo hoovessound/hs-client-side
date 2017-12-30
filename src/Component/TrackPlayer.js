@@ -169,7 +169,7 @@ export default class TrackPlayer extends React.Component {
                 <div
                     ref={'coverArt'}
                     style={{
-                        backgroundImage: `url(${this.state.MusicPlayer.coverArt})`,
+                        backgroundImage: `url(${this.state.MusicPlayer.coverArt}?width=100)`,
                         backgroundSize: 'cover',
                         backgroundRepeat: 'no-repeat',
                         width: '5em',

@@ -151,7 +151,7 @@ export default class NavBar extends React.Component {
                                         id={'dropdown-wraper'}
                                     >
                                         <img
-                                            src={this.state.userIcon}
+                                            src={`${this.state.userIcon}?width=50`}
                                             alt="Your profile icon"
                                             style={{
                                                 borderRadius: '50%',
