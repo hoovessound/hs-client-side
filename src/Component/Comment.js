@@ -3,6 +3,7 @@ import axios from 'axios';
 import getApiurl from '../Util/getApiUrl';
 import {url} from '../Util/textFormat';
 import {Link} from 'react-router-dom';
+import renderHtml from 'react-render-html';
 
 export default class Comment extends React.Component {
     constructor(){
@@ -25,7 +26,7 @@ export default class Comment extends React.Component {
         return (
             <div key={comment.id}>
                 <Link to={"/@" + comment.author.username}>{"@" + comment.author.username}</Link>
-                <p>{url(comment.comment)}</p>
+                <p>{renderHtml(url(comment.comment))}</p>
             </div>
         )
     }
