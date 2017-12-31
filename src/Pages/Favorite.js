@@ -21,7 +21,7 @@ export default class Favorite extends React.Component {
                                     author_username={track.author.username} author_fullName={track.author.fullname}/>
                 )
             }
-            tracks.push(trackEl());
+            return tracks.push(trackEl());
         });
         this.setState({
             tracks: tracks.reverse(),
