@@ -49,6 +49,33 @@ export default class DoodleSubmit extends React.Component {
         })
     }
 
+    makeInput(options){
+        return options.map(option => {
+            const isRequest = () => {
+                if(option.require){
+                    return (
+                        <span
+                            style={{
+                                color: 'red',
+                            }}
+                        >*</span>
+                    )
+                }else{
+                    return(
+                        <span></span>
+                    )
+                }
+            }
+
+            return(
+                <div className="input-group" key={options.title}>
+                    {isRequest()}
+                    <input type="text" class="form-control" placeholder={option.placeholder} ref={options.title}/>
+                </div>
+            )
+        })
+    }
+
     validCheks() {
         const ticks = this.state.ticks;
         const checks = this.state.checks;
@@ -108,38 +135,42 @@ export default class DoodleSubmit extends React.Component {
     render() {
         return (
             <div id="doodleSubmit">
-                <span
-                    style={{
-                        color: 'red',
-                    }}
-                >{this.state.error}</span>
 
                 <p>First of all, thank you for your submission</p>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Artwork title" ref={'title'}/>
-                </div>
 
-                <div class="input-group">
-                    <span
-                        style={{
-                            color: 'red',
-                        }}
-                    >*</span>
-                    <input type="text" class="form-control" placeholder="Imgur url" ref={'imgur'}/>
-                </div>
-
-                <div class="input-group">
-                    <input type="text" class="form-control"
-                           placeholder="Your profile link EP: https://yay.deviantart.com" ref={'profileLink'}/>
+                <div id="inputs" ref={'inputs'}>
+                    {
+                        this.makeInput([
+                            {
+                                title: 'Title',
+                                placeholder: 'Artwork title',
+                                require: true,
+                            },
+                            {
+                                title: 'Imgur Url',
+                                placeholder: 'Imgur url',
+                                require: true,
+                            },
+                            {
+                                title: 'Profile Url',
+                                placeholder: 'Your profile link EP: https://yay.deviantart.com',
+                                require: true,
+                            }
+                        ])
+                    }
                 </div>
 
                 <div id="checks" ref={'checks'}>
                     {this.makeChecks([
-                        'Make sure you have a copy of you artwork file, like a PSD and a PNG/JPG on your computer',
-                        'You artwork is COMPLETELY family save, NO NSFW is allow in HoovesSound Doodle',
-                        'You own this artwork, and you didn\'t violate the copyright law, like download somebody else artwork and re-uplaod it'
+                        'Have an copy of the artwork source file',
+                        'Your artwork is SFW and family friendlily',
+                        'Your artwork is under copyright and fair use'
                     ])}
                 </div>
+
+                <hr/>
+
+                <p>Once you submit your artwork, your artwork will show up in the gallery right away, but will NOT show in other places until your artwork has been approved and validated</p>
 
                 <div
                     className="btn btn-success"
