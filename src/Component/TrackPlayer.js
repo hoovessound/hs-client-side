@@ -15,6 +15,10 @@ export default class TrackPlayer extends React.Component {
         super();
         this.state = {
             MusicPlayer: {},
+            playlist: {
+                index: 0,
+                stack: [],
+            },
         };
     }
 
@@ -95,6 +99,7 @@ export default class TrackPlayer extends React.Component {
 
     playMusic() {
         const trackId = this.state.MusicPlayer.trackId;
+        const playList = this.state.playlist;
         const source = getApiUrl('stream', `/${trackId}?`);
         if (audio.src !== source) {
             // A new audio source
@@ -102,6 +107,14 @@ export default class TrackPlayer extends React.Component {
             this.refs.time.value = 0;
             audio.onloadedmetadata = () => {
                 this.refs.time.max = audio.duration;
+            };
+
+            // When the track is finish
+            audio.onended = () => {
+                audio.pause();
+                this.refs.playPauseButton.textContent = 'play_arrow';
+                document.title = oldTitle;
+                this.updateLastPlay();
             };
         }
 
