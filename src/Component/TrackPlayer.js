@@ -99,7 +99,6 @@ export default class TrackPlayer extends React.Component {
 
     playMusic() {
         const trackId = this.state.MusicPlayer.trackId;
-        const playList = this.state.playlist;
         const source = getApiUrl('stream', `/${trackId}?`);
         if (audio.src !== source) {
             // A new audio source

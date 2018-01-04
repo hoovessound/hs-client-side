@@ -12,11 +12,8 @@ export default class Upload extends React.Component {
     }
 
     textStrip(text){
-        return (
-            text
-            .replace(/ /igm,'_')
-            .replace(/\W/igm, '')
-        );
+        // lol
+        return (text);
     }
 
     updatingTitle(){

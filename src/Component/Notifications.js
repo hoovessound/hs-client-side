@@ -44,16 +44,18 @@ export default class Notifications extends React.Component {
             if(payload.link){
                 const rootUrl = getApiurl('$NA', '', false);
                 let isHSLink = false;
-                if(payload.link.startsWith(rootUrl)){
+                if(payload.link.startsWith(rootUrl) || payload.link.startsWith('https://hoovessound.ml') || payload.link.startsWith('http://hoovessound.ml')){
                     isHSLink = true;
                 }
                 if(isHSLink){
+                    const link = payload.link.split('/')[3];
                     body = () => {
-                        payload.link = payload.link.split(rootUrl)[1];
                         return (
-                            <Link to={payload.link}>
+                            <Link to={link}>
                                 <span>{title()}</span>
+                                <br/>
                                 <span>{payload.message}</span>
+                                <hr/>
                             </Link>
                         )
                     }
@@ -61,8 +63,10 @@ export default class Notifications extends React.Component {
                     body = () => {
                         return (
                             <a href={payload.link} target="_blank">
-                                {/*<span>{title()}</span>*/}
+                                <span>{title()}</span>
+                                <br/>
                                 <span>{payload.message}</span>
+                                <hr/>
                             </a>
                         )
                     }
