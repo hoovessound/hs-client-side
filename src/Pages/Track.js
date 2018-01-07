@@ -31,13 +31,20 @@ export default class Track extends React.Component {
                         </div>
                         <Favorite trackId={this.props.match.params.id}/>
                         <Playlist track={track}/>
-                        <h1 className="title">{track.title}</h1>
+                        <h1
+                            className="title"
+                            style={{
+                                whiteSpace: 'pre',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                            }}
+                        >{track.title}</h1>
                         <p>By <Link
                             to={'/@' + track.author.username}>{'@' + track.author.username}</Link>
                         </p>
                         <TrackContainer key={track.id} title={track.title} coverImage={track.coverImage}
                                         trackId={track.id} author_username={track.author.username}
-                                        author_fullName={track.author.fullname} notitle nolink/>
+                                        author_fullName={track.author.fullname} notitle nolink noauthor/>
 
                         <div className="description">
                             {renderHTML(description)}
