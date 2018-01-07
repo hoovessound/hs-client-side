@@ -15,9 +15,15 @@ export default (subdomain='api', path='/', needAuth=true) => {
         subdomain = "";
     }
 
-    if(process.env.NODE_ENV === 'production'){
-        return (`https://${subdomain}hoovessound.ml${path}${tail}`);
+    const noDevServer = process.env.REACT_APP_NO_DEV_SERVER;
+
+    if(!noDevServer){
+        if(process.env.NODE_ENV === 'production'){
+            return (`https://${subdomain}hoovessound.ml${path}${tail}`);
+        }else{
+            return (`http://${subdomain}hoovessound.me:3000${path}${tail}`);
+        }
     }else{
-        return (`http://${subdomain}hoovessound.me:3000${path}${tail}`);
+        return (`https://${subdomain}hoovessound.ml${path}${tail}`);
     }
 }
