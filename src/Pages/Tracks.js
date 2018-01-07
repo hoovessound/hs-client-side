@@ -5,7 +5,7 @@ import getApiurl from '../Util/getApiUrl';
 
 export default class Tracks extends React.Component {
     constructor() {
-        super()
+        super();
         this.state = {
             trackEl: []
         }

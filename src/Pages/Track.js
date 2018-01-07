@@ -6,7 +6,8 @@ import getApiurl from '../Util/getApiUrl';
 import renderHTML from 'react-render-html';
 import {url} from '../Util/textFormat';
 import Comment from '../Component/Comment';
-import Favorite from '../Component/Favorite'
+import Favorite from '../Component/Favorite';
+import Playlist from '../Component/Playlist';
 
 export default class Track extends React.Component {
     constructor() {
@@ -29,6 +30,7 @@ export default class Track extends React.Component {
 
                         </div>
                         <Favorite trackId={this.props.match.params.id}/>
+                        <Playlist track={track}/>
                         <h1 className="title">{track.title}</h1>
                         <p>By <Link
                             to={'/@' + track.author.username}>{'@' + track.author.username}</Link>
