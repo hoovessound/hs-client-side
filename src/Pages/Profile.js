@@ -1,8 +1,8 @@
 import React from 'react';
-// import {Link} from 'react-router-dom';
 import store from '../Redux/store';
 import axios from 'axios';
 import getApiUrl from '../Util/getApiUrl';
+import Modal from 'react-responsive-modal';
 
 export default class Profile extends React.Component {
     constructor() {
@@ -10,6 +10,9 @@ export default class Profile extends React.Component {
         this.state = {
             user: {},
             isOwner: false,
+            modal: {
+                open: false,
+            }
         }
     }
 
@@ -42,13 +45,19 @@ export default class Profile extends React.Component {
     }
 
     closeOverLay() {
-        this.refs.overlay.style.display = 'none';
-        this.refs.updateBox.style.display = 'none';
+        this.setState({
+            modal: {
+                open: false,
+            }
+        })
     }
 
     openOverLay() {
-        this.refs.overlay.style.display = 'block';
-        this.refs.updateBox.style.display = 'block';
+        this.setState({
+            modal: {
+                open: true,
+            }
+        })
     }
 
     fullNameOnChange() {
@@ -110,8 +119,7 @@ export default class Profile extends React.Component {
                 )
             } else {
                 return (
-                    <div
-                        message="You are not he owner of this account, so you are not allow to edit this profile"></div>
+                    <span></span>
                 )
             }
         };
@@ -129,81 +137,61 @@ export default class Profile extends React.Component {
                 }}
             >
 
-                <div
-                    id="overlay"
-                    ref={"overlay"}
-                    style={{
-                        display: 'none',
-                        position: 'fixed',
-                        background: 'rgba(255,255,255, 0.5)',
-                        height: '100vh',
-                        width: '100vw',
-                        top: 0,
-                        left: 0,
-                    }}
-                    onClick={this.closeOverLay.bind(this)}
-                ></div>
-
-                <div
-                    id="updateBox"
-                    ref={"updateBox"}
-                    style={{
-                        display: 'none',
-                        textAlign: 'center',
-                        background: '#FFF',
-                        padding: '4em 3em',
-                        height: '50%',
-                        width: '50%',
-                        position: 'fixed',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                    }}
-                >
-                    <img
-                        alt=""
-                        ref={"userIcon_Edit"}
-                        src={this.state.user.icon}
+                <Modal little open={this.state.modal.open} onClose={this.closeOverLay.bind(this)}>
+                    <div
+                        id="updateBox"
+                        ref={"updateBox"}
                         style={{
-                            borderRadius: '50%',
-                            width: '4em',
-                            cursor: 'pointer',
-                            margin: '0.5em',
-                        }}
-                        onClick={this.updateUserIcon.bind(this)}
-                    />
-
-                    <input type="file" ref={'userIcon_Edit'} hidden={'true'} style={{display: 'none'}}/>
-
-                    <p>Your name</p>
-                    <input
-                        ref="userFullName_Edit"
-                        type={'text'}
-                        style={{
-                            cursor: 'pointer',
-                            display: 'block',
-                            border: '1px solid #000',
                             textAlign: 'center',
-                            position: 'relative',
-                            margin: 'auto',
-                            padding: '0.5em',
-                            borderRadius: '3px',
+                            background: '#FFF',
+                            padding: '4em 3em',
                         }}
-                        value={this.state.user.fullname}
-                        onChange={this.fullNameOnChange.bind(this)}
-                    />
+                    >
+                        <img
+                            alt=""
+                            ref={"userIcon_Edit"}
+                            src={this.state.user.icon}
+                            style={{
+                                borderRadius: '50%',
+                                width: '4em',
+                                cursor: 'pointer',
+                                margin: '0.5em',
+                            }}
+                            onClick={this.updateUserIcon.bind(this)}
+                        />
+
+                        <input type="file" ref={'userIcon_Edit'} hidden={'true'} style={{display: 'none'}}/>
+
+                        <p>Your name</p>
+                        <input
+                            ref="userFullName_Edit"
+                            type={'text'}
+                            style={{
+                                cursor: 'pointer',
+                                display: 'block',
+                                border: '1px solid #000',
+                                textAlign: 'center',
+                                position: 'relative',
+                                margin: 'auto',
+                                padding: '0.5em',
+                                borderRadius: '3px',
+                            }}
+                            value={this.state.user.fullname}
+                            onChange={this.fullNameOnChange.bind(this)}
+                        />
 
 
-                    <div className="btn btn-success"
-                         style={{
-                             cursor: 'pointer',
-                             margin: '0.5em',
-                         }}
-                         onClick={this.save.bind(this)}
-                    >Update
+                        <div className="btn btn-success"
+                             style={{
+                                 cursor: 'pointer',
+                                 margin: '0.5em',
+                             }}
+                             onClick={this.save.bind(this)}
+                        >Update
+                        </div>
+
                     </div>
-
-                </div>
+                </Modal>
 
                 <img
                     alt=""
