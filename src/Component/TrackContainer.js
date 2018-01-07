@@ -16,10 +16,6 @@ export default class TrackContainer extends React.Component {
                     background: 'skyblue',
                     padding: '0.5em',
                     borderRadius: '50%',
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, 50%)',
                     color: '#161616'
                 }}
             >play_arrow
@@ -125,6 +121,7 @@ export default class TrackContainer extends React.Component {
             >
                 {this.coverImage()}
                 <div className="details">
+                    {this.playButton()}
                     {this.title()}
                     {this.author()}
                 </div>
