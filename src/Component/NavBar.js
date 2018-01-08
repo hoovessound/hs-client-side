@@ -180,6 +180,10 @@ export default class NavBar extends React.Component {
                                     </div>
 
                                     <div className="nav-link">
+                                        <Link to={'/playlist'}>Playlist</Link>
+                                    </div>
+
+                                    <div className="nav-link">
                                         <Link to={"/logout"}>Logout</Link>
                                     </div>
 
