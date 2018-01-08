@@ -3,8 +3,6 @@ import axios from 'axios';
 import getApiUrl from '../Util/getApiUrl';
 import {Link} from 'react-router-dom';
 
-let offset = 0;
-
 export default class PlaylistCollections extends React.Component {
     constructor() {
         super();

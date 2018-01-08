@@ -1,10 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import getApiUrl from '../Util/getApiUrl';
-import {Link} from 'react-router-dom';
 import TrackContainer from "../Component/TrackContainer";
-
-let offset = 0;
 
 export default class PlaylistPage extends React.Component {
     constructor() {
@@ -29,7 +26,7 @@ export default class PlaylistPage extends React.Component {
     eachTrack(payload){
         const tracks = [];
         payload.tracks.map(track => {
-            tracks.push(
+            return tracks.push(
                 <TrackContainer key={track.id} title={track.title} coverImage={track.coverImage} trackId={track.id}
                                 author_username={track.author.username} author_fullName={track.author.fullname}/>
             )
