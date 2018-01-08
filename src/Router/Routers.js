@@ -22,6 +22,7 @@ import Upload from '../Pages/Upload';
 import Doodle from '../Pages/Doodle';
 import DoodleSubmit from "../Pages/DoodleSubmit";
 import Status from "../Pages/Status";
+import PlaylistPage from "../Pages/PlaylistPage";
 
 let setInitUserStack = false;
 
@@ -121,6 +122,7 @@ export default class Routers extends React.Component {
                             <Route path="/upload" component={Upload}></Route>
                             <Route exact path="/doodle" component={Doodle}></Route>
                             <Route exact path="/doodle/submit" component={DoodleSubmit}></Route>
+                            <Route exact path="/playlist/:id" component={PlaylistPage}></Route>
                             <Route path="/status" component={Status}></Route>
                             <Route path="/logout" component={Logout}></Route>
                             <Route component={Footer}/>
