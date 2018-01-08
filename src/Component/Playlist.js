@@ -93,11 +93,23 @@ export default class Playlist extends React.Component {
         const title = payload.title;
         const id = payload.id;
         const url = getApiurl('api', '/playlist/create?');
-        await axios.post(url, {
+        const response = await axios.post(url, {
             title,
             tracks: [
                 id,
             ]
+        });
+        const playlist = response.data;
+        // Update the local playlist array
+        const playlists = this.state.playlists;
+        playlists.push({
+            id: playlist.id,
+            title: playlist.title,
+            author: playlist.author,
+            tracks: playlist.tracks,
+        });
+        this.setState({
+            playlists,
         });
         this.closeModal();
     }
