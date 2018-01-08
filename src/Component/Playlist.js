@@ -89,6 +89,19 @@ export default class Playlist extends React.Component {
         })
     }
 
+    async createNewPlaylist(payload){
+        const title = payload.title;
+        const id = payload.id;
+        const url = getApiurl('api', '/playlist/create?');
+        await axios.post(url, {
+            title,
+            tracks: [
+                id,
+            ]
+        });
+        this.closeModal();
+    }
+
     render() {
         return (
             <div
@@ -107,6 +120,22 @@ export default class Playlist extends React.Component {
                     {
                         this.eachPlaylists(this.state.playlists)
                     }
+                    <div className="newPlaylist">
+                        <p>Create a new playlist</p>
+                        <input type="text" ref={'newPlaylistName'}/>
+                        <div
+                            className="btn btn-info"
+                            style={{
+                                right: '1em',
+                                position: 'absolute',
+                                cursor: 'pointer',
+                            }}
+                            onClick={() => this.createNewPlaylist({
+                                title: this.refs.newPlaylistName.value,
+                                id: this.props.track.id,
+                            })}
+                        >Add</div>
+                    </div>
                 </Modal>
 
             </div>
