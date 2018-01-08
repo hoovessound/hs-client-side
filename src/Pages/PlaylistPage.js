@@ -27,16 +27,15 @@ export default class PlaylistPage extends React.Component {
     }
 
     eachTrack(payload){
-        const stateTracks = this.state.tracks;
+        const tracks = [];
         payload.tracks.map(track => {
-            stateTracks.push(
+            tracks.push(
                 <TrackContainer key={track.id} title={track.title} coverImage={track.coverImage} trackId={track.id}
-                                author_username={track.author.username} author_fullName={track.author.fullName}/>
+                                author_username={track.author.username} author_fullName={track.author.fullname}/>
             )
         });
         this.setState({
-            tracks: stateTracks,
-            playlist: payload,
+            tracks,
         });
     }
 
