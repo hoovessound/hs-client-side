@@ -3,6 +3,8 @@ import axios from 'axios';
 import {Link} from 'react-router-dom';
 import getApiurl from '../Util/getApiUrl';
 import Modal from 'react-responsive-modal';
+import 'react-tabs/style/react-tabs.css';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 export default class Playlist extends React.Component {
 
@@ -126,28 +128,40 @@ export default class Playlist extends React.Component {
             >playlist_add
 
                 <Modal open={this.state.modal.open} little onClose={this.closeModal.bind(this)}>
-                    <h2>Add to playlist</h2>
-                    <p>Adding {this.props.track.title} to one of your playlist</p>
-                    <hr/>
-                    {
-                        this.eachPlaylist(this.state.playlists)
-                    }
-                    <div className="newPlaylist">
-                        <p>Create a new playlist</p>
-                        <input type="text" ref={'newPlaylistName'}/>
-                        <div
-                            className="btn btn-info"
-                            style={{
-                                right: '1em',
-                                position: 'absolute',
-                                cursor: 'pointer',
-                            }}
-                            onClick={() => this.createNewPlaylist({
-                                title: this.refs.newPlaylistName.value,
-                                id: this.props.track.id,
-                            })}
-                        >Add</div>
-                    </div>
+                    <Tabs>
+                        <TabList>
+                            <Tab>Add to playlist</Tab>
+                            <Tab>Create new playlist</Tab>
+                        </TabList>
+
+                        <TabPanel>
+                            <h2>Add to playlist</h2>
+                            <p>Adding {this.props.track.title} to one of your playlist</p>
+                            {this.eachPlaylist(this.state.playlists)}
+                        </TabPanel>
+
+                        <TabPanel>
+                            <h2>Create a new playlist</h2>
+                            <p>Crate a new playlist for {this.props.track.title}</p>
+                            <div className="newPlaylist">
+                                <p>Playlist name:</p>
+                                <input type="text" ref={'newPlaylistName'}/>
+                                <div
+                                    className="btn btn-info"
+                                    style={{
+                                        right: '1em',
+                                        position: 'absolute',
+                                        cursor: 'pointer',
+                                    }}
+                                    onClick={() => this.createNewPlaylist({
+                                        title: this.refs.newPlaylistName.value,
+                                        id: this.props.track.id,
+                                    })}
+                                >Add</div>
+                            </div>
+                        </TabPanel>
+
+                    </Tabs>
                 </Modal>
 
             </div>
