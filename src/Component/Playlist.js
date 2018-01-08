@@ -103,6 +103,7 @@ export default class Playlist extends React.Component {
     }
 
     render() {
+        console.log('calling render()')
         return (
             <div
                 className="material-icons"
@@ -110,7 +111,7 @@ export default class Playlist extends React.Component {
                     cursor: 'pointer',
                     marginLeft: '0.5em',
                 }}
-                onClick={this.openModal.bind(this)}
+                onMouseDown={() => this.openModal()}
             >playlist_add
 
                 <Modal open={this.state.modal.open} little onClose={this.closeModal.bind(this)}>
