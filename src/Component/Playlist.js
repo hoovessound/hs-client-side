@@ -16,7 +16,7 @@ export default class Playlist extends React.Component {
         }
     }
 
-    eachPlaylists(data) {
+    eachPlaylist(data) {
         return data.map(playlist => {
             let text = 'Add';
             if(playlist.tracks.includes(this.props.track.id)){
@@ -118,7 +118,7 @@ export default class Playlist extends React.Component {
                     <p>Adding {this.props.track.title} to one of your playlist</p>
                     <hr/>
                     {
-                        this.eachPlaylists(this.state.playlists)
+                        this.eachPlaylist(this.state.playlists)
                     }
                     <div className="newPlaylist">
                         <p>Create a new playlist</p>
