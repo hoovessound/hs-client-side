@@ -2,10 +2,11 @@ import React from 'react';
 import axios from 'axios';
 import TrackContainer from '../Component/TrackContainer';
 import getApiurl from '../Util/getApiUrl';
+import * as checkLogin from '../Util/checkLogin';
 
 export default class Favorite extends React.Component {
     constructor() {
-        super()
+        super();
         this.state = {
             trackEl: []
         }
@@ -20,7 +21,7 @@ export default class Favorite extends React.Component {
                     <TrackContainer key={track.id} title={track.title} coverImage={track.coverImage} trackId={track.id}
                                     author_username={track.author.username} author_fullName={track.author.fullname}/>
                 )
-            }
+            };
             return tracks.push(trackEl());
         });
         this.setState({
@@ -29,10 +30,14 @@ export default class Favorite extends React.Component {
     }
 
     render() {
-        return (
-            <div>
-                {this.state.trackEl}
-            </div>
-        )
+        if(checkLogin.isLogin()){
+            return (
+                <div>
+                    {this.state.trackEl}
+                </div>
+            )
+        }else{
+            checkLogin.goLogin();
+        }
     }
 }
