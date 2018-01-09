@@ -14,7 +14,7 @@ export default class Notifications extends React.Component {
 
 
     async componentDidMount(){
-        const response = await axios.get(getApiurl('api', '/notification?'));
+        const response = await axios.get(getApiurl('api', '/notification?read=true'));
         this.setState({
             payloads: response.data,
         })
@@ -47,6 +47,8 @@ export default class Notifications extends React.Component {
                 if(payload.link.startsWith(rootUrl) || payload.link.startsWith('https://hoovessound.ml') || payload.link.startsWith('http://hoovessound.ml')){
                     isHSLink = true;
                 }
+
+
                 if(isHSLink){
                     const link = payload.link.split('/')[3];
                     body = () => {
@@ -71,6 +73,17 @@ export default class Notifications extends React.Component {
                         )
                     }
                 }
+            }else{
+                body = () => {
+                    return (
+                        <a href={payload.link} target="_blank">
+                            <span>{title()}</span>
+                            <br/>
+                            <span>{payload.message}</span>
+                            <hr/>
+                        </a>
+                    )
+                }
             }
 
             if(payload.icon){
@@ -87,6 +100,10 @@ export default class Notifications extends React.Component {
                         />
                     )
                 }
+            }else{
+                return (
+                    <span></span>
+                )
             }
 
             return (

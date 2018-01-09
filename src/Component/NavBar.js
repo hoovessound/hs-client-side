@@ -16,14 +16,20 @@ export default class NavBar extends React.Component {
             userIcon: '',
             username: '',
             notification: '',
+            notificationStyle: '',
         }
     }
 
     async componentDidMount() {
         const response = await axios.get(getApiUrl('api', '/me?'));
+        let notificationStyle = {};
+        if(response.data.unreadNotification){
+            notificationStyle = '2px red solid';
+        }
         this.setState({
             userIcon: response.data.icon,
-            username: response.data.username
+            username: response.data.username,
+            notificationStyle,
         }, () => {
             store.dispatch({
                 type: 'UPDATE_USER_STACK',
@@ -34,7 +40,8 @@ export default class NavBar extends React.Component {
 
     showNotification(){
         this.setState({
-            notification: <Notifications/>
+            notification: <Notifications/>,
+            notificationStyle: '',
         });
     }
 
@@ -133,9 +140,11 @@ export default class NavBar extends React.Component {
                                             style={{
                                                 fontSize: '2em',
                                                 display: 'inline-block',
+                                                borderBottom: this.state.notificationStyle,
                                             }}
                                             onClick={this.showNotification.bind(this)}
                                         ></span>
+
                                     </span>
 
                                                 </a>
