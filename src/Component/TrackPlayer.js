@@ -4,6 +4,7 @@ import store from '../Redux/store';
 import {Link} from 'react-router-dom';
 import getApiUrl from '../Util/getApiUrl';
 import axios from 'axios';
+import * as checkLogin from '../Util/checkLogin';
 
 const audio = new Audio();
 let updateLastPlayEvent;
@@ -113,7 +114,9 @@ export default class TrackPlayer extends React.Component {
                 audio.pause();
                 this.refs.playPauseButton.textContent = 'play_arrow';
                 document.title = oldTitle;
-                this.updateLastPlay();
+                if(checkLogin.isLogin()){
+                    this.updateLastPlay();
+                }
             };
         }
 
@@ -127,7 +130,9 @@ export default class TrackPlayer extends React.Component {
             document.title = oldTitle;
         }
 
-        this.updateLastPlay();
+        if(checkLogin.isLogin()){
+            this.updateLastPlay();
+        }
     }
 
     updateTimeStamp(updateAudio = false) {

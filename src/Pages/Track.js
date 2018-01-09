@@ -9,6 +9,7 @@ import Comment from '../Component/Comment';
 import Favorite from '../Component/Favorite';
 import Playlist from '../Component/Playlist';
 import Modal from 'react-responsive-modal';
+import * as checkLogin from '../Util/checkLogin';
 
 export default class Track extends React.Component {
     constructor() {
@@ -33,29 +34,48 @@ export default class Track extends React.Component {
             this.setState({
                 track,
             });
+
             const trackInfo = () => {
                 return (
                     <div>
                         <div className="tags">
 
                         </div>
-                        <Favorite trackId={this.props.match.params.id}/>
-                        <Playlist track={track}/>
-                        <div
-                            className="btn btn-info"
-                            onClick={() => {
-                                this.setState({
-                                    modal: {
-                                        edit: {
-                                            open: true,
-                                        }
-                                    }
-                                });
-                            }}
-                            style={{
-                                cursor: 'pointer',
-                            }}
-                        >Edit</div>
+
+                        {
+                            (() => {
+                                if(checkLogin.isLogin()){
+                                    return (
+                                        <div>
+                                            <Favorite trackId={this.props.match.params.id}/>
+                                            <Playlist track={track}/>
+
+                                            <div
+                                                className="btn btn-info"
+                                                onClick={() => {
+                                                    this.setState({
+                                                        modal: {
+                                                            edit: {
+                                                                open: true,
+                                                            }
+                                                        }
+                                                    });
+                                                }}
+                                                style={{
+                                                    cursor: 'pointer',
+                                                }}
+                                            >Edit</div>
+
+                                        </div>
+                                    )
+                                }else{
+                                    return (
+                                        <span></span>
+                                    )
+                                }
+                            })()
+                        }
+
                         <h1
                             className="title"
                             style={{
@@ -75,7 +95,20 @@ export default class Track extends React.Component {
                             {renderHTML(description)}
                         </div>
 
-                        <Comment trackId={this.props.match.params.id}/>
+                        {
+                            (() => {
+                                if(checkLogin.isLogin()){
+                                    return (
+                                        <Comment trackId={this.props.match.params.id}/>
+                                    )
+                                }else{
+                                    return (
+                                        <span></span>
+                                    )
+                                }
+                            })()
+                        }
+
                     </div>
                 )
             };
@@ -91,7 +124,7 @@ export default class Track extends React.Component {
         if(this.state.track.tags && this.state.track.tags.length > 0){
             const tags = [];
             this.state.track.tags.map(tag => {
-                tags.push(
+                return tags.push(
                     <span
                         className="tag"
                         key={tag}

@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import getApiUrl from '../Util/getApiUrl';
 import {Redirect} from 'react-router-dom';
+import * as checkLogin from '../Util/checkLogin';
 
 export default class DoodleSubmit extends React.Component {
 
@@ -133,52 +134,56 @@ export default class DoodleSubmit extends React.Component {
     }
 
     render() {
-        return (
-            <div id="doodleSubmit">
+        if(checkLogin.isLogin()){
+            return (
+                <div id="doodleSubmit">
 
-                <p>First of all, thank you for your submission</p>
+                    <p>First of all, thank you for your submission</p>
 
-                <div id="inputs" ref={'inputs'}>
-                    {
-                        this.makeInput([
-                            {
-                                title: 'Title',
-                                placeholder: 'Artwork title',
-                                require: true,
-                            },
-                            {
-                                title: 'Imgur Url',
-                                placeholder: 'Imgur url',
-                                require: true,
-                            },
-                            {
-                                title: 'Profile Url',
-                                placeholder: 'Your profile link EP: https://yay.deviantart.com',
-                                require: true,
-                            }
-                        ])
-                    }
+                    <div id="inputs" ref={'inputs'}>
+                        {
+                            this.makeInput([
+                                {
+                                    title: 'Title',
+                                    placeholder: 'Artwork title',
+                                    require: true,
+                                },
+                                {
+                                    title: 'Imgur Url',
+                                    placeholder: 'Imgur url',
+                                    require: true,
+                                },
+                                {
+                                    title: 'Profile Url',
+                                    placeholder: 'Your profile link EP: https://yay.deviantart.com',
+                                    require: true,
+                                }
+                            ])
+                        }
+                    </div>
+
+                    <div id="checks" ref={'checks'}>
+                        {this.makeChecks([
+                            'Have an copy of the artwork source file',
+                            'Your artwork is SFW and family friendlily',
+                            'Your artwork is under copyright and fair use'
+                        ])}
+                    </div>
+
+                    <hr/>
+
+                    <p>Once you submit your artwork, your artwork will show up in the gallery right away, but will NOT show in other places until your artwork has been approved and validated</p>
+
+                    <div
+                        className="btn btn-success"
+                        onClick={this.submit.bind(this)}
+                    >Submit
+                    </div>
+                    <Redirect to={this.state.redirect}/>
                 </div>
-
-                <div id="checks" ref={'checks'}>
-                    {this.makeChecks([
-                        'Have an copy of the artwork source file',
-                        'Your artwork is SFW and family friendlily',
-                        'Your artwork is under copyright and fair use'
-                    ])}
-                </div>
-
-                <hr/>
-
-                <p>Once you submit your artwork, your artwork will show up in the gallery right away, but will NOT show in other places until your artwork has been approved and validated</p>
-
-                <div
-                    className="btn btn-success"
-                    onClick={this.submit.bind(this)}
-                >Submit
-                </div>
-                <Redirect to={this.state.redirect}/>
-            </div>
-        )
+            )
+        }else{
+            checkLogin.goLogin();
+        }
     }
 }

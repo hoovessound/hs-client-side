@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import getApiUrl from '../Util/getApiUrl';
 import {Link} from 'react-router-dom';
+import * as checkLogin from '../Util/checkLogin';
 
 let offset = 0;
 
@@ -19,10 +20,10 @@ export default class Doodle extends React.Component {
         let doodles = this.state.doodles;
         response.data.map(doodle => {
             return doodles[doodle.id] = doodle;
-        })
+        });
         this.setState({
             doodles,
-        })
+        });
         offset += 5;
     }
 
@@ -62,14 +63,27 @@ export default class Doodle extends React.Component {
     render() {
         return (
             <div id={'doodles'}>
-                <Link to={'/doodle/submit'}>
-                    <div
-                        className="btn btn-success"
-                        style={{
-                            margin: '0.5em',
-                        }}
-                    >Submit</div>
-                </Link>
+                {
+                    (() => {
+                        if(checkLogin.isLogin()){
+                            return (
+                                <Link to={'/doodle/submit'}>
+                                    <div
+                                        className="btn btn-success"
+                                        style={{
+                                            margin: '0.5em',
+                                        }}
+                                    >Submit
+                                    </div>
+                                </Link>
+                            )
+                        }else{
+                            return (
+                                <span> </span>
+                            )
+                        }
+                    })()
+                }
                 {this.eachArtWork(this.state.doodles)}
                 <div
                     className="btn btn-info"

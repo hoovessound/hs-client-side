@@ -3,8 +3,8 @@ import axios from 'axios';
 import store from '../Redux/store';
 import getApiUrl from '../Util/getApiUrl';
 import Notifications from '../Component/Notifications';
-
 import {Link} from 'react-router-dom';
+import * as checkLogin from '../Util/checkLogin';
 
 const devUrl = getApiUrl('console.developer', '/', false);
 
@@ -39,6 +39,7 @@ export default class NavBar extends React.Component {
     }
 
     render() {
+
         return (
             <div>
 
@@ -66,11 +67,21 @@ export default class NavBar extends React.Component {
                                 </div>
                             </li>
 
-                            <li className="nav-item">
-                                <div className="nav-link">
-                                    <Link to={"/favorite"}>Favorite</Link>
-                                </div>
-                            </li>
+                            {
+                                (() => {
+                                    if(checkLogin.isLogin()){
+                                        return (
+                                            <li className="nav-item">
+                                                <div className="nav-link">
+                                                    <Link to={"/favorite"}>Favorite</Link>
+                                                </div>
+                                            </li>
+                                        )
+                                    }else{
+                                        return null;
+                                    }
+                                })()
+                            }
 
                             <li className="nav-item">
                                 <div className="nav-link">
@@ -80,32 +91,36 @@ export default class NavBar extends React.Component {
 
                         </ul>
 
-                        <ul className="navbar-nav ml-auto">
+                        {
+                            (() => {
+                                if(checkLogin.isLogin()){
+                                    return (
+                                        <ul className="navbar-nav ml-auto">
 
-                            <li className="nav-link">
-                                <Link
-                                    to="/upload"
-                                    className="fa fa-upload"
-                                    style={{
-                                        fontSize: '1.5em'
-                                    }}
-                                />
-                            </li>
+                                            <li className="nav-link">
+                                                <Link
+                                                    to="/upload"
+                                                    className="fa fa-upload"
+                                                    style={{
+                                                        fontSize: '1.5em'
+                                                    }}
+                                                />
+                                            </li>
 
-                            {/*Notification*/}
+                                            {/*Notification*/}
 
-                            <li
-                                className="nav-item dropdown"
-                            >
-                                <a className="nav-link"
-                                   id="notification"
-                                   data-toggle="dropdown"
-                                   aria-haspopup="true"
-                                   aria-expanded="false"
-                                   style={{
-                                       display: 'inline',
-                                   }}
-                                >
+                                            <li
+                                                className="nav-item dropdown"
+                                            >
+                                                <a className="nav-link"
+                                                   id="notification"
+                                                   data-toggle="dropdown"
+                                                   aria-haspopup="true"
+                                                   aria-expanded="false"
+                                                   style={{
+                                                       display: 'inline',
+                                                   }}
+                                                >
 
                                     <span
                                         style={{
@@ -123,26 +138,26 @@ export default class NavBar extends React.Component {
                                         ></span>
                                     </span>
 
-                                </a>
-                                <div className="dropdown-menu dropdown-menu-right" ref={'notification'}>
-                                    {this.state.notification}
-                                </div>
-                            </li>
+                                                </a>
+                                                <div className="dropdown-menu dropdown-menu-right" ref={'notification'}>
+                                                    {this.state.notification}
+                                                </div>
+                                            </li>
 
-                            {/*Profile*/}
+                                            {/*Profile*/}
 
-                            <li
-                                className="nav-item dropdown"
-                            >
-                                <a className="nav-link"
-                                   id="navbarDropdown"
-                                   data-toggle="dropdown"
-                                   aria-haspopup="true"
-                                   aria-expanded="false"
-                                   style={{
-                                       display: 'inline',
-                                   }}
-                                >
+                                            <li
+                                                className="nav-item dropdown"
+                                            >
+                                                <a className="nav-link"
+                                                   id="navbarDropdown"
+                                                   data-toggle="dropdown"
+                                                   aria-haspopup="true"
+                                                   aria-expanded="false"
+                                                   style={{
+                                                       display: 'inline',
+                                                   }}
+                                                >
 
                                     <span
                                         style={{
@@ -168,29 +183,39 @@ export default class NavBar extends React.Component {
                                         ></span>
                                     </span>
 
-                                </a>
-                                <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" >
+                                                </a>
+                                                <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" >
 
-                                    <div className="nav-link">
-                                        <Link to={`/@${this.state.username}`}>Profile</Link>
-                                    </div>
+                                                    <div className="nav-link">
+                                                        <Link to={`/@${this.state.username}`}>Profile</Link>
+                                                    </div>
 
-                                    <div className="nav-link">
-                                        <a href={devUrl}>Developer</a>
-                                    </div>
+                                                    <div className="nav-link">
+                                                        <a href={devUrl}>Developer</a>
+                                                    </div>
 
-                                    <div className="nav-link">
-                                        <Link to={'/playlist'}>Playlist</Link>
-                                    </div>
+                                                    <div className="nav-link">
+                                                        <Link to={'/playlist'}>Playlist</Link>
+                                                    </div>
 
-                                    <div className="nav-link">
-                                        <Link to={"/logout"}>Logout</Link>
-                                    </div>
+                                                    <div className="nav-link">
+                                                        <Link to={"/logout"}>Logout</Link>
+                                                    </div>
 
-                                </div>
-                            </li>
+                                                </div>
+                                            </li>
 
-                        </ul>
+                                        </ul>
+                                    )
+                                }else{
+                                    return (
+                                        <ul className="navbar-nav ml-auto">
+                                            <a href={`https://id.hoovessound.ml/login?service=hs_service_login&redirect=${window.location}`} className="btn btn-info">Login</a>
+                                        </ul>
+                                    )
+                                }
+                            })()
+                        }
 
                     </div>
                 </nav>

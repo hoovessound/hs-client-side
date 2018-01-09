@@ -7,7 +7,7 @@ import TrackPlayer from '../Component/TrackPlayer';
 import axios from 'axios';
 import getApiUrl from '../Util/getApiUrl';
 import store from '../Redux/store';
-import checkLogin from '../Util/checkLogin';
+import * as checkLogin from '../Util/checkLogin';
 
 import {
     BrowserRouter as Router,
@@ -66,77 +66,85 @@ export default class Routers extends React.Component {
             }
         }
 
-        store.subscribe(() => {
-            const errorMessage = 'Out service is running out of service, please contact one of our support, and we are more then welcome to help you out';
-            const user = store.getState().User;
-            // Check if the user have an history
-            if(user.history){
-                const trackID = user.history.trackID;
-                // Get the track info
-                getUserHistory(trackID)
-                .then(() => {
-                    setInitUserStack = true;
-                })
-                .catch(error => {
-                    console.log(error);
+        const errorMessage = 'Out service is running out of service, please contact one of our support, and we are more then welcome to help you out';
+
+        if(checkLogin.isLogin()){
+
+            store.subscribe(() => {
+                const user = store.getState().User;
+
+                // Check if the user have an history
+                if(user.history){
+                    const trackID = user.history.trackID;
+                    // Get the track info
+                    getUserHistory(trackID)
+                        .then(() => {
+                            setInitUserStack = true;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            getLatestTrackInfo()
+                                .then(() => {
+                                    setInitUserStack = true;
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                    alert(errorMessage);
+                                })
+                        })
+                }else{
+                    // User is new, and have no history before
                     getLatestTrackInfo()
-                    .then(() => {
-                        setInitUserStack = true;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        alert(errorMessage);
-                    })
-                })
-            }else{
-                // User is new, and have no history before
-                getLatestTrackInfo()
-                .then(() => {
-                    setInitUserStack = true;
-                })
-                .catch(error => {
-                    console.log(error);
-                    alert(errorMessage);
-                })
-            }
-        })
+                        .then(() => {
+                            setInitUserStack = true;
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            alert(errorMessage);
+                        })
+                }
+            });
+
+        }else{
+            getLatestTrackInfo()
+            .catch(error => {
+                console.log(error);
+                alert(errorMessage);
+            })
+        }
+
+
     }
 
     render() {
-        if (checkLogin()) {
-            this.setInitialTrackState();
-            return (
-                <Router>
-                    <div>
-                        <Route component={Header}/>
-                        <div
-                            className="container"
-                            style={{
-                                marginBottom: '6em',
-                                marginTop: '6.5em',
-                            }}
-                        >
-                            <Route exact path="/" component={Tracks}></Route>
-                            <Route path="/track/:id" component={Track}></Route>
-                            <Route path="/favorite" component={Favorite}></Route>
-                            <Route path="/@:username" component={Profile}></Route>
-                            <Route path="/upload" component={Upload}></Route>
-                            <Route exact path="/doodle" component={Doodle}></Route>
-                            <Route exact path="/doodle/submit" component={DoodleSubmit}></Route>
-                            <Route exact path="/playlist/:id" component={PlaylistPage}></Route>
-                            <Route exact path="/playlist" component={PlaylistCollections}></Route>
-                            <Route path="/status" component={Status}></Route>
-                            <Route path="/logout" component={Logout}></Route>
-                            <Route component={Footer}/>
-                        </div>
-                        <Route component={TrackPlayer}/>
+        this.setInitialTrackState();
+        return (
+            <Router>
+                <div>
+                    <Route component={Header}/>
+                    <div
+                        className="container"
+                        style={{
+                            marginBottom: '6em',
+                            marginTop: '6.5em',
+                        }}
+                    >
+                        <Route exact path="/" component={Tracks} />
+                        <Route path="/track/:id" component={Track} />
+                        <Route path="/favorite" component={Favorite} />
+                        <Route path="/@:username" component={Profile} />
+                        <Route path="/upload" component={Upload} />
+                        <Route exact path="/doodle" component={Doodle} />
+                        <Route exact path="/doodle/submit" component={DoodleSubmit} />
+                        <Route exact path="/playlist/:id" component={PlaylistPage} />
+                        <Route exact path="/playlist" component={PlaylistCollections} />
+                        <Route path="/status" component={Status} />
+                        <Route path="/logout" component={Logout} />
+                        <Route component={Footer}/>
                     </div>
-                </Router>
-            )
-        } else {
-            return (
-                <h1>You have to login before you continue this action.</h1>
-            )
-        }
+                    <Route component={TrackPlayer}/>
+                </div>
+            </Router>
+        )
     }
 }
