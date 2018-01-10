@@ -17,13 +17,13 @@ export default class Profile extends React.Component {
     }
 
     async fetchUserData(username) {
-        const response = await axios.get(getApiUrl('api', `/search/${username}?`))
-        let userObject = response.data.users[0];
+        const response = await axios.get(getApiUrl('api', `/user/${username}?`))
+        let userObject = response.data;
         userObject.fullname = userObject.fullName;
         delete userObject.fullName;
         this.updateInfo({
             user: userObject,
-        })
+        });
         const User = store.getState().User;
         if (User.username === userObject.username) {
             this.setState({
