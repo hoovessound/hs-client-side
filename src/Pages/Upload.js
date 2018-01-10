@@ -22,11 +22,13 @@ export default class Upload extends React.Component {
 
     audioFileOnChange(e){
         // Get the file name
-        const fileName = e.target.files[0].name;
-        const stripFileName = this.textStrip(fileName.split('.')[0]);
-        const titleEl = this.refs.title;
-        if(!titleEl.value){
-            titleEl.value = stripFileName;
+        if(e.target.files[0]){
+            const fileName = e.target.files[0].name;
+            const stripFileName = fileName.split('.')[0];
+            const titleEl = this.refs.title;
+            if(!titleEl.value){
+                titleEl.value = stripFileName;
+            }
         }
     }
 
@@ -37,9 +39,7 @@ export default class Upload extends React.Component {
     }
 
     async uploadTrack(){
-        const form = new FormData();
-        const titleEl = this.refs.title;
-        const audioFileEl = this.refs.audioFile;
+        const form = new FormData(this.refs.uploadForm);
         const config = {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -52,8 +52,6 @@ export default class Upload extends React.Component {
                 this.refs.processBar.style.width = `${percentComplete}%`;
             }
         };
-        form.append('title', titleEl.value);
-        form.append('audio', audioFileEl.files[0]);
         const response = await axios.post(getApiurl('api', `/upload?`), form, config);
         if(response.data.error){
             this.throwError(response.data.msg);
@@ -94,15 +92,93 @@ export default class Upload extends React.Component {
 
                     {/*Media file and info*/}
 
-                    <div id="audioFile">
-                        <p>Audio File<span style={{color: 'red'}}>*</span></p>
-                        <input ref="audioFile" type="file" onChange={this.audioFileOnChange.bind(this)} />
+                    <h1>Step 1: Select your audio file</h1>
+
+                    <div
+                        id="audioFile"
+                        style={{
+                            position: 'relative',
+                            border: '3px solid #161616',
+                            width: '50em',
+                            height: '10em',
+                            margin: '0.5em auto'
+                        }}
+                    >
+
+                        <p style={{
+                            textAlign: 'center',
+                            fontSize: '1.2em',
+                            margin: '0.5em',
+                        }}>Drop your file here</p>
+
+                        <input
+                            ref="audioFile"
+                            type="file"
+                            name={'audio'}
+                            onChange={this.audioFileOnChange.bind(this)}
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                opacity: 0,
+                                width: '100%',
+                                height: '100%',
+                            }}
+                        />
                     </div>
+
+                    <hr/>
+
+                    <h1>Step 2: Fill up the meta data</h1>
 
                     <div id="title">
                         <p>Title<span style={{color: 'red'}}>*</span></p>
-                        <input ref="title" type="text" onKeyUp={this.updatingTitle.bind(this)}/>
+                        <input ref="title" type="text" name={'title'} />
                     </div>
+
+                    <div id="description">
+                        <p>Description</p>
+                        <textarea ref="description" type="text" name={'description'} />
+                    </div>
+
+                    <hr/>
+
+                    <h1>Step 3: Choose a covert art</h1>
+
+                    <div
+                        id="audioFile"
+                        style={{
+                            position: 'relative',
+                            border: '3px solid #161616',
+                            width: '50em',
+                            height: '10em',
+                            margin: '0.5em auto'
+                        }}
+                    >
+
+                        <p style={{
+                            textAlign: 'center',
+                            fontSize: '1.2em',
+                            margin: '0.5em',
+                        }}>Drop your file here</p>
+
+                        <input
+                            ref="coverArtFile"
+                            type="file"
+                            name={'image'}
+                            onChange={this.audioFileOnChange.bind(this)}
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                opacity: 0,
+                                width: '100%',
+                                height: '100%',
+                            }}
+                        />
+                    </div>
+
+                    <hr/>
 
                     <div
                         className="btn btn-success"
