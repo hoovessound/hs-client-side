@@ -115,7 +115,7 @@ export default class Profile extends React.Component {
         const response = await axios.get(url);
         const tracks = [];
         response.data.map(track => {
-            tracks.push(
+            return tracks.push(
                 <TrackContainer key={track.id} title={track.title} coverImage={track.coverImage} trackId={track.id}
                                 author_username={track.author.username} author_fullName={track.author.fullname}/>
             );
