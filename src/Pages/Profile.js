@@ -3,6 +3,7 @@ import store from '../Redux/store';
 import axios from 'axios';
 import getApiUrl from '../Util/getApiUrl';
 import Modal from 'react-responsive-modal';
+import TrackContainer from "../Component/TrackContainer";
 
 export default class Profile extends React.Component {
     constructor() {
@@ -12,7 +13,8 @@ export default class Profile extends React.Component {
             isOwner: false,
             modal: {
                 open: false,
-            }
+            },
+            tracks: [],
         }
     }
 
@@ -29,7 +31,6 @@ export default class Profile extends React.Component {
             this.setState({
                 isOwner: true,
             })
-        } else {
         }
     }
 
@@ -109,6 +110,21 @@ export default class Profile extends React.Component {
         }
     }
 
+    async fetchTracks(){
+        const url = getApiUrl('api', '/me/tracks?');
+        const response = await axios.get(url);
+        const tracks = [];
+        response.data.map(track => {
+            tracks.push(
+                <TrackContainer key={track.id} title={track.title} coverImage={track.coverImage} trackId={track.id}
+                                author_username={track.author.username} author_fullName={track.author.fullname}/>
+            );
+        });
+        this.setState({
+            tracks,
+        });
+    }
+
     render() {
         const editButton = () => {
             const allowToEdit = this.state.isOwner;
@@ -123,87 +139,91 @@ export default class Profile extends React.Component {
                 )
             }
         };
-
+        this.fetchTracks();
         return (
-
-            <div
-                ref="userInfo"
-                style={{
-                    backgroundImage: `url(${this.state.user.banner})`,
-                    backgroundAttachment: 'fixed',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundSize: 'cover',
-                    padding: '5em 3em',
-                }}
-            >
-
-                <Modal little open={this.state.modal.open} onClose={this.closeOverLay.bind(this)}>
-                    <div
-                        id="updateBox"
-                        ref={"updateBox"}
-                        style={{
-                            textAlign: 'center',
-                            background: '#FFF',
-                            padding: '4em 3em',
-                        }}
-                    >
-                        <img
-                            alt=""
-                            ref={"userIcon_Edit"}
-                            src={this.state.user.icon}
-                            style={{
-                                borderRadius: '50%',
-                                width: '4em',
-                                cursor: 'pointer',
-                                margin: '0.5em',
-                            }}
-                            onClick={this.updateUserIcon.bind(this)}
-                        />
-
-                        <input type="file" ref={'userIcon_Edit'} hidden={'true'} style={{display: 'none'}}/>
-
-                        <p>Your name</p>
-                        <input
-                            ref="userFullName_Edit"
-                            type={'text'}
-                            style={{
-                                cursor: 'pointer',
-                                display: 'block',
-                                border: '1px solid #000',
-                                textAlign: 'center',
-                                position: 'relative',
-                                margin: 'auto',
-                                padding: '0.5em',
-                                borderRadius: '3px',
-                            }}
-                            value={this.state.user.fullname}
-                            onChange={this.fullNameOnChange.bind(this)}
-                        />
-
-
-                        <div className="btn btn-success"
-                             style={{
-                                 cursor: 'pointer',
-                                 margin: '0.5em',
-                             }}
-                             onClick={this.save.bind(this)}
-                        >Update
-                        </div>
-
-                    </div>
-                </Modal>
-
-                <img
-                    alt=""
-                    ref={"userIcon"}
-                    src={this.state.user.icon}
+            <div id={'profile'}>
+                <div
+                    ref="userInfo"
                     style={{
-                        borderRadius: '50%',
-                        width: '4em',
+                        backgroundImage: `url(${this.state.user.banner})`,
+                        backgroundAttachment: 'fixed',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundSize: 'cover',
+                        padding: '5em 3em',
                     }}
-                />
-                <h1 ref="userFullName">{this.state.user.fullname}</h1>
-                {editButton()}
+                >
+
+                    <Modal little open={this.state.modal.open} onClose={this.closeOverLay.bind(this)}>
+                        <div
+                            id="updateBox"
+                            ref={"updateBox"}
+                            style={{
+                                textAlign: 'center',
+                                background: '#FFF',
+                                padding: '4em 3em',
+                            }}
+                        >
+                            <img
+                                alt=""
+                                ref={"userIcon_Edit"}
+                                src={this.state.user.icon}
+                                style={{
+                                    borderRadius: '50%',
+                                    width: '4em',
+                                    cursor: 'pointer',
+                                    margin: '0.5em',
+                                }}
+                                onClick={this.updateUserIcon.bind(this)}
+                            />
+
+                            <input type="file" ref={'userIcon_Edit'} hidden={'true'} style={{display: 'none'}}/>
+
+                            <p>Your name</p>
+                            <input
+                                ref="userFullName_Edit"
+                                type={'text'}
+                                style={{
+                                    cursor: 'pointer',
+                                    display: 'block',
+                                    border: '1px solid #000',
+                                    textAlign: 'center',
+                                    position: 'relative',
+                                    margin: 'auto',
+                                    padding: '0.5em',
+                                    borderRadius: '3px',
+                                }}
+                                value={this.state.user.fullname}
+                                onChange={this.fullNameOnChange.bind(this)}
+                            />
+
+
+                            <div className="btn btn-success"
+                                 style={{
+                                     cursor: 'pointer',
+                                     margin: '0.5em',
+                                 }}
+                                 onClick={this.save.bind(this)}
+                            >Update
+                            </div>
+
+                        </div>
+                    </Modal>
+
+                    <img
+                        alt=""
+                        ref={"userIcon"}
+                        src={this.state.user.icon}
+                        style={{
+                            borderRadius: '50%',
+                            width: '4em',
+                        }}
+                    />
+                    <h1 ref="userFullName">{this.state.user.fullname}</h1>
+                    {editButton()}
+                </div>
+
+                {this.state.tracks}
+
             </div>
         )
     }
