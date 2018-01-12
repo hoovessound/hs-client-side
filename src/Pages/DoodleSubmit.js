@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import getApiUrl from '../Util/getApiUrl';
-import {Redirect} from 'react-router-dom';
 import * as checkLogin from '../Util/checkLogin';
 
 export default class DoodleSubmit extends React.Component {
@@ -66,12 +65,24 @@ export default class DoodleSubmit extends React.Component {
                         <span></span>
                     )
                 }
-            }
+            };
 
             return(
                 <div className="input-group" key={options.title}>
                     {isRequest()}
-                    <input type="text" class="form-control" placeholder={option.placeholder} ref={options.title}/>
+                    {
+                        (() => {
+                            if(option.file){
+                                return (
+                                    <input type="file" name={option.name} ref={option.name} />
+                                )
+                            }else{
+                                return (
+                                    <input type="text" class="form-control" placeholder={option.placeholder} name={option.name} ref={option.name} />
+                                )
+                            }
+                        })()
+                    }
                 </div>
             )
         })
@@ -109,24 +120,20 @@ export default class DoodleSubmit extends React.Component {
         const pass = this.validCheks();
         if (pass) {
             this.refs.checks.style.border = '';
-            const apiUrl = getApiUrl('api', '/doodle?');
-            const title = this.refs.title.value;
-            const profileLink = this.refs.profileLink.value;
-            const imgur = this.refs.imgur.value;
-            const data = {
-                imgur,
-                link: profileLink,
-                title,
+            const formElement = this.refs.inputs;
+            console.log(formElement)
+            const form = new FormData(formElement);
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             };
-            const response = await axios.post(apiUrl, data);
+            const apiUrl = getApiUrl('api', '/doodle?');
+            const response = await axios.post(apiUrl, form, config);
             if(!response.data.error){
                 this.setState({
-                    redirect: '/doodle'
-                })
-            }else{
-                this.setState({
-                    error: response.data.error,
-                })
+                    error: response.data.error
+                });
             }
         } else {
             this.refs.checks.style.border = '1px solid red';
@@ -139,28 +146,32 @@ export default class DoodleSubmit extends React.Component {
                 <div id="doodleSubmit">
 
                     <p>First of all, thank you for your submission</p>
-
-                    <div id="inputs" ref={'inputs'}>
+                    <p style={{color: 'red'}}>{this.state.error}</p>
+                    <form id="inputs" ref={'inputs'}>
                         {
                             this.makeInput([
                                 {
                                     title: 'Title',
                                     placeholder: 'Artwork title',
                                     require: true,
+                                    name: 'title',
                                 },
                                 {
                                     title: 'Imgur Url',
                                     placeholder: 'Imgur url',
+                                    name: 'image',
                                     require: true,
+                                    file: true,
                                 },
                                 {
                                     title: 'Profile Url',
                                     placeholder: 'Your profile link EP: https://yay.deviantart.com',
                                     require: true,
+                                    name: 'url',
                                 }
                             ])
                         }
-                    </div>
+                    </form>
 
                     <div id="checks" ref={'checks'}>
                         {this.makeChecks([
@@ -179,7 +190,6 @@ export default class DoodleSubmit extends React.Component {
                         onClick={this.submit.bind(this)}
                     >Submit
                     </div>
-                    <Redirect to={this.state.redirect}/>
                 </div>
             )
         }else{
