@@ -8,7 +8,10 @@ import * as checkLogin from '../Util/checkLogin';
 
 const audio = new Audio();
 let updateLastPlayEvent;
+let showTimeEvent;
 let oldTitle = document.title;
+
+let initPlay = false;
 
 export default class TrackPlayer extends React.Component {
 
@@ -102,6 +105,7 @@ export default class TrackPlayer extends React.Component {
         const trackId = this.state.MusicPlayer.trackId;
         const source = getApiUrl('stream', `/${trackId}?`);
         if (audio.src !== source) {
+            initPlay = true;
             // A new audio source
             audio.src = source;
             this.refs.time.value = 0;
@@ -118,6 +122,15 @@ export default class TrackPlayer extends React.Component {
                     this.updateLastPlay();
                 }
             };
+        }else{
+            initPlay = false;
+        }
+
+        if(initPlay){
+            this.toggleMobileTimeStamp();
+            setTimeout(() => {
+                this.toggleMobileTimeStamp();
+            }, 2000)
         }
 
         if (audio.paused) {
@@ -172,6 +185,21 @@ export default class TrackPlayer extends React.Component {
         }
     }
 
+    toggleMobileTimeStamp(){
+        const time = this.refs.time;
+        const trackInfo = this.refs.trackInfo;
+
+        if(trackInfo.classList.contains('hide')){
+            // Hide time
+            time.classList.remove('show');
+            trackInfo.classList.remove('hide');
+        }else{
+            // Show time
+            time.classList.add('show');
+            trackInfo.classList.add('hide');
+        }
+    }
+
     render() {
         window.onkeydown = (event) => this.hotKey(event);
         audio.ontimeupdate = () => this.updateTimeStamp();
@@ -181,17 +209,26 @@ export default class TrackPlayer extends React.Component {
                 style={{
                     marginTop: '1em',
                 }}
+                onTouchStart={() => {
+                    showTimeEvent = setTimeout(() => {
+                        this.toggleMobileTimeStamp();
+                    }, 500);
+                }}
+                onTouchEnd={() => {
+                    clearTimeout(showTimeEvent);
+                }}
+
             >
 
                 <div
                     ref={'coverArt'}
+                    id={'coverArt'}
                     style={{
                         backgroundImage: `url(${this.state.MusicPlayer.coverArt}?width=100)`,
                         backgroundSize: 'cover',
                         backgroundRepeat: 'no-repeat',
                         width: '5em',
                         height: '5em',
-                        display: 'inline-block',
                         position: 'relative',
                     }}
                 >
@@ -203,18 +240,19 @@ export default class TrackPlayer extends React.Component {
                         style={{
                             cursor: 'pointer',
                             position: 'absolute',
-                            background: 'skyblue',
+                            background: '#161616',
                             borderRadius: '50%',
                             padding: '0.2em',
                             top: '50%',
                             left: '50%',
                             transform: 'translate(-50%, -50%)',
+                            color: '#FFF',
                         }}
                     >play_arrow
                     </div>
                 </div>
 
-                <div id="trackInfo">
+                <div id="trackInfo" ref={'trackInfo'}>
 
                     <Link to={"/track/" + this.state.MusicPlayer.trackId}>
                         <span
@@ -226,8 +264,8 @@ export default class TrackPlayer extends React.Component {
 
                     <br/>
 
-                    <Link to={"/@" + this.state.MusicPlayer.author_username}>
-                        <span>{"@" + this.state.MusicPlayer.author_username}</span>
+                    <Link to={"/@" + this.state.MusicPlayer.author_username} >
+                        <span>{this.state.MusicPlayer.author_username ? "@" + this.state.MusicPlayer.author_username : ''}</span>
                     </Link>
 
                 </div>

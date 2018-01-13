@@ -1,7 +1,7 @@
 #TrackPlayer{
     position: fixed;
     width: 100vw;
-    background: hotpink;
+    background: #161616;
     height: 5em;
     bottom: 0em;
     left: 0em;
@@ -27,8 +27,43 @@
     bottom: 0.5em;
 }
 
+#coverArt{
+    display: inline-block;
+}
+
 @media (max-width: 415px) {
     #time{
-        width: 70%;
+        width: 60%;
+        opacity: 0;
+        transition: all 0.2s ease-in-out;
+    }
+
+    #time.show{
+        opacity: 1;
+    }
+
+    #volume{
+        display: none;
+    }
+
+    #coverArt{
+        background: none !important;
+    }
+
+    #playPauseButton{
+        top: 0em !important;
+        padding: 0.5em !important;
+    }
+
+    #TrackPlayer{
+        height: 3em;
+    }
+
+    #trackInfo{
+        transition: all 0.2s ease-in-out;
+    }
+
+    #trackInfo.hide{
+        opacity: 0;
     }
 }
