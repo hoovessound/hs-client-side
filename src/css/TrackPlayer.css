@@ -31,6 +31,10 @@
     display: inline-block;
 }
 
+#time::-webkit-slider-thumb {
+    background: skyblue;
+}
+
 @media (max-width: 415px) {
     #time{
         width: 60%;

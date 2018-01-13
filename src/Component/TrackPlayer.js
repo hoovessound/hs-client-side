@@ -1,5 +1,7 @@
 import React from 'react';
 import '../css/TrackPlayer.css';
+// http://danielstern.ca/range.css/#/
+import '../css/includes/TrackPlayer_Time_Stamp.css';
 import store from '../Redux/store';
 import {Link} from 'react-router-dom';
 import getApiUrl from '../Util/getApiUrl';
