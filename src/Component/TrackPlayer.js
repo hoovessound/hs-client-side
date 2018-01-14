@@ -13,6 +13,8 @@ let updateLastPlayEvent;
 let showTimeEvent;
 let oldTitle = document.title;
 
+let updateTimeEvent;
+
 let initPlay = false;
 
 export default class TrackPlayer extends React.Component {
@@ -139,15 +141,33 @@ export default class TrackPlayer extends React.Component {
             audio.play();
             this.refs.playPauseButton.textContent = 'pause';
             document.title = `${this.state.MusicPlayer.author_fullname} - ${this.state.MusicPlayer.title}`;
+
+            updateTimeEvent = setInterval(() => {
+                axios.post(getApiUrl('api', `/events?`), {
+                    event: 'UPDATE_LAST_PLAY',
+                    payload: {
+                        volume: 100,
+                        trackID: store.getState().MusicPlayer.trackId,
+                        playtime: {
+                            currentTime: audio.currentTime,
+                            duration: audio.duration,
+                        },
+                        isPlaying: !audio.paused,
+                    }
+                });
+            }, 10000);
+
         } else {
             audio.pause();
             this.refs.playPauseButton.textContent = 'play_arrow';
             document.title = oldTitle;
+            clearInterval(updateTimeEvent)
         }
 
         if(checkLogin.isLogin()){
             this.updateLastPlay();
         }
+
     }
 
     updateTimeStamp(updateAudio = false) {
@@ -174,7 +194,7 @@ export default class TrackPlayer extends React.Component {
                     },
                     isPlaying: !audio.paused,
                 }
-            })
+            });
         }, 750);
     }
 
@@ -205,6 +225,22 @@ export default class TrackPlayer extends React.Component {
     render() {
         window.onkeydown = (event) => this.hotKey(event);
         audio.ontimeupdate = () => this.updateTimeStamp();
+
+        navigator.sendBeacon = navigator.sendBeacon || function (url, data) {
+            axios.post(getApiUrl('api', `/events?`), {
+                event: 'UPDATE_LAST_PLAY',
+                payload: {
+                    volume: 100,
+                    trackID: store.getState().MusicPlayer.trackId,
+                    playtime: {
+                        currentTime: audio.currentTime,
+                        duration: audio.duration,
+                    },
+                    isPlaying: !audio.paused,
+                }
+            });
+        };
+
         return (
             <div
                 id="TrackPlayer"
