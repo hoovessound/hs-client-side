@@ -12,6 +12,7 @@ const audio = new Audio();
 let updateLastPlayEvent;
 let showTimeEvent;
 let oldTitle = document.title;
+let playlistIndex = 0;
 
 let updateTimeEvent;
 
@@ -108,7 +109,21 @@ export default class TrackPlayer extends React.Component {
     playMusic() {
         const trackId = this.state.MusicPlayer.trackId;
         const source = getApiUrl('stream', `/${trackId}?`);
+        const localPlaylist = store.getState().LocalPlayList.tracks;
+
+
+
         if (audio.src !== source) {
+            // Set the correct playlist index
+
+            for(let key in localPlaylist){
+                // Look for the index
+                const id = localPlaylist[key].id;
+                if(id === trackId){
+                    playlistIndex = parseInt(key, 10);
+                }
+            }
+
             initPlay = true;
             // A new audio source
             audio.src = source;
@@ -119,11 +134,32 @@ export default class TrackPlayer extends React.Component {
 
             // When the track is finish
             audio.onended = () => {
-                audio.pause();
-                this.refs.playPauseButton.textContent = 'play_arrow';
-                document.title = oldTitle;
-                if(checkLogin.isLogin()){
-                    this.updateLastPlay();
+
+                // Check if the local playlist is available
+                if(parseInt(playlistIndex + 1, 10) === localPlaylist.length){
+                    // End the playlist
+                    audio.pause();
+                    this.refs.playPauseButton.textContent = 'play_arrow';
+                    document.title = oldTitle;
+                    if(checkLogin.isLogin()){
+                        this.updateLastPlay();
+                    }
+                    playlistIndex = 0;
+                }else{
+                    // Play the next track from the playlist
+                    playlistIndex = (playlistIndex + 1);
+                    const track = localPlaylist[parseInt(playlistIndex, 10)];
+                    store.dispatch({
+                        type: 'UPDATE_TRACK_DETAILS',
+                        payload: {
+                            trackId: track.id,
+                            title: track.title,
+                            author_username: track.author.username,
+                            author_fullname: track.author.fullname,
+                            coverArt: track.coverImage,
+                            playitnow: true,
+                        }
+                    });
                 }
             };
         }else{
@@ -314,6 +350,7 @@ export default class TrackPlayer extends React.Component {
                     ref={'volume'}
                     style={{
                         cursor: 'pointer',
+                        color: '#FFF',
                     }}
                     onClick={this.mute.bind(this)}
                 ></span>
