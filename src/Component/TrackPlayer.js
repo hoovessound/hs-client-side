@@ -98,12 +98,8 @@ export default class TrackPlayer extends React.Component {
 
             this.setState({
                 MusicPlayer,
-            }, () => {
-                if (this.state.MusicPlayer.playitnow) {
-                    this.playMusic();
-                }
             });
-        })
+        });
     }
 
     playMusic() {
