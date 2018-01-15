@@ -3,6 +3,7 @@ import axios from 'axios';
 import TrackContainer from '../Component/TrackContainer';
 import getApiurl from '../Util/getApiUrl';
 import * as checkLogin from '../Util/checkLogin';
+import store from "../Redux/store";
 
 export default class Favorite extends React.Component {
     constructor() {
@@ -15,6 +16,15 @@ export default class Favorite extends React.Component {
     async componentDidMount() {
         const response = await axios.get(getApiurl('api', `/me/favorites?offset=0`));
         const tracks = this.state.trackEl;
+
+        // Add some tracks to the local playlist
+        store.dispatch({
+            type: 'ADD_LOCAL_PLAYLIST',
+            payload: {
+                tracks,
+            }
+        });
+
         response.data.map(track => {
             const trackEl = () => {
                 return (

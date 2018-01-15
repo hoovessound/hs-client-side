@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import getApiUrl from '../Util/getApiUrl';
 import TrackContainer from "../Component/TrackContainer";
+import store from "../Redux/store";
 
 export default class PlaylistPage extends React.Component {
     constructor() {
@@ -15,6 +16,13 @@ export default class PlaylistPage extends React.Component {
     async fetchPlaylist(id){
         const url = getApiUrl('api', `/playlist/${id}?`);
         const response = await axios.get(url);
+        // Add some tracks to the local playlist
+        store.dispatch({
+            type: 'ADD_LOCAL_PLAYLIST',
+            payload: {
+                tracks: response.data.tracks,
+            }
+        });
         this.eachTrack(response.data);
     }
 
