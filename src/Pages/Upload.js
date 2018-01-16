@@ -211,8 +211,12 @@ export default class Upload extends React.Component {
                             return (
                                 <Redirect to={this.state.redirectTo}/>
                             )
+                        }else{
+                            return (
+                                <span></span>
+                            )
                         }
-                    })
+                    })()
                 }
             </div>
         )
