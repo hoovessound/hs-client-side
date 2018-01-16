@@ -11,15 +11,6 @@ export default class Upload extends React.Component {
         }
     }
 
-    textStrip(text){
-        // lol
-        return (text);
-    }
-
-    updatingTitle(){
-        this.refs.title.value = this.textStrip(this.refs.title.value);
-    }
-
     audioFileOnChange(e){
         // Get the file name
         if(e.target.files[0]){
@@ -116,14 +107,14 @@ export default class Upload extends React.Component {
                             type="file"
                             name={'audio'}
                             onChange={this.audioFileOnChange.bind(this)}
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                opacity: 0,
-                                width: '100%',
-                                height: '100%',
-                            }}
+                        style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        opacity: 0,
+                        width: '100%',
+                        height: '100%',
+                    }}
                         />
                     </div>
 
