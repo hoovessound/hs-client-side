@@ -8,16 +8,9 @@ export default class Upload extends React.Component {
         super();
         this.state = {
             errorMessage: '',
+            redirect: false,
+            redirectTo: '',
         }
-    }
-
-    textStrip(text){
-        // lol
-        return (text);
-    }
-
-    updatingTitle(){
-        this.refs.title.value = this.textStrip(this.refs.title.value);
     }
 
     audioFileOnChange(e){
@@ -56,16 +49,17 @@ export default class Upload extends React.Component {
         if(response.data.error){
             this.throwError(response.data.msg);
         }else{
-            return (
-                <Redirect to={`/track/${response.data.id}`}/>
-            )
+            // Redirect the user to the track page
+            this.setState({
+                redirect: true,
+                redirectTo: `/${response.data.id}`,
+            });
         }
     }
 
     render() {
         return (
             <div ref="upload">
-
                 <div className="error">
                     <p
                         style={{
@@ -74,9 +68,26 @@ export default class Upload extends React.Component {
                     >{this.state.errorMessage}</p>
                 </div>
 
-                <form ref="uploadForm">
+                <div
+                    className="progress-container"
+                    style={{
+                        width: 'auto',
+                        height: '1.5em',
+                        position: 'relative',
+                    }}
+                >
+                    <div
+                        className="progress"
+                        style={{
+                            width: 'auto',
+                            height: '1.5em',
+                            top: '6em',
+                            left: '0em',
+                            right: '0em',
+                            position: 'fixed',
+                        }}
 
-                    <div className="progress">
+                    >
                         <div className="progress-bar"
                              role="progressbar"
                              aria-valuenow="0"
@@ -85,10 +96,15 @@ export default class Upload extends React.Component {
                              ref="processBar"
                              style={{
                                  width: '0%',
+                                 position: 'relative'
                              }}
                         >
                         </div>
                     </div>
+
+                </div>
+
+                <form ref="uploadForm">
 
                     {/*Media file and info*/}
 
@@ -116,14 +132,14 @@ export default class Upload extends React.Component {
                             type="file"
                             name={'audio'}
                             onChange={this.audioFileOnChange.bind(this)}
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                opacity: 0,
-                                width: '100%',
-                                height: '100%',
-                            }}
+                        style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        opacity: 0,
+                        width: '100%',
+                        height: '100%',
+                    }}
                         />
                     </div>
 
@@ -188,8 +204,16 @@ export default class Upload extends React.Component {
                         }}
                         onClick={this.uploadTrack.bind(this)}
                     >Upload</div>
-
                 </form>
+                {
+                    (() => {
+                        if(this.state.redirect){
+                            return (
+                                <Redirect to={this.state.redirectTo}/>
+                            )
+                        }
+                    })
+                }
             </div>
         )
     }
