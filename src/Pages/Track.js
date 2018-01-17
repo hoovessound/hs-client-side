@@ -166,40 +166,154 @@ export default class Track extends React.Component {
         }
     }
 
+    async updateTrack(){
+        const track = this.state.track;
+        const url = getApiurl('api', `/track/edit/${track.id}?`);
+        const form = new FormData(this.refs.editForm);
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+        };
+        await axios.post(url, form, config);
+        const modal = this.state.modal;
+        modal.edit.open = false;
+        this.setState({
+            modal,
+        });
+        // Update the DOM
+        track.title = form.get('title');
+        track.description = form.get('description');
+        this.setState({
+            track,
+        })
+    }
+
     render() {
-        return (
-            <div ref={this.props.match.params.id} key={this.props.match.params.id}>
+        const track = this.state.track;
+        if(track.author){
+            return (
+                <div ref={this.props.match.params.id} key={this.props.match.params.id}>
 
-                <Modal open={this.state.modal.edit.open} onClose={() => {
-                    this.setState({
-                        modal: {
-                            edit: {
-                                open: false,
-                            },
+                    <Modal open={this.state.modal.edit.open} onClose={() => {
+                        this.setState({
+                            modal: {
+                                edit: {
+                                    open: false,
+                                },
+                            }
+                        })
+                    }} little>
+                        <br/>
+                        <h3>Edit {this.state.track.title}</h3>
+
+                        <form id="editForm" ref={'editForm'}>
+                            <p>Title</p>
+                            <input type="text" name={'title'} defaultValue={this.state.track.title} />
+                            <p>Description</p>
+                            <textarea name="description" defaultValue={renderHTML(this.state.track.description)}></textarea>
+                            <hr/>
+                            <span>Tags</span>
+                            <div className="tags">
+                                {this.eachTags()}
+                                <input
+                                    type="text"
+                                    ref={'tagName'}
+                                    style={{
+                                        border: 'none',
+                                        background: 'none',
+                                        outline: 'none',
+                                        marginLeft: '0.5em',
+                                    }}
+                                    onKeyDown={this.addTag.bind(this)}
+                                />
+                            </div>
+
+                            <div className="btn btn-success" ref={'updateButton'} onClick={this.updateTrack.bind(this)}>Update</div>
+                        </form>
+                    </Modal>
+
+
+                    <div>
+                        <div className="tags">
+
+                        </div>
+
+                        {
+                            (() => {
+                                if(checkLogin.isLogin()){
+                                    return (
+                                        <div>
+                                            <Favorite trackId={this.props.match.params.id}/>
+                                            <Playlist track={track}/>
+
+                                            <div
+                                                className="btn btn-info"
+                                                onClick={() => {
+                                                    this.setState({
+                                                        modal: {
+                                                            edit: {
+                                                                open: true,
+                                                            }
+                                                        }
+                                                    });
+                                                }}
+                                                style={{
+                                                    cursor: 'pointer',
+                                                }}
+                                            >Edit</div>
+
+                                        </div>
+                                    )
+                                }else{
+                                    return (
+                                        <span></span>
+                                    )
+                                }
+                            })()
                         }
-                    })
-                }} little>
-                    <br/>
-                    <h3>Edit {this.state.track.title}</h3>
-                    <span>Tags</span>
-                    <div className="tags">
-                        {this.eachTags()}
-                        <input
-                            type="text"
-                            ref={'tagName'}
-                            style={{
-                                border: 'none',
-                                background: 'none',
-                                outline: 'none',
-                                marginLeft: '0.5em',
-                            }}
-                            onKeyDown={this.addTag.bind(this)}
-                        />
-                    </div>
-                </Modal>
 
-                {this.state.trackInfo}
-            </div>
-        )
+                        <h1
+                            className="title"
+                            style={{
+                                whiteSpace: 'pre',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                            }}
+                            ref={'mainTitle'}
+                        >{track.title}</h1>
+                        <p>By <Link
+                            to={'/@' + track.author.username}>{'@' + track.author.username}</Link>
+                        </p>
+                        <TrackContainer key={track.id} title={track.title} coverImage={track.coverImage}
+                                        trackId={track.id} author_username={track.author.username}
+                                        author_fullName={track.author.fullname} notitle nolink noauthor/>
+
+                        <div className="description">
+                            {renderHTML(url(this.state.track.description))}
+                        </div>
+
+                        {
+                            (() => {
+                                if(checkLogin.isLogin()){
+                                    return (
+                                        <Comment trackId={this.props.match.params.id}/>
+                                    )
+                                }else{
+                                    return (
+                                        <span></span>
+                                    )
+                                }
+                            })()
+                        }
+
+                    </div>
+                </div>
+            )
+        }else{
+            return (
+                <div></div>
+            )
+        }
     }
 }
