@@ -43,6 +43,7 @@ export default class Profile extends React.Component {
     componentDidMount() {
         const username = this.props.match.params.username;
         this.fetchUserData(username);
+        this.fetchTracks(username);
     }
 
     closeOverLay() {
@@ -110,8 +111,8 @@ export default class Profile extends React.Component {
         }
     }
 
-    async fetchTracks(){
-        const url = getApiUrl('api', '/me/tracks?');
+    async fetchTracks(username){
+        const url = getApiUrl('api', `/user/${username}/tracks?`);
         const response = await axios.get(url);
         const tracks = [];
         response.data.map(track => {
@@ -139,7 +140,6 @@ export default class Profile extends React.Component {
                 )
             }
         };
-        this.fetchTracks();
         return (
             <div id={'profile'}>
                 <div
