@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import getApiUrl from '../Util/getApiUrl';
 import * as checkLogin from '../Util/checkLogin';
+import {Redirect} from 'react-router-dom';
 
 export default class DoodleSubmit extends React.Component {
 
@@ -11,6 +12,7 @@ export default class DoodleSubmit extends React.Component {
             checks: [],
             ticks: [],
             error: '',
+            redirect: false,
         }
     }
 
@@ -126,14 +128,24 @@ export default class DoodleSubmit extends React.Component {
             const config = {
                 headers: {
                     'Content-Type': 'multipart/form-data'
+                },
+
+                onUploadProgress:(progressEvt) => {
+                    const complete = progressEvt.loaded / progressEvt.total;
+                    const percentComplete = complete * 100;
+                    this.refs.processBar.style.width = `${percentComplete}%`;
                 }
             };
             const apiUrl = getApiUrl('api', '/doodle?');
             const response = await axios.post(apiUrl, form, config);
-            if(!response.data.error){
+            if(response.data.error){
                 this.setState({
                     error: response.data.error
                 });
+            }else{
+                this.setState({
+                    redirect: true,
+                })
             }
         } else {
             this.refs.checks.style.border = '1px solid red';
@@ -145,8 +157,59 @@ export default class DoodleSubmit extends React.Component {
             return (
                 <div id="doodleSubmit">
 
+                    {
+                        (() => {
+                            if(this.state.redirect){
+                                return (
+                                    <Redirect to={'/doodle'}/>
+                                )
+                            }else{
+                                return (
+                                    <span></span>
+                                )
+                            }
+                        })()
+                    }
+
                     <p>First of all, thank you for your submission</p>
                     <p style={{color: 'red'}}>{this.state.error}</p>
+
+                    <div
+                        className="progress-container"
+                        style={{
+                            width: 'auto',
+                            height: '1.5em',
+                            position: 'relative',
+                        }}
+                    >
+                        <div
+                            className="progress"
+                            style={{
+                                width: 'auto',
+                                height: '1.5em',
+                                top: '6em',
+                                left: '0em',
+                                right: '0em',
+                                position: 'fixed',
+                            }}
+
+                        >
+                            <div className="progress-bar"
+                                 role="progressbar"
+                                 aria-valuenow="0"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100"
+                                 ref="processBar"
+                                 style={{
+                                     width: '0%',
+                                     position: 'relative'
+                                 }}
+                            >
+                            </div>
+                        </div>
+
+                    </div>
+
                     <form id="inputs" ref={'inputs'}>
                         {
                             this.makeInput([
