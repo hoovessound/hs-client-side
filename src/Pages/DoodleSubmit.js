@@ -235,7 +235,7 @@ export default class DoodleSubmit extends React.Component {
                             ])
                         }
                     </form>
-                    <br>
+                    <br />
                     <p>By submitting this artwork, I declare that:</p>
 
                     <div id="checks" ref={'checks'}>
@@ -247,7 +247,7 @@ export default class DoodleSubmit extends React.Component {
 
                     <hr/>
 
-                    <p>Once you click Submit, it will immediately show up in the user gallery, but it will NOT appear in other places until your artwork has been approved and validated</p> // Is this so?
+                    <p>Once you click Submit, it will immediately show up in the user gallery, but it will NOT appear in other places until your artwork has been approved and validated</p>
 
                     <div
                         className="btn btn-success"
