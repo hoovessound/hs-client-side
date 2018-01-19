@@ -171,7 +171,7 @@ export default class DoodleSubmit extends React.Component {
                         })()
                     }
 
-                    <p style={{font-family: 'verdana'; font-size: '160%'; font-weight: 'bold'}}>Artwork Submission</p>
+                    <p style={{font-family: 'verdana', font-size: '160%', font-weight: 'bold'}}>Artwork Submission</p>
                     <p style={{color: 'red'}}>{this.state.error}</p>
 
                     <div
