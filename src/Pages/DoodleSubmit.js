@@ -171,7 +171,7 @@ export default class DoodleSubmit extends React.Component {
                         })()
                     }
 
-                    <p>First of all, thank you for your submission</p>
+                    <p style={{font-family: 'verdana'; font-size: '160%'; font-weight: 'bold'}}>Artwork Submission</p>
                     <p style={{color: 'red'}}>{this.state.error}</p>
 
                     <div
@@ -215,7 +215,7 @@ export default class DoodleSubmit extends React.Component {
                             this.makeInput([
                                 {
                                     title: 'Title',
-                                    placeholder: 'Artwork title',
+                                    placeholder: 'Title of Artwork',
                                     require: true,
                                     name: 'title',
                                 },
@@ -228,25 +228,26 @@ export default class DoodleSubmit extends React.Component {
                                 },
                                 {
                                     title: 'Profile Url',
-                                    placeholder: 'Your profile link EP: https://yay.deviantart.com',
+                                    placeholder: 'Source link e.g. https://artist.deviantart.com',
                                     require: true,
                                     name: 'url',
                                 }
                             ])
                         }
                     </form>
+                    <br>
+                    <p>By submitting this artwork, I declare that:</p>
 
                     <div id="checks" ref={'checks'}>
                         {this.makeChecks([
-                            'Have an copy of the artwork source file',
-                            'Your artwork is SFW and family friendlily',
-                            'Your artwork is under copyright and fair use'
+                            'The artwork is safe for work and contains no mature content.',
+                            'The artwork can be shared within the scope of fair use with regards to copyrighted or licensed materials, if applicable.'
                         ])}
                     </div>
 
                     <hr/>
 
-                    <p>Once you submit your artwork, your artwork will show up in the gallery right away, but will NOT show in other places until your artwork has been approved and validated</p>
+                    <p>Once you click Submit, it will immediately show up in the user gallery, but it will NOT appear in other places until your artwork has been approved and validated</p> // Is this so?
 
                     <div
                         className="btn btn-success"
