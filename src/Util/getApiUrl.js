@@ -4,12 +4,12 @@ import * as checkLogin from '../Util/checkLogin';
 export default (subdomain = 'api', path = '/', needAuth = true) => {
     // Get the user's oauth-token
     let tail = "";
-    const token = cookie.load('oauth-token');
+    const token = cookie.load('jwt_token');
     const noDevServer = process.env.REACT_APP_NO_DEV_SERVER;
 
     if(checkLogin.isLogin()){
         if (needAuth) {
-            tail = `&oauth_token=${token}&bypass=true`;
+            tail = `&jwt=${token}&bypass=true`;
         }
     }
 

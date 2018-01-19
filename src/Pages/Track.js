@@ -10,6 +10,7 @@ import Favorite from '../Component/Favorite';
 import Playlist from '../Component/Playlist';
 import Modal from 'react-responsive-modal';
 import * as checkLogin from '../Util/checkLogin';
+import store from "../Redux/store";
 
 export default class Track extends React.Component {
     constructor() {
@@ -247,21 +248,35 @@ export default class Track extends React.Component {
                                             <Favorite trackId={this.props.match.params.id}/>
                                             <Playlist track={track}/>
 
-                                            <div
-                                                className="btn btn-info"
-                                                onClick={() => {
-                                                    this.setState({
-                                                        modal: {
-                                                            edit: {
-                                                                open: true,
-                                                            }
-                                                        }
-                                                    });
-                                                }}
-                                                style={{
-                                                    cursor: 'pointer',
-                                                }}
-                                            >Edit</div>
+                                            {
+                                                (() => {
+                                                    const User = store.getState().User;
+                                                    if(User.id === this.state.track.author){
+                                                        return (
+                                                            <div
+                                                                className="btn btn-info"
+                                                                onClick={() => {
+                                                                    this.setState({
+                                                                        modal: {
+                                                                            edit: {
+                                                                                open: true,
+                                                                            }
+                                                                        }
+                                                                    });
+                                                                }}
+                                                                style={{
+                                                                    cursor: 'pointer',
+                                                                }}
+                                                            >Edit</div>
+                                                        )
+                                                    }else{
+                                                        return (
+                                                            <span></span>
+                                                        )
+                                                    }
+                                                })
+                                            }
+
 
                                         </div>
                                     )
