@@ -145,7 +145,7 @@ export default class Upload extends React.Component {
 
                     <hr/>
 
-                    <h1>Step 2: Fill up the meta data</h1>
+                    <h1>Step 2: Fill in the meta data</h1>
 
                     <div id="title">
                         <p>Title<span style={{color: 'red'}}>*</span></p>
@@ -159,7 +159,7 @@ export default class Upload extends React.Component {
 
                     <hr/>
 
-                    <h1>Step 3: Choose a covert art</h1>
+                    <h1>Step 3: Choose a cover art</h1>
 
                     <div
                         id="audioFile"
