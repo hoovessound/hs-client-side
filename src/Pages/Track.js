@@ -11,6 +11,7 @@ import Playlist from '../Component/Playlist';
 import Modal from 'react-responsive-modal';
 import * as checkLogin from '../Util/checkLogin';
 import store from "../Redux/store";
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
 export default class Track extends React.Component {
     constructor() {
@@ -22,11 +23,13 @@ export default class Track extends React.Component {
                 edit: {
                     open: false,
                 }
-            }
+            },
+            backgroundDropEl: [],
         }
     }
 
     async componentDidMount() {
+        this.fetchBackgroundDrop();
         try {
             const trackId = this.props.match.params.id;
             const response = await axios.get(getApiurl('api', `/track/${trackId}?`))
@@ -190,6 +193,46 @@ export default class Track extends React.Component {
         })
     }
 
+    async fetchBackgroundDrop(){
+        const url = getApiurl('api', '/me/doodles?');
+        const response = await axios.get(url);
+        const doodles = response.data.map(doodle => {
+            return (
+                <div className="bgDropContainer"
+                    style={{
+                        cursor: 'pointer',
+                    }}
+                     key={doodle.id}
+                     onClick={() => this.changeBackgroundDrop(doodle.id)}
+                >
+                    <img src={doodle.image} alt={`${doodle.id} doodle`} style={{width: '25em', height: '15em'}}/>
+                    <hr/>
+                </div>
+            )
+        });
+        this.setState({
+            backgroundDropEl: doodles,
+        })
+    }
+
+    async changeBackgroundDrop(id){
+        const modal = this.state.modal;
+        const url = getApiurl('api', `/track/backgrounddrop/${this.state.track.id}?`);
+
+        const form = new FormData();
+
+        form.append('backgrounddrop', id);
+
+        await axios.post(url, {
+            id,
+        });
+
+        modal.edit.open = false;
+        this.setState({
+            modal,
+        });
+    }
+
     render() {
         const track = this.state.track;
         if(track.author){
@@ -209,28 +252,43 @@ export default class Track extends React.Component {
                         <h3>Edit {this.state.track.title}</h3>
 
                         <form id="editForm" ref={'editForm'}>
-                            <p>Title</p>
-                            <input type="text" name={'title'} defaultValue={this.state.track.title} />
-                            <p>Description</p>
-                            <textarea name="description" defaultValue={renderHTML(this.state.track.description)}></textarea>
-                            <hr/>
-                            <span>Tags</span>
-                            <div className="tags">
-                                {this.eachTags()}
-                                <input
-                                    type="text"
-                                    ref={'tagName'}
-                                    style={{
-                                        border: 'none',
-                                        background: 'none',
-                                        outline: 'none',
-                                        marginLeft: '0.5em',
-                                    }}
-                                    onKeyDown={this.addTag.bind(this)}
-                                />
-                            </div>
+                            <Tabs>
 
-                            <div className="btn btn-success" ref={'updateButton'} onClick={this.updateTrack.bind(this)}>Update</div>
+                                <TabList>
+                                    <Tab>Metadata</Tab>
+                                    <Tab>Background Drop</Tab>
+                                </TabList>
+
+                                <TabPanel>
+                                    <p>Title</p>
+                                    <input type="text" name={'title'} defaultValue={this.state.track.title} />
+                                    <p>Description</p>
+                                    <textarea name="description" defaultValue={renderHTML(this.state.track.description)}></textarea>
+                                    <hr/>
+                                    <span>Tags</span>
+                                    <div className="tags">
+                                        {this.eachTags()}
+                                        <input
+                                            type="text"
+                                            ref={'tagName'}
+                                            style={{
+                                                border: 'none',
+                                                background: 'none',
+                                                outline: 'none',
+                                                marginLeft: '0.5em',
+                                            }}
+                                            onKeyDown={this.addTag.bind(this)}
+                                        />
+                                    </div>
+
+                                    <div className="btn btn-success" ref={'updateButton'} onClick={this.updateTrack.bind(this)}>Update</div>
+                                </TabPanel>
+
+                                <TabPanel>
+                                    {this.state.backgroundDropEl}
+                                </TabPanel>
+
+                            </Tabs>
                         </form>
                     </Modal>
 
@@ -302,7 +360,12 @@ export default class Track extends React.Component {
                         </p>
                         <TrackContainer key={track.id} title={track.title} coverImage={track.coverImage}
                                         trackId={track.id} author_username={track.author.username}
-                                        author_fullName={track.author.fullname} notitle nolink noauthor/>
+                                        author_fullName={track.author.fullname}
+                                        notitle
+                                        nolink
+                                        noauthor
+                                        nobackgrounddrop
+                        />
 
                         <div className="description">
                             {renderHTML(url(this.state.track.description))}

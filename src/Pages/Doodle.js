@@ -35,6 +35,7 @@ export default class Doodle extends React.Component {
         const render = [];
         for (let key in doodles) {
             const doodle = doodles[key];
+            console.log(doodle)
             render.push(
                 <div className="card" key={doodle.id}>
                     <img
@@ -47,7 +48,7 @@ export default class Doodle extends React.Component {
                     />
                     <div className="card-block">
                         <h4>
-                            By: <a href={doodle.author.link} target="_blank">{doodle.author.name}</a>
+                            By: <a href={doodle.link} target="_blank">{doodle.author.fullname}</a>
                         </h4>
                     </div>
                 </div>

@@ -28,7 +28,7 @@ export default class Tracks extends React.Component {
             const trackEl = tracks.map(track => {
                 return (
                     <TrackContainer key={track.id} title={track.title} coverImage={track.coverImage} trackId={track.id}
-                                    author_username={track.author.username} author_fullName={track.author.fullname}/>
+                                    author_username={track.author.username} author_fullName={track.author.fullname} backgrounddrop={track.backgrounddrop}/>
                 )
             })
             this.setState({

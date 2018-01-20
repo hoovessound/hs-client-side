@@ -3,6 +3,7 @@ import '../css/TrackContainer.css';
 import {Link} from 'react-router-dom';
 import store from '../Redux/store';
 import TrackPlayerEvent from "../Flux/TrackPlayerEvent";
+import getApiUrl from "../Util/getApiUrl";
 
 export default class TrackContainer extends React.Component {
 
@@ -117,12 +118,32 @@ export default class TrackContainer extends React.Component {
         }
     }
 
+    backgroundDrop(){
+        if(!this.props.nobackgrounddrop) {
+            if(this.props.backgrounddrop){
+                const url = getApiUrl('api', `/image/doodle/${this.props.backgrounddrop}`, false);
+                return (
+                    <div className="backgroundDrop"
+                         style={{
+                             background: `url(${url})`,
+                         }}
+                    ></div>
+                )
+            }else{
+                return (
+                    <div className="backgroundDrop"></div>
+                )
+            }
+        }
+    }
+
     render() {
         return (
             <div
                 key={this.props.id}
                 className='TrackContainer'
             >
+                {this.backgroundDrop()}
                 {this.coverImage()}
                 <div className="details">
                     {this.playButton()}
