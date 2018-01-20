@@ -83,20 +83,22 @@ export default class TrackPlayer extends React.Component {
         window.onkeydown = (event) => this.hotKey(event);
         audio.ontimeupdate = () => this.updateTimeStamp();
 
-        navigator.sendBeacon = navigator.sendBeacon || function () {
-            axios.post(getApiUrl('api', `/events?`), {
-                event: 'UPDATE_LAST_PLAY',
-                payload: {
-                    volume: 100,
-                    trackID: store.getState().MusicPlayer.trackId,
-                    playtime: {
-                        currentTime: audio.currentTime,
-                        duration: audio.duration,
-                    },
-                    isPlaying: !audio.paused,
-                }
-            });
-        };
+        if(checkLogin.isLogin()){
+            navigator.sendBeacon = navigator.sendBeacon || function () {
+                axios.post(getApiUrl('api', `/events?`), {
+                    event: 'UPDATE_LAST_PLAY',
+                    payload: {
+                        volume: 100,
+                        trackID: store.getState().MusicPlayer.trackId,
+                        playtime: {
+                            currentTime: audio.currentTime,
+                            duration: audio.duration,
+                        },
+                        isPlaying: !audio.paused,
+                    }
+                });
+            };
+        }
 
         TrackPlayerEvent.on('update', () => {
             this.playMusic();
@@ -203,20 +205,22 @@ export default class TrackPlayer extends React.Component {
             this.refs.playPauseButton.textContent = 'pause';
             document.title = `${track.author_fullName || track.author_fullname} - ${track.title}`;
 
-            updateTimeEvent = setInterval(() => {
-                axios.post(getApiUrl('api', `/events?`), {
-                    event: 'UPDATE_LAST_PLAY',
-                    payload: {
-                        volume: 100,
-                        trackID: store.getState().MusicPlayer.trackId,
-                        playtime: {
-                            currentTime: audio.currentTime,
-                            duration: audio.duration,
-                        },
-                        isPlaying: !audio.paused,
-                    }
-                });
-            }, 10000);
+            if(checkLogin.isLogin()){
+                updateTimeEvent = setInterval(() => {
+                    axios.post(getApiUrl('api', `/events?`), {
+                        event: 'UPDATE_LAST_PLAY',
+                        payload: {
+                            volume: 100,
+                            trackID: store.getState().MusicPlayer.trackId,
+                            playtime: {
+                                currentTime: audio.currentTime,
+                                duration: audio.duration,
+                            },
+                            isPlaying: !audio.paused,
+                        }
+                    });
+                }, 10000);
+            }
 
         } else {
             audio.pause();
@@ -243,20 +247,22 @@ export default class TrackPlayer extends React.Component {
         // Update the user's lastPlay field
 
         if (updateLastPlayEvent) clearTimeout(updateLastPlayEvent);
-        updateLastPlayEvent = setTimeout(() => {
-            axios.post(getApiUrl('api', `/events?`), {
-                event: 'UPDATE_LAST_PLAY',
-                payload: {
-                    volume: 100,
-                    trackID: store.getState().MusicPlayer.trackId,
-                    playtime: {
-                        currentTime: audio.currentTime,
-                        duration: audio.duration,
-                    },
-                    isPlaying: !audio.paused,
-                }
-            });
-        }, 750);
+        if(checkLogin.isLogin()){
+            updateLastPlayEvent = setTimeout(() => {
+                axios.post(getApiUrl('api', `/events?`), {
+                    event: 'UPDATE_LAST_PLAY',
+                    payload: {
+                        volume: 100,
+                        trackID: store.getState().MusicPlayer.trackId,
+                        playtime: {
+                            currentTime: audio.currentTime,
+                            duration: audio.duration,
+                        },
+                        isPlaying: !audio.paused,
+                    }
+                });
+            }, 750);
+        }
     }
 
     mute() {
