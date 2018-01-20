@@ -5,6 +5,7 @@ import getApiUrl from '../Util/getApiUrl';
 import Notifications from '../Component/Notifications';
 import {Link} from 'react-router-dom';
 import * as checkLogin from '../Util/checkLogin';
+import '../css/NavBar.css';
 
 const devUrl = getApiUrl('console.developer', '/', false);
 
