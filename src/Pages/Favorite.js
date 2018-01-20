@@ -16,12 +16,11 @@ export default class Favorite extends React.Component {
     async componentDidMount() {
         const response = await axios.get(getApiurl('api', `/me/favorites?offset=0`));
         const tracks = this.state.trackEl;
-
         // Add some tracks to the local playlist
         store.dispatch({
             type: 'ADD_LOCAL_PLAYLIST',
             payload: {
-                tracks,
+                tracks: response.data,
             }
         });
 

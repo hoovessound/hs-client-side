@@ -104,15 +104,8 @@ export default class TrackPlayer extends React.Component {
 
         store.subscribe(() => {
             const MusicPlayer = store.getState().MusicPlayer;
-
-            // FIX:
-            //     Problem: While the track is playing, if the user chagen his page, it will cost the track to pause
-            //     Costing: Because when user change the tab, Redux will dispatch a new ADD_LOCAL_PLAY event, and the TrackPlayer is also listening to this event
-            //     Fix: Find a way to ID the event name
-
             if(setHistory){
                 if (MusicPlayer.isHistory) {
-                    console.log(1)
                     const User = store.getState().User;
                     // Track is come from the user's history
 
@@ -164,37 +157,6 @@ export default class TrackPlayer extends React.Component {
             audio.onloadedmetadata = () => {
                 this.refs.time.max = audio.duration;
             };
-
-            // When the track is finish
-            audio.onended = () => {
-
-                // Check if the local playlist is available
-                if(parseInt(playlistIndex + 1, 10) === localPlaylist.length){
-                    // End the playlist
-                    audio.pause();
-                    this.refs.playPauseButton.textContent = 'play_arrow';
-                    document.title = oldTitle;
-                    if(checkLogin.isLogin()){
-                        this.updateLastPlay();
-                    }
-                    playlistIndex = 0;
-                }else{
-                    // Play the next track from the playlist
-                    playlistIndex = (playlistIndex + 1);
-                    const track = localPlaylist[parseInt(playlistIndex, 10)];
-                    store.dispatch({
-                        type: 'UPDATE_TRACK_DETAILS',
-                        payload: {
-                            trackId: track.id,
-                            title: track.title,
-                            author_username: track.author.username,
-                            author_fullname: track.author.fullname,
-                            coverArt: track.coverImage,
-                            playitnow: true,
-                        }
-                    });
-                }
-            };
         }else{
             initPlay = false;
         }
@@ -206,10 +168,40 @@ export default class TrackPlayer extends React.Component {
             }, 2000)
         }
 
+        // When the track is finish
+        audio.onended = () => {
+
+            // Check if the local playlist is available
+            if(parseInt(playlistIndex + 1, 10) === localPlaylist.length){
+                // End the playlist
+                audio.pause();
+                this.refs.playPauseButton.textContent = 'play_arrow';
+                document.title = oldTitle;
+                playlistIndex = 0;
+            }else{
+                // Play the next track from the playlist
+                playlistIndex = (playlistIndex + 1);
+                const track = localPlaylist[parseInt(playlistIndex, 10)];
+                store.dispatch({
+                    type: 'UPDATE_TRACK_DETAILS',
+                    payload: {
+                        trackId: track.id,
+                        title: track.title,
+                        author_username: track.author.username,
+                        author_fullname: track.author.fullname,
+                        coverArt: track.coverImage,
+                        playitnow: true,
+                    }
+                });
+                this.updateLastPlay();
+                this.playMusic();
+            }
+        };
+
         if (audio.paused) {
             audio.play();
             this.refs.playPauseButton.textContent = 'pause';
-            document.title = `${track.author_fullName} - ${track.title}`;
+            document.title = `${track.author_fullName || track.author_fullname} - ${track.title}`;
 
             updateTimeEvent = setInterval(() => {
                 axios.post(getApiUrl('api', `/events?`), {

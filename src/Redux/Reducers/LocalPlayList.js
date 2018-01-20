@@ -1,5 +1,5 @@
 export default (state={
-
+    tracks: []
 }, action) => {
     switch(action.type){
 
@@ -8,11 +8,17 @@ export default (state={
         }
 
         case 'ADD_LOCAL_PLAYLIST': {
-            state = {
-                ...state,
-                ...action.payload,
-            };
+            const ids = []
+            state.tracks.map(stateTrack => {
+                return ids.push(stateTrack.id);
+            });
+            action.payload.tracks.map(track => {
+                if(!ids.includes(track.id)){
+                    state.tracks.push(track);
+                }
+                return true;
+            });
+            return state;
         }
     }
-    return state;
 }
