@@ -7,6 +7,7 @@ import {Link} from 'react-router-dom';
 import getApiUrl from '../Util/getApiUrl';
 import axios from 'axios';
 import * as checkLogin from '../Util/checkLogin';
+import TrackPlayerEvent from "../Flux/TrackPlayerEvent";
 
 const audio = new Audio();
 let updateLastPlayEvent;
@@ -17,6 +18,8 @@ let playlistIndex = 0;
 let updateTimeEvent;
 
 let initPlay = false;
+
+let setHistory = true;
 
 export default class TrackPlayer extends React.Component {
 
@@ -75,18 +78,51 @@ export default class TrackPlayer extends React.Component {
         audio.currentTime = (audio.currentTime + 5);
     }
 
-    async componentDidMount() {
+    componentDidMount() {
+
+        window.onkeydown = (event) => this.hotKey(event);
+        audio.ontimeupdate = () => this.updateTimeStamp();
+
+        navigator.sendBeacon = navigator.sendBeacon || function () {
+            axios.post(getApiUrl('api', `/events?`), {
+                event: 'UPDATE_LAST_PLAY',
+                payload: {
+                    volume: 100,
+                    trackID: store.getState().MusicPlayer.trackId,
+                    playtime: {
+                        currentTime: audio.currentTime,
+                        duration: audio.duration,
+                    },
+                    isPlaying: !audio.paused,
+                }
+            });
+        };
+
+        TrackPlayerEvent.on('update', () => {
+            this.playMusic();
+        });
+
         store.subscribe(() => {
             const MusicPlayer = store.getState().MusicPlayer;
-            if (MusicPlayer.isHistory) {
-                const User = store.getState().User;
-                // Track is come from the user's history
 
-                // Set the correct timestamp and volume
+            // FIX:
+            //     Problem: While the track is playing, if the user chagen his page, it will cost the track to pause
+            //     Costing: Because when user change the tab, Redux will dispatch a new ADD_LOCAL_PLAY event, and the TrackPlayer is also listening to this event
+            //     Fix: Find a way to ID the event name
 
-                audio.currentTime = User.history.playtime.currentTime;
-                this.refs.time.max = User.history.playtime.duration;
-                this.refs.time.value = User.history.playtime.currentTime;
+            if(setHistory){
+                if (MusicPlayer.isHistory) {
+                    console.log(1)
+                    const User = store.getState().User;
+                    // Track is come from the user's history
+
+                    // Set the correct timestamp and volume
+
+                    audio.currentTime = User.history.playtime.currentTime;
+                    this.refs.time.max = User.history.playtime.duration;
+                    this.refs.time.value = User.history.playtime.currentTime;
+                    setHistory = false;
+                }
             }
 
             // If the data contain coverImage, than use the coverImage
@@ -103,7 +139,8 @@ export default class TrackPlayer extends React.Component {
     }
 
     playMusic() {
-        const trackId = this.state.MusicPlayer.trackId;
+        const track = store.getState().MusicPlayer;
+        const trackId = track.trackId;
         const source = getApiUrl('stream', `/${trackId}?`);
         const localPlaylist = store.getState().LocalPlayList.tracks;
 
@@ -172,7 +209,7 @@ export default class TrackPlayer extends React.Component {
         if (audio.paused) {
             audio.play();
             this.refs.playPauseButton.textContent = 'pause';
-            document.title = `${this.state.MusicPlayer.author_fullname} - ${this.state.MusicPlayer.title}`;
+            document.title = `${track.author_fullName} - ${track.title}`;
 
             updateTimeEvent = setInterval(() => {
                 axios.post(getApiUrl('api', `/events?`), {
@@ -255,24 +292,6 @@ export default class TrackPlayer extends React.Component {
     }
 
     render() {
-        window.onkeydown = (event) => this.hotKey(event);
-        audio.ontimeupdate = () => this.updateTimeStamp();
-
-        navigator.sendBeacon = navigator.sendBeacon || function (url, data) {
-            axios.post(getApiUrl('api', `/events?`), {
-                event: 'UPDATE_LAST_PLAY',
-                payload: {
-                    volume: 100,
-                    trackID: store.getState().MusicPlayer.trackId,
-                    playtime: {
-                        currentTime: audio.currentTime,
-                        duration: audio.duration,
-                    },
-                    isPlaying: !audio.paused,
-                }
-            });
-        };
-
         return (
             <div
                 id="TrackPlayer"

@@ -2,6 +2,7 @@ import React from 'react';
 import '../css/TrackContainer.css';
 import {Link} from 'react-router-dom';
 import store from '../Redux/store';
+import TrackPlayerEvent from "../Flux/TrackPlayerEvent";
 
 export default class TrackContainer extends React.Component {
 
@@ -31,6 +32,9 @@ export default class TrackContainer extends React.Component {
                 ...this.props,
                 playitnow: true,
             }
+        });
+        TrackPlayerEvent.update({
+            ...this.props,
         });
     }
 
