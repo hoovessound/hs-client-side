@@ -251,7 +251,7 @@ export default class Track extends React.Component {
                                             {
                                                 (() => {
                                                     const User = store.getState().User;
-                                                    if(User.id === this.state.track.author){
+                                                    if(User.id === this.state.track.author.id){
                                                         return (
                                                             <div
                                                                 className="btn btn-info"
@@ -274,7 +274,7 @@ export default class Track extends React.Component {
                                                             <span></span>
                                                         )
                                                     }
-                                                })
+                                                })()
                                             }
 
 
