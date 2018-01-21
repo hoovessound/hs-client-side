@@ -126,6 +126,8 @@ export default class TrackContainer extends React.Component {
                     <div className="backgroundDrop"
                          style={{
                              background: `url(${url})`,
+                             backgroundSize: 'cover',
+                             backgroundRepeat: 'no-repeat',
                          }}
                     ></div>
                 )
@@ -141,7 +143,7 @@ export default class TrackContainer extends React.Component {
         return (
             <div
                 key={this.props.id}
-                className='TrackContainer'
+                className={`TrackContainer ${this.props.backgrounddrop ? 'backgrounddrop' : ''}`}
             >
                 {this.backgroundDrop()}
                 {this.coverImage()}

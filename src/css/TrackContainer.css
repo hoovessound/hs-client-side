@@ -45,4 +45,9 @@
         top: 9em;
         height: auto;
     }
+
+    .TrackContainer.backgrounddrop{
+        display: block;
+        width: 90vw;
+    }
 }
