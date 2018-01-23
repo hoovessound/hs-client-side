@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import store from '../Redux/store';
 import TrackPlayerEvent from "../Flux/TrackPlayerEvent";
 import getApiUrl from "../Util/getApiUrl";
+import moment from 'moment';
 
 export default class TrackContainer extends React.Component {
 
@@ -159,6 +160,19 @@ export default class TrackContainer extends React.Component {
                     {this.playButton()}
                     {this.title()}
                     {this.author()}
+                    <div className="uploadTime">
+                        {
+                            (() => {
+                                return (
+                                    <span>
+                                        {
+                                            moment(this.props.track.uploadDate).fromNow()
+                                        }
+                                    </span>
+                                )
+                            })()
+                        }
+                    </div>
                 </div>
             </div>
         )
