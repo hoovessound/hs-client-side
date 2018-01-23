@@ -148,6 +148,20 @@ export default class TrackContainer extends React.Component {
         }
     }
 
+    timeStamp(){
+        if(!this.props.notimestamp){
+            return (
+                <div className="uploadTime">
+                    {moment(this.props.track.uploadDate).fromNow()}
+                </div>
+            )
+        }else{
+            return (
+                <span></span>
+            )
+        }
+    }
+
     render() {
         return (
             <div
@@ -160,19 +174,7 @@ export default class TrackContainer extends React.Component {
                     {this.playButton()}
                     {this.title()}
                     {this.author()}
-                    <div className="uploadTime">
-                        {
-                            (() => {
-                                return (
-                                    <span>
-                                        {
-                                            moment(this.props.track.uploadDate).fromNow()
-                                        }
-                                    </span>
-                                )
-                            })()
-                        }
-                    </div>
+                    {this.timeStamp()}
                 </div>
             </div>
         )
