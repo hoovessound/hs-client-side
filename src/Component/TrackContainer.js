@@ -30,12 +30,20 @@ export default class TrackContainer extends React.Component {
         store.dispatch({
             type: 'UPDATE_TRACK_DETAILS',
             payload: {
-                ...this.props,
+                title: this.props.track.title,
+                coverImage: this.props.track.coverImage,
+                trackId: this.props.track.id,
+                author_username: this.props.track.author.username,
+                author_fullName: this.props.track.author.fullname,
                 playitnow: true,
             }
         });
         TrackPlayerEvent.update({
-            ...this.props,
+            title: this.props.track.title,
+            coverImage: this.props.track.coverImage,
+            trackId: this.props.track.id,
+            author_username: this.props.track.author.username,
+            author_fullName: this.props.track.author.fullname,
         });
     }
 
@@ -56,12 +64,12 @@ export default class TrackContainer extends React.Component {
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                             }}
-                        >{this.props.title}</p>
+                        >{this.props.track.title}</p>
                     </div>
                 )
             }else{
                 return (
-                    <Link to={`/track/${this.props.trackId}`}>
+                    <Link to={`/track/${this.props.track.id}`}>
                         <div
                             className="track_info"
                             style={{
@@ -75,7 +83,7 @@ export default class TrackContainer extends React.Component {
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
                                 }}
-                            >{this.props.title}</p>
+                            >{this.props.track.title}</p>
                         </div>
                     </Link>
                 )
@@ -87,7 +95,7 @@ export default class TrackContainer extends React.Component {
         if(!this.props.noauthor){
             return (
                 <div className="author_info">
-                    <Link to={`/@${this.props.author_username}`}>
+                    <Link to={`/@${this.props.track.author.username}`}>
                         <span
                             className="fullanme"
                             style={{
@@ -95,7 +103,7 @@ export default class TrackContainer extends React.Component {
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                             }}
-                        >{this.props.author_fullName}</span>
+                        >{this.props.track.author.fullName || this.props.track.author.fullname}</span>
                     </Link>
                 </div>
             )
@@ -108,7 +116,7 @@ export default class TrackContainer extends React.Component {
                 <div
                     className="coverArt"
                     style={{
-                        backgroundImage: `url(${this.props.coverImage}?width=300)`,
+                        backgroundImage: `url(${this.props.track.coverImage}?width=300)`,
                         backgroundRepeat: 'no-repeat',
                         backgroundSize: 'cover',
                     }}
@@ -120,8 +128,8 @@ export default class TrackContainer extends React.Component {
 
     backgroundDrop(){
         if(!this.props.nobackgrounddrop) {
-            if(this.props.backgrounddrop){
-                const url = getApiUrl('api', `/image/doodle/${this.props.backgrounddrop}`, false);
+            if(this.props.track.backgrounddrop){
+                const url = getApiUrl('api', `/image/doodle/${this.props.track.backgrounddrop}`, false);
                 return (
                     <div className="backgroundDrop"
                          style={{
@@ -133,7 +141,7 @@ export default class TrackContainer extends React.Component {
                 )
             }else{
                 return (
-                    <div className="backgroundDrop"></div>
+                    <span></span>
                 )
             }
         }
@@ -142,8 +150,8 @@ export default class TrackContainer extends React.Component {
     render() {
         return (
             <div
-                key={this.props.id}
-                className={`TrackContainer ${this.props.backgrounddrop ? 'backgrounddrop' : ''}`}
+                className={`TrackContainer ${this.props.track.backgrounddrop ? 'backgrounddrop' : ''}`}
+                key={this.props.track.id}
             >
                 {this.backgroundDrop()}
                 {this.coverImage()}
