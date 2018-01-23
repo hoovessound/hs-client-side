@@ -30,7 +30,7 @@ export default class Tracks extends React.Component {
                     <TrackContainer key={track.id} title={track.title} coverImage={track.coverImage} trackId={track.id}
                                     author_username={track.author.username} author_fullName={track.author.fullname} backgrounddrop={track.backgrounddrop}/>
                 )
-            })
+            });
             this.setState({
                 trackEl,
             });

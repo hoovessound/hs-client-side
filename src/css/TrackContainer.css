@@ -28,7 +28,7 @@
 @media (max-width: 415px) {
 
     .TrackContainer{
-        width: auto;
+        width: 45%;
         display: inline-block;
         height: auto;
     }
@@ -49,5 +49,13 @@
     .TrackContainer.backgrounddrop{
         display: block;
         width: 90vw;
+    }
+
+    /* With background drop */
+    .TrackContainer.backgrounddrop .details{
+        position: absolute;
+        top: 0em;
+        left: 9.5em;
+        width: auto;
     }
 }

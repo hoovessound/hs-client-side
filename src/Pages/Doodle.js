@@ -35,7 +35,6 @@ export default class Doodle extends React.Component {
         const render = [];
         for (let key in doodles) {
             const doodle = doodles[key];
-            console.log(doodle)
             render.push(
                 <div className="card" key={doodle.id}>
                     <img
