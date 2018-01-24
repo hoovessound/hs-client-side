@@ -34,7 +34,11 @@ export default class Track extends React.Component {
             const trackId = this.props.match.params.id;
             const response = await axios.get(getApiurl('api', `/track/${trackId}?`))
             const track = response.data;
+            if(track.description === null) {
+                track.description = '';
+            }
             const description = track.description ? url(track.description) : '';
+
             this.setState({
                 track,
             });
@@ -263,7 +267,7 @@ export default class Track extends React.Component {
                                     <p>Title</p>
                                     <input type="text" name={'title'} defaultValue={this.state.track.title} />
                                     <p>Description</p>
-                                    <textarea name="description" defaultValue={renderHTML(this.state.track.description)}></textarea>
+                                    <textarea name="description" defaultValue={this.state.track.description}></textarea>
                                     <hr/>
                                     <span>Tags</span>
                                     <div className="tags">
@@ -358,9 +362,8 @@ export default class Track extends React.Component {
                         <p>By <Link
                             to={'/@' + track.author.username}>{'@' + track.author.username}</Link>
                         </p>
-                        <TrackContainer key={track.id} title={track.title} coverImage={track.coverImage}
-                                        trackId={track.id} author_username={track.author.username}
-                                        author_fullName={track.author.fullname}
+                        <TrackContainer key={track.id}
+                                        track={track}
                                         notitle
                                         nolink
                                         noauthor
