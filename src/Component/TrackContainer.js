@@ -5,6 +5,7 @@ import store from '../Redux/store';
 import TrackPlayerEvent from "../Flux/TrackPlayerEvent";
 import getApiUrl from "../Util/getApiUrl";
 import moment from 'moment';
+import renderHtml from 'react-render-html';
 
 export default class TrackContainer extends React.Component {
 
@@ -48,9 +49,9 @@ export default class TrackContainer extends React.Component {
         });
     }
 
-    title(){
-        if(!this.props.notitle){
-            if(this.props.nolink){
+    title() {
+        if (!this.props.notitle) {
+            if (this.props.nolink) {
                 return (
                     <div
                         className="track_info"
@@ -65,10 +66,10 @@ export default class TrackContainer extends React.Component {
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                             }}
-                        >{this.props.track.title}</p>
+                        >{renderHtml(this.props.track.title ? this.props.track.title : '')}</p>
                     </div>
                 )
-            }else{
+            } else {
                 return (
                     <Link to={`/track/${this.props.track.id}`}>
                         <div
@@ -84,7 +85,7 @@ export default class TrackContainer extends React.Component {
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
                                 }}
-                            >{this.props.track.title}</p>
+                            >{renderHtml(this.props.track.title ? this.props.track.title : '')}</p>
                         </div>
                     </Link>
                 )
@@ -92,8 +93,8 @@ export default class TrackContainer extends React.Component {
         }
     }
 
-    author(){
-        if(!this.props.noauthor){
+    author() {
+        if (!this.props.noauthor) {
             return (
                 <div className="author_info">
                     <Link to={`/@${this.props.track.author.username}`}>
@@ -104,15 +105,15 @@ export default class TrackContainer extends React.Component {
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                             }}
-                        >{this.props.track.author.fullName || this.props.track.author.fullname}</span>
+                        >{renderHtml(this.props.track.author.fullName || this.props.track.author.fullname || '')}</span>
                     </Link>
                 </div>
             )
         }
     }
 
-    coverImage(){
-        if(!this.props.nocoverimage){
+    coverImage() {
+        if (!this.props.nocoverimage) {
             return (
                 <div
                     className="coverArt"
@@ -127,9 +128,9 @@ export default class TrackContainer extends React.Component {
         }
     }
 
-    backgroundDrop(){
-        if(!this.props.nobackgrounddrop) {
-            if(this.props.track.backgrounddrop){
+    backgroundDrop() {
+        if (!this.props.nobackgrounddrop) {
+            if (this.props.track.backgrounddrop) {
                 const url = getApiUrl('api', `/image/doodle/${this.props.track.backgrounddrop}`, false);
                 return (
                     <div className="backgroundDrop"
@@ -140,7 +141,7 @@ export default class TrackContainer extends React.Component {
                          }}
                     ></div>
                 )
-            }else{
+            } else {
                 return (
                     <span></span>
                 )
@@ -148,14 +149,14 @@ export default class TrackContainer extends React.Component {
         }
     }
 
-    timeStamp(){
-        if(!this.props.notimestamp){
+    timeStamp() {
+        if (!this.props.notimestamp) {
             return (
                 <div className="uploadTime">
                     {moment(this.props.track.uploadDate).fromNow()}
                 </div>
             )
-        }else{
+        } else {
             return (
                 <span></span>
             )

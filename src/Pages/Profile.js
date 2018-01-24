@@ -4,6 +4,7 @@ import axios from 'axios';
 import getApiUrl from '../Util/getApiUrl';
 import Modal from 'react-responsive-modal';
 import TrackContainer from "../Component/TrackContainer";
+import renderHtml from 'react-render-html';
 
 export default class Profile extends React.Component {
     constructor() {
@@ -209,15 +210,30 @@ export default class Profile extends React.Component {
                     </Modal>
 
                     <img
-                        alt=""
+                        alt={`${this.state.user.username ? this.state.user.username : ''} profile icon`}
                         ref={"userIcon"}
                         src={this.state.user.icon}
                         style={{
-                            borderRadius: '50%',
-                            width: '4em',
+                            width: '7em',
+                            position: 'relative',
+                            margin: '0 auto',
+                            display: 'block',
                         }}
                     />
-                    <h1 ref="userFullName">{this.state.user.fullname}</h1>
+
+                    <h1 ref="userFullName"
+                        style={{
+                            textAlign: 'center',
+                            background: '#FFF',
+                            color: '#161616',
+                            width: '30%',
+                            display: 'block',
+                            margin: '0 auto',
+                            position: 'relative',
+                            padding: '0.1em',
+                            marginTop: '0.4em',
+                        }}
+                    >{renderHtml(this.state.user.fullname ? this.state.user.fullname : '')}</h1>
                     {editButton()}
                 </div>
 

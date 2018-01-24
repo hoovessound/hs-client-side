@@ -13,6 +13,7 @@ import * as checkLogin from '../Util/checkLogin';
 import store from "../Redux/store";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
+
 export default class Track extends React.Component {
     constructor() {
         super();
@@ -95,9 +96,7 @@ export default class Track extends React.Component {
                         <p>By <Link
                             to={'/@' + track.author.username}>{'@' + track.author.username}</Link>
                         </p>
-                        <TrackContainer key={track.id} title={track.title} coverImage={track.coverImage}
-                                        trackId={track.id} author_username={track.author.username}
-                                        author_fullName={track.author.fullname} notitle nolink noauthor/>
+                        <TrackContainer key={track.id} track={track} notitle nolink noauthor/>
 
                         <div className="description">
                             {renderHTML(description)}
@@ -253,7 +252,7 @@ export default class Track extends React.Component {
                         })
                     }} little>
                         <br/>
-                        <h3>Edit {this.state.track.title}</h3>
+                        <h3>Edit {renderHTML(this.state.track.title ? this.state.track.title : '')}</h3>
 
                         <form id="editForm" ref={'editForm'}>
                             <Tabs>
@@ -265,9 +264,9 @@ export default class Track extends React.Component {
 
                                 <TabPanel>
                                     <p>Title</p>
-                                    <input type="text" name={'title'} defaultValue={this.state.track.title} />
+                                    <input type="text" name={'title'} defaultValue={renderHTML(this.state.track.title ? this.state.track.title : '')} />
                                     <p>Description</p>
-                                    <textarea name="description" defaultValue={this.state.track.description}></textarea>
+                                    <textarea name="description" defaultValue={renderHTML(this.state.track.description ? this.state.track.description : '')}></textarea>
                                     <hr/>
                                     <span>Tags</span>
                                     <div className="tags">

@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import getApiUrl from '../Util/getApiUrl';
 import {Link} from 'react-router-dom';
+import renderHtml from 'react-render-html';
 
 export default class PlaylistCollections extends React.Component {
     constructor() {
@@ -11,7 +12,7 @@ export default class PlaylistCollections extends React.Component {
         }
     }
 
-    async fetchPlaylist(){
+    async fetchPlaylist() {
         const url = getApiUrl('api', '/me/playlists?');
         const response = await axios.get(url);
         this.setState({
@@ -19,7 +20,7 @@ export default class PlaylistCollections extends React.Component {
         });
     }
 
-    eachPlaylist(playlists){
+    eachPlaylist(playlists) {
         return playlists.map(playlist => {
             return (
                 <div className="playlistContainer" key={playlist.id}>
@@ -38,14 +39,14 @@ export default class PlaylistCollections extends React.Component {
                             style={{
                                 paddingLeft: '0.5em'
                             }}
-                        >{playlist.title}</span>
+                        >{renderHtml(playlist.title ? playlist.title : '')}</span>
                     </Link>
                 </div>
             )
         });
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.fetchPlaylist();
     }
 

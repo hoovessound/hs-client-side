@@ -1,13 +1,15 @@
 import React from 'react';
 import getApiUrl from "../Util/getApiUrl";
 import axios from 'axios';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import {Link} from 'react-router-dom';
 import TrackContainer from "../Component/TrackContainer";
-let initSearch = true;
-export default class Search extends React.Component{
+import rednerHtml from 'react-render-html';
 
-    constructor(){
+let initSearch = true;
+export default class Search extends React.Component {
+
+    constructor() {
         super();
         this.state = {
             ponies: [],
@@ -17,15 +19,16 @@ export default class Search extends React.Component{
         }
     };
 
-    async fetchResult(query){
+    async fetchResult(query) {
         const response = await axios.get(getApiUrl('api', `/search/${query}?`));
         const result = response.data;
         let ponies = result.users.map(user => {
             return (
                 <div key={user.id}>
                     <Link to={`/@${user.username}`}>
-                        <img src={getApiUrl('api', `/image/avatar/${user.username}?width=50`, false)} alt={`${user.username} icon`}/>
-                        <p>{user.fullName}</p>
+                        <img src={getApiUrl('api', `/image/avatar/${user.username}?width=50`, false)}
+                             alt={`${user.username} icon`}/>
+                        <p>{rednerHtml(user.fullName ? user.fullName : '')}</p>
                     </Link>
                 </div>
             )
@@ -41,8 +44,9 @@ export default class Search extends React.Component{
             return (
                 <div key={playlist.id}>
                     <Link to={`/playlist/${playlist.id}`}>
-                        <img src={getApiUrl('api', `/image/playlist/${playlist.id}?width=100`, false)} alt={`${playlist.id} icon`}/>
-                        <p>{playlist.title}</p>
+                        <img src={getApiUrl('api', `/image/playlist/${playlist.id}?width=100`, false)}
+                             alt={`${playlist.id} icon`}/>
+                        <p>{rednerHtml(playlist.title ? playlist.title : '')}</p>
                     </Link>
                 </div>
             )
@@ -56,7 +60,7 @@ export default class Search extends React.Component{
         });
     }
 
-    componentDidMount(){
+    componentDidMount() {
         const query = this.props.match.params.query;
         this.setState({
             query,
@@ -65,22 +69,22 @@ export default class Search extends React.Component{
         this.fetchResult(query);
     }
 
-    nullChekc(array){
-        if(array.length <= 0){
+    nullChekc(array) {
+        if (array.length <= 0) {
             return (
                 <div>
                     <span>Opps, nothing was found :/</span>
                 </div>
             )
-        }else{
+        } else {
             return array;
         }
     }
 
-    render(){
+    render() {
         const query = this.props.match.params.query;
-        if(query !== this.state.query){
-            if(!initSearch){
+        if (query !== this.state.query) {
+            if (!initSearch) {
                 this.fetchResult(query);
             }
         }
