@@ -21,7 +21,6 @@ import Profile from '../Pages/Profile';
 import Upload from '../Pages/Upload';
 import Doodle from '../Pages/Doodle';
 import DoodleSubmit from "../Pages/DoodleSubmit";
-import Status from "../Pages/Status";
 import PlaylistPage from "../Pages/PlaylistPage";
 import PlaylistCollections from "../Pages/PlaylistCollections";
 import Search from "../Pages/Search";
@@ -140,7 +139,6 @@ export default class Routers extends React.Component {
                         <Route exact path="/playlist/:id" component={PlaylistPage} />
                         <Route exact path="/playlist" component={PlaylistCollections} />
                         <Route exact path="/search/:query" component={Search} />
-                        <Route path="/status" component={Status} />
                         <Route path="/logout" component={Logout} />
                         <Route component={Footer}/>
                     </div>

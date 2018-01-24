@@ -17,9 +17,6 @@ export default class Layout extends React.Component {
                    target="_blank"
                    rel="noopener noreferrer"
                 >Open Source</a>
-                <Link to={'/status'}>
-                    <p>Status</p>
-                </Link>
             </footer>
         )
     }
