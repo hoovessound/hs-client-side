@@ -3,7 +3,7 @@ import axios from 'axios';
 import store from '../Redux/store';
 import getApiUrl from '../Util/getApiUrl';
 import Notifications from '../Component/Notifications';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import * as checkLogin from '../Util/checkLogin';
 import '../css/NavBar.css';
 
@@ -18,6 +18,10 @@ export default class NavBar extends React.Component {
             username: '',
             notification: '',
             notificationStyle: '',
+            redirect: {
+                redirect: false,
+                link: '/',
+            }
         }
     }
 
@@ -46,10 +50,44 @@ export default class NavBar extends React.Component {
         });
     }
 
+    search(e){
+        e.preventDefault();
+        const value = this.refs.search.value;
+        this.setState({
+            redirect: {
+                redirect: true,
+                link: `/search/${value}`
+            }
+        },() => {
+            this.setState({
+                redirect: {
+                    redirect: false,
+                    link: `/`
+                }
+            });
+        })
+    }
+
     render() {
 
         return (
             <div>
+
+                {
+                    (() => {
+                        if(this.state.redirect.redirect){
+                            const url = this.state.redirect.link;
+                            return (
+                                <Redirect to={url}/>
+                            )
+
+                        }else{
+                            return (
+                                <span></span>
+                            )
+                        }
+                    })()
+                }
 
                 <nav
                     className="navbar navbar-toggleable-md navbar-light bg-faded fixed-top"
@@ -104,6 +142,13 @@ export default class NavBar extends React.Component {
                                 if(checkLogin.isLogin()){
                                     return (
                                         <ul className="navbar-nav ml-auto">
+
+                                            <ul className="text-truncate">
+                                                <form className="input-group">
+                                                    <input ref={'search'} className="form-control" placeholder="Search Here" autoComplete="off" type="text" />
+                                                    <button className="btn btn-outline-success" type="submit" onClick={(e) => this.search(e)}>Search</button>
+                                                </form>
+                                            </ul>
 
                                             <li className="nav-link">
                                                 <Link

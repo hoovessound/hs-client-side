@@ -10,7 +10,7 @@ import store from '../Redux/store';
 import * as checkLogin from '../Util/checkLogin';
 
 import {
-    BrowserRouter as Router,
+    BrowserRouter,
     Route,
 } from 'react-router-dom';
 
@@ -24,6 +24,7 @@ import DoodleSubmit from "../Pages/DoodleSubmit";
 import Status from "../Pages/Status";
 import PlaylistPage from "../Pages/PlaylistPage";
 import PlaylistCollections from "../Pages/PlaylistCollections";
+import Search from "../Pages/Search";
 
 let setInitUserStack = false;
 
@@ -119,7 +120,7 @@ export default class Routers extends React.Component {
     render() {
         this.setInitialTrackState();
         return (
-            <Router>
+            <BrowserRouter>
                 <div>
                     <Route component={Header}/>
                     <div
@@ -138,13 +139,14 @@ export default class Routers extends React.Component {
                         <Route exact path="/doodle/submit" component={DoodleSubmit} />
                         <Route exact path="/playlist/:id" component={PlaylistPage} />
                         <Route exact path="/playlist" component={PlaylistCollections} />
+                        <Route exact path="/search/:query" component={Search} />
                         <Route path="/status" component={Status} />
                         <Route path="/logout" component={Logout} />
                         <Route component={Footer}/>
                     </div>
                     <Route component={TrackPlayer}/>
                 </div>
-            </Router>
+            </BrowserRouter>
         )
     }
 }
