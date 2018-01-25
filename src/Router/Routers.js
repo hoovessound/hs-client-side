@@ -31,7 +31,7 @@ export default class Routers extends React.Component {
     async setInitialTrackState() {
 
         async function getUserHistory(trackID) {
-            if(!setInitUserStack){
+            if (!setInitUserStack) {
                 const response = await axios.get(getApiUrl('api', `/track/${trackID}?`));
                 const track = response.data;
                 store.dispatch({
@@ -50,7 +50,7 @@ export default class Routers extends React.Component {
         }
 
         async function getLatestTrackInfo() {
-            if(!setInitUserStack){
+            if (!setInitUserStack) {
                 const response = await axios.get(getApiUrl('api', '/tracks?offset=0'))
                 store.dispatch({
                     type: 'UPDATE_TRACK_DETAILS',
@@ -68,33 +68,22 @@ export default class Routers extends React.Component {
 
         const errorMessage = 'Out service is running out of service, please contact one of our support, and we are more then welcome to help you out';
 
-        if(checkLogin.isLogin()){
+        if (checkLogin.isLogin()) {
 
             store.subscribe(() => {
                 const user = store.getState().User;
 
                 // Check if the user have an history
-                if(user.history){
+                if (user.history) {
                     const trackID = user.history.trackID;
                     // Get the track info
                     getUserHistory(trackID)
-                        .then(() => {
-                            setInitUserStack = true;
-                        })
-                        .catch(error => {
-                            console.log(error);
-                            getLatestTrackInfo()
-                                .then(() => {
-                                    setInitUserStack = true;
-                                })
-                                .catch(error => {
-                                    console.log(error);
-                                    alert(errorMessage);
-                                })
-                        })
-                }else{
-                    // User is new, and have no history before
-                    getLatestTrackInfo()
+                    .then(() => {
+                        setInitUserStack = true;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        getLatestTrackInfo()
                         .then(() => {
                             setInitUserStack = true;
                         })
@@ -102,10 +91,21 @@ export default class Routers extends React.Component {
                             console.log(error);
                             alert(errorMessage);
                         })
+                    })
+                } else {
+                    // User is new, and have no history before
+                    getLatestTrackInfo()
+                    .then(() => {
+                        setInitUserStack = true;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        alert(errorMessage);
+                    })
                 }
             });
 
-        }else{
+        } else {
             getLatestTrackInfo()
             .catch(error => {
                 console.log(error);
@@ -129,17 +129,17 @@ export default class Routers extends React.Component {
                             marginTop: '6.5em',
                         }}
                     >
-                        <Route exact path="/" component={Tracks} />
-                        <Route path="/track/:id" component={Track} />
-                        <Route path="/favorite" component={Favorite} />
-                        <Route path="/@:username" component={Profile} />
-                        <Route path="/upload" component={Upload} />
-                        <Route exact path="/doodle" component={Doodle} />
-                        <Route exact path="/doodle/submit" component={DoodleSubmit} />
-                        <Route exact path="/playlist/:id" component={PlaylistPage} />
-                        <Route exact path="/playlist" component={PlaylistCollections} />
-                        <Route exact path="/search/:query" component={Search} />
-                        <Route path="/logout" component={Logout} />
+                        <Route exact path="/" component={Tracks}/>
+                        <Route path="/track/:id" component={Track}/>
+                        <Route path="/favorite" component={Favorite}/>
+                        <Route path="/@:username" component={Profile}/>
+                        <Route path="/upload" component={Upload}/>
+                        <Route exact path="/doodle" component={Doodle}/>
+                        <Route exact path="/doodle/submit" component={DoodleSubmit}/>
+                        <Route exact path="/playlist/:id" component={PlaylistPage}/>
+                        <Route exact path="/playlist" component={PlaylistCollections}/>
+                        <Route exact path="/search/:query" component={Search}/>
+                        <Route path="/logout" component={Logout}/>
                         <Route component={Footer}/>
                     </div>
                     <Route component={TrackPlayer}/>
