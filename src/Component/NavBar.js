@@ -6,7 +6,6 @@ import Notifications from '../Component/Notifications';
 import {Link, Redirect} from 'react-router-dom';
 import * as checkLogin from '../Util/checkLogin';
 import '../css/NavBar.css';
-import skygear from 'skygear';
 
 const devUrl = getApiUrl('console.developer', '/', false);
 
@@ -40,13 +39,6 @@ export default class NavBar extends React.Component {
                 type: 'UPDATE_USER_STACK',
                 payload: response.data,
             });
-        });
-
-        skygear.pubsub.on('NOTIFICATION_SENT', (data) => {
-            notificationStyle = '2px red solid';
-            this.setState({
-                notificationStyle,
-            })
         });
     }
 

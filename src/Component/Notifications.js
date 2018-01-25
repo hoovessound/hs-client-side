@@ -2,9 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import getApiurl from '../Util/getApiUrl';
-import skygear from "skygear";
 
-let initLoad = false;
 export default class Notifications extends React.Component {
 
     constructor() {
@@ -126,23 +124,6 @@ export default class Notifications extends React.Component {
     }
 
     render() {
-        if(!initLoad){
-            skygear.pubsub.on('NOTIFICATION_SENT', (data) => {
-                const payloads = this.state.payloads;
-                const els = this.state.els;
-                payloads.push(data);
-                this.setState({
-                    payloads,
-                });
-                els.push(
-                    this.parsePayload(data)
-                );
-                this.setState({
-                    els: els.reverse(),
-                });
-            });
-            initLoad = true;
-        }
         return (
             <div id={'notifications'}>
                 {this.state.els}

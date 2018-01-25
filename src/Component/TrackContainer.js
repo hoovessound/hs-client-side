@@ -105,7 +105,7 @@ export default class TrackContainer extends React.Component {
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                             }}
-                        >{renderHtml(this.props.track.author.fullName || this.props.track.author.fullname || '')}</span>
+                        >{renderHtml(this.props.track.author.fullName || this.props.track.author.fullname)}</span>
                     </Link>
                 </div>
             )
@@ -118,7 +118,7 @@ export default class TrackContainer extends React.Component {
                 <div
                     className="coverArt"
                     style={{
-                        backgroundImage: `url(${this.props.track.coverImage}?width=300)`,
+                        backgroundImage: `url(${getApiUrl('api', '/image/coverart/' + this.props.track.id ,false)}?width=300)`,
                         backgroundRepeat: 'no-repeat',
                         backgroundSize: 'cover',
                     }}
