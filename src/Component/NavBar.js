@@ -16,6 +16,7 @@ export default class NavBar extends React.Component {
         this.state = {
             userIcon: '',
             username: '',
+            notification: '',
             notificationStyle: '',
             redirect: {
                 redirect: false,
@@ -27,7 +28,7 @@ export default class NavBar extends React.Component {
     async componentDidMount() {
         const response = await axios.get(getApiUrl('api', '/me?'));
         let notificationStyle = {};
-        if (response.data.unreadNotification) {
+        if(response.data.unreadNotification){
             notificationStyle = '2px red solid';
         }
         this.setState({
@@ -39,16 +40,17 @@ export default class NavBar extends React.Component {
                 type: 'UPDATE_USER_STACK',
                 payload: response.data,
             });
-        });
+        })
     }
 
-    showNotification() {
+    showNotification(){
         this.setState({
+            notification: <Notifications/>,
             notificationStyle: '',
         });
     }
 
-    search(e) {
+    search(e){
         e.preventDefault();
         const value = this.refs.search.value;
         this.setState({
@@ -56,7 +58,7 @@ export default class NavBar extends React.Component {
                 redirect: true,
                 link: `/search/${value}`
             }
-        }, () => {
+        },() => {
             this.setState({
                 redirect: {
                     redirect: false,
@@ -73,13 +75,13 @@ export default class NavBar extends React.Component {
 
                 {
                     (() => {
-                        if (this.state.redirect.redirect) {
+                        if(this.state.redirect.redirect){
                             const url = this.state.redirect.link;
                             return (
                                 <Redirect to={url}/>
                             )
 
-                        } else {
+                        }else{
                             return (
                                 <span></span>
                             )
@@ -113,7 +115,7 @@ export default class NavBar extends React.Component {
 
                             {
                                 (() => {
-                                    if (checkLogin.isLogin()) {
+                                    if(checkLogin.isLogin()){
                                         return (
                                             <li className="nav-item">
                                                 <div className="nav-link">
@@ -121,7 +123,7 @@ export default class NavBar extends React.Component {
                                                 </div>
                                             </li>
                                         )
-                                    } else {
+                                    }else{
                                         return null;
                                     }
                                 })()
@@ -137,17 +139,14 @@ export default class NavBar extends React.Component {
 
                         {
                             (() => {
-                                if (checkLogin.isLogin()) {
+                                if(checkLogin.isLogin()){
                                     return (
                                         <ul className="navbar-nav ml-auto">
 
                                             <ul className="text-truncate">
                                                 <form className="input-group">
-                                                    <input ref={'search'} className="form-control"
-                                                           placeholder="Search Here" autoComplete="off" type="text"/>
-                                                    <button className="btn btn-outline-success" type="submit"
-                                                            onClick={(e) => this.search(e)}>Search
-                                                    </button>
+                                                    <input ref={'search'} className="form-control" placeholder="Search Here" autoComplete="off" type="text" />
+                                                    <button className="btn btn-outline-success" type="submit" onClick={(e) => this.search(e)}>Search</button>
                                                 </form>
                                             </ul>
 
@@ -196,7 +195,7 @@ export default class NavBar extends React.Component {
 
                                                 </a>
                                                 <div className="dropdown-menu dropdown-menu-right" ref={'notification'}>
-                                                    <Notifications/>
+                                                    {this.state.notification}
                                                 </div>
                                             </li>
 
@@ -240,8 +239,7 @@ export default class NavBar extends React.Component {
                                     </span>
 
                                                 </a>
-                                                <div className="dropdown-menu dropdown-menu-right"
-                                                     aria-labelledby="navbarDropdown">
+                                                <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" >
 
                                                     <div className="nav-link">
                                                         <Link to={`/@${this.state.username}`}>Profile</Link>
@@ -264,11 +262,10 @@ export default class NavBar extends React.Component {
 
                                         </ul>
                                     )
-                                } else {
+                                }else{
                                     return (
                                         <ul className="navbar-nav ml-auto">
-                                            <a href={`https://id.hoovessound.ml/login?service=hs_service_login&redirect=${window.location}`}
-                                               className="btn btn-info">Login</a>
+                                            <a href={`https://id.hoovessound.ml/login?service=hs_service_login&redirect=${window.location}`} className="btn btn-info">Login</a>
                                         </ul>
                                     )
                                 }
