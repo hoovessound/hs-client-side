@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react';
 import '../css/TrackPlayer.css';
 // http://danielstern.ca/range.css/#/
@@ -231,6 +233,45 @@ export default class TrackPlayer extends React.Component {
 
         if(checkLogin.isLogin()){
             this.updateLastPlay();
+        }
+
+        // Mobile only
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: track.title,
+                artist: track.author_fullName,
+                artwork: [
+                    {
+                        src: getApiUrl('api', `/image/coverart/${track.id}?width=96`),
+                        sizes: '96x96'
+                    },
+                    {
+                        src: getApiUrl('api', `/image/coverart/${track.id}?width=128`),
+                        sizes: '128x128'
+                    },
+                    {
+                        src: getApiUrl('api', `/image/coverart/${track.id}?width=192`),
+                        sizes: '192x192'
+                    },
+                    {
+                        src: getApiUrl('api', `/image/coverart/${track.id}?width=256`),
+                        sizes: '256x256'
+                    },
+                    {
+                        src: getApiUrl('api', `/image/coverart/${track.id}?width=384`),
+                        sizes: '384x384'
+                    },
+                    {
+                        src: getApiUrl('api', `/image/coverart/${track.id}?width=512`),
+                        sizes: '512x512'
+                    },
+                ]
+            });
+
+            navigator.mediaSession.setActionHandler('play', this.playMusic());
+            navigator.mediaSession.setActionHandler('pause', this.playMusic());
+            navigator.mediaSession.setActionHandler('seekbackward', this.goBackward());
+            navigator.mediaSession.setActionHandler('seekforward', this.goForward());
         }
 
     }
