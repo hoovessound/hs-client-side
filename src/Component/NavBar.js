@@ -137,18 +137,47 @@ export default class NavBar extends React.Component {
 
                         </ul>
 
+                        <div className="nav-item"
+                            style={{
+                                width: '65%',
+                            }}
+                        >
+                            <form className="input-group"
+                                style={{
+                                    width: '100%',
+                                    background: '#CCC',
+                                    marginLeft: '0.3em',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    height: '1em',
+                                    padding: '1em 0em',
+
+                                }}
+                            >
+                                <input ref={'search'} className="form-control" placeholder="Search Here" autoComplete="off" type="text"
+                                    style={{
+                                        outline: 'none',
+                                        background: 'none',
+                                        border: 'none',
+                                    }}
+                                />
+                                <button className="fa fa-search" onClick={e => this.search(e)} type={'submit'}
+                                    style={{
+                                        cursor: 'pointer',
+                                        marginRight: '0.3em',
+                                        background: 'none',
+                                        border: 'none',
+                                        outline: 'none',
+                                    }}
+                                ></button>
+                            </form>
+                        </div>
+
                         {
                             (() => {
                                 if(checkLogin.isLogin()){
                                     return (
                                         <ul className="navbar-nav ml-auto">
-
-                                            <ul className="text-truncate">
-                                                <form className="input-group">
-                                                    <input ref={'search'} className="form-control" placeholder="Search Here" autoComplete="off" type="text" />
-                                                    <button className="btn btn-outline-success" type="submit" onClick={(e) => this.search(e)}>Search</button>
-                                                </form>
-                                            </ul>
 
                                             <li className="nav-link">
                                                 <Link
