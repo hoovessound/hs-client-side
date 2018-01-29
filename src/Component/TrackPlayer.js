@@ -85,6 +85,13 @@ export default class TrackPlayer extends React.Component {
         window.onkeydown = (event) => this.hotKey(event);
         audio.ontimeupdate = () => this.updateTimeStamp();
 
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.setActionHandler('play', this.playMusic());
+            navigator.mediaSession.setActionHandler('pause', this.playMusic());
+            navigator.mediaSession.setActionHandler('seekbackward', this.goBackward());
+            navigator.mediaSession.setActionHandler('seekforward', this.goForward());
+        }
+
         if(checkLogin.isLogin()){
             navigator.sendBeacon = navigator.sendBeacon || function () {
                 axios.post(getApiUrl('api', `/events?`), {
@@ -141,8 +148,6 @@ export default class TrackPlayer extends React.Component {
         const source = getApiUrl('stream', `/${trackId}?`);
         const localPlaylist = store.getState().LocalPlayList.tracks;
 
-
-
         if (audio.src !== source) {
             // Set the correct playlist index
 
@@ -161,6 +166,41 @@ export default class TrackPlayer extends React.Component {
             audio.onloadedmetadata = () => {
                 this.refs.time.max = audio.duration;
             };
+
+            // Mobile only
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: track.title,
+                    artist: track.author_fullName,
+                    artwork: [
+                        {
+                            src: getApiUrl('api', `/image/coverart/${trackId}?width=96`, false),
+                            sizes: '96x96'
+                        },
+                        {
+                            src: getApiUrl('api', `/image/coverart/${trackId}?width=128`, false),
+                            sizes: '128x128'
+                        },
+                        {
+                            src: getApiUrl('api', `/image/coverart/${trackId}?width=192`, false),
+                            sizes: '192x192'
+                        },
+                        {
+                            src: getApiUrl('api', `/image/coverart/${trackId}?width=256`, false),
+                            sizes: '256x256'
+                        },
+                        {
+                            src: getApiUrl('api', `/image/coverart/${trackId}?width=384`, false),
+                            sizes: '384x384'
+                        },
+                        {
+                            src: getApiUrl('api', `/image/coverart/${trackId}?width=512`, false),
+                            sizes: '512x512'
+                        },
+                    ]
+                });
+            }
+
         }else{
             initPlay = false;
         }
@@ -233,45 +273,6 @@ export default class TrackPlayer extends React.Component {
 
         if(checkLogin.isLogin()){
             this.updateLastPlay();
-        }
-
-        // Mobile only
-        if ('mediaSession' in navigator) {
-            navigator.mediaSession.metadata = new MediaMetadata({
-                title: track.title,
-                artist: track.author_fullName,
-                artwork: [
-                    {
-                        src: getApiUrl('api', `/image/coverart/${track.id}?width=96`),
-                        sizes: '96x96'
-                    },
-                    {
-                        src: getApiUrl('api', `/image/coverart/${track.id}?width=128`),
-                        sizes: '128x128'
-                    },
-                    {
-                        src: getApiUrl('api', `/image/coverart/${track.id}?width=192`),
-                        sizes: '192x192'
-                    },
-                    {
-                        src: getApiUrl('api', `/image/coverart/${track.id}?width=256`),
-                        sizes: '256x256'
-                    },
-                    {
-                        src: getApiUrl('api', `/image/coverart/${track.id}?width=384`),
-                        sizes: '384x384'
-                    },
-                    {
-                        src: getApiUrl('api', `/image/coverart/${track.id}?width=512`),
-                        sizes: '512x512'
-                    },
-                ]
-            });
-
-            navigator.mediaSession.setActionHandler('play', this.playMusic());
-            navigator.mediaSession.setActionHandler('pause', this.playMusic());
-            navigator.mediaSession.setActionHandler('seekbackward', this.goBackward());
-            navigator.mediaSession.setActionHandler('seekforward', this.goForward());
         }
 
     }
