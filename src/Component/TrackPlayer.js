@@ -86,10 +86,24 @@ export default class TrackPlayer extends React.Component {
         audio.ontimeupdate = () => this.updateTimeStamp();
 
         if ('mediaSession' in navigator) {
-            navigator.mediaSession.setActionHandler('play', this.playMusic());
-            navigator.mediaSession.setActionHandler('pause', this.playMusic());
-            navigator.mediaSession.setActionHandler('seekbackward', this.goBackward());
-            navigator.mediaSession.setActionHandler('seekforward', this.goForward());
+            navigator.mediaSession.setActionHandler('play', () => {
+                this.playMusic();
+            });
+            navigator.mediaSession.setActionHandler('pause', () => {
+                this.playMusic();
+            });
+            navigator.mediaSession.setActionHandler('seekbackward', () => {
+                this.goBackward();
+            });
+            navigator.mediaSession.setActionHandler('seekforward', () => {
+                this.goForward();
+            });
+            navigator.mediaSession.setActionHandler('previoustrack', () => {
+                this.goBackfardPlaylist();
+            });
+            navigator.mediaSession.setActionHandler('nexttrack', () => {
+                this.goForwardPlaylist();
+            });
         }
 
         if(checkLogin.isLogin()){
@@ -140,6 +154,44 @@ export default class TrackPlayer extends React.Component {
                 MusicPlayer,
             });
         });
+    }
+
+    goForwardPlaylist(){
+        const localPlaylist = store.getState().LocalPlayList.tracks;
+        playlistIndex = (playlistIndex + 1);
+        const track = localPlaylist[parseInt(playlistIndex, 10)];
+        store.dispatch({
+            type: 'UPDATE_TRACK_DETAILS',
+            payload: {
+                trackId: track.id,
+                title: track.title,
+                author_username: track.author.username,
+                author_fullname: track.author.fullname,
+                coverArt: track.coverImage,
+                playitnow: true,
+            }
+        });
+        this.updateLastPlay();
+        this.playMusic();
+    }
+
+    goBackfardPlaylist(){
+        const localPlaylist = store.getState().LocalPlayList.tracks;
+        playlistIndex = (playlistIndex - 1);
+        const track = localPlaylist[parseInt(playlistIndex, 10)];
+        store.dispatch({
+            type: 'UPDATE_TRACK_DETAILS',
+            payload: {
+                trackId: track.id,
+                title: track.title,
+                author_username: track.author.username,
+                author_fullname: track.author.fullname,
+                coverArt: track.coverImage,
+                playitnow: true,
+            }
+        });
+        this.updateLastPlay();
+        this.playMusic();
     }
 
     playMusic() {
@@ -229,7 +281,7 @@ export default class TrackPlayer extends React.Component {
                 store.dispatch({
                     type: 'UPDATE_TRACK_DETAILS',
                     payload: {
-                        trackId: track.id,
+                        trackId,
                         title: track.title,
                         author_username: track.author.username,
                         author_fullname: track.author.fullname,
