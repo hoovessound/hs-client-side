@@ -137,11 +137,7 @@ export default class NavBar extends React.Component {
 
                         </ul>
 
-                        <div className="nav-item"
-                            style={{
-                                width: '65%',
-                            }}
-                        >
+                        <div className="nav-item" id={'searchContainer'} >
                             <form className="input-group"
                                 style={{
                                     width: '100%',
