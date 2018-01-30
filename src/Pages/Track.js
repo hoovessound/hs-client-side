@@ -222,10 +222,6 @@ export default class Track extends React.Component {
         const modal = this.state.modal;
         const url = getApiurl('api', `/track/backgrounddrop/${this.state.track.id}?`);
 
-        const form = new FormData();
-
-        form.append('backgrounddrop', id);
-
         await axios.post(url, {
             id,
         });
