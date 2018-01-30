@@ -257,13 +257,6 @@ export default class TrackPlayer extends React.Component {
             initPlay = false;
         }
 
-        if(initPlay){
-            this.toggleMobileTimeStamp();
-            setTimeout(() => {
-                this.toggleMobileTimeStamp();
-            }, 2000)
-        }
-
         // When the track is finish
         audio.onended = () => {
 
@@ -368,38 +361,66 @@ export default class TrackPlayer extends React.Component {
         }
     }
 
-    toggleMobileTimeStamp(){
-        const time = this.refs.time;
+    toggleMobileTimeStamp(e){
+        const trackPlayer = this.refs.trackPlayer;
         const trackInfo = this.refs.trackInfo;
+        const coverArt = this.refs.coverArt;
+        const time = this.refs.time;
+        const active = e.target;
+        const isClicking = active.classList.contains('backgroundImage');
 
-        if(trackInfo.classList.contains('hide')){
-            // Hide time
-            time.classList.remove('show');
-            trackInfo.classList.remove('hide');
-        }else{
-            // Show time
-            time.classList.add('show');
-            trackInfo.classList.add('hide');
+        function open() {
+            trackPlayer.classList.add('expand');
+            trackInfo.classList.add('expand');
+            coverArt.classList.add('expand');
+            time.classList.add('expand');
         }
+
+        function close() {
+            trackPlayer.classList.remove('expand');
+            trackInfo.classList.remove('expand');
+            coverArt.classList.remove('expand');
+            time.classList.remove('expand');
+        }
+
+        if(isClicking){
+            if(trackPlayer.classList.contains('expand')){
+                // Close expand panel
+                close();
+            }else{
+                // Expand the panel
+                open();
+            }
+        }
+
     }
 
     render() {
+        const track = store.getState().MusicPlayer;
         return (
             <div
                 id="TrackPlayer"
+                ref={'trackPlayer'}
                 style={{
                     marginTop: '1em',
                 }}
-                onTouchStart={() => {
-                    showTimeEvent = setTimeout(() => {
-                        this.toggleMobileTimeStamp();
-                    }, 500);
+                onTouchStart={e => {
+                    this.toggleMobileTimeStamp(e);
                 }}
                 onTouchEnd={() => {
                     clearTimeout(showTimeEvent);
                 }}
 
             >
+                {/*Mobile only background image*/}
+
+                <div className="mobile backgroundImage"
+                    style={{
+                        backgroundImage: `url(${getApiUrl('api', '/image/coverart/' + track.trackId, false)})`,
+                    }}
+                >
+
+                </div>
 
                 <div
                     ref={'coverArt'}
