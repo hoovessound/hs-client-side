@@ -10,7 +10,7 @@ export default class Favorite extends React.Component {
             domain = '.hoovessound.me'
         }
         // Redirect the user to the home page
-        cookie.remove('jwt-token', {
+        cookie.remove('jwt_token', {
             path: '/',
             domain,
         });

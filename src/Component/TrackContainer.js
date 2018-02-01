@@ -118,7 +118,7 @@ export default class TrackContainer extends React.Component {
                 <div
                     className="coverArt"
                     style={{
-                        backgroundImage: `url(${getApiUrl('api', '/image/coverart/' + this.props.track.id ,false)}?width=300)`,
+                        backgroundImage: `url(${getApiUrl('api', '/image/coverart/' + this.props.track.id)}?width=300)`,
                         backgroundRepeat: 'no-repeat',
                         backgroundSize: 'cover',
                     }}
@@ -131,7 +131,7 @@ export default class TrackContainer extends React.Component {
     backgroundDrop() {
         if (!this.props.nobackgrounddrop) {
             if (this.props.track.backgrounddrop) {
-                const url = getApiUrl('api', `/image/doodle/${this.props.track.backgrounddrop}`, false);
+                const url = getApiUrl('api', `/image/doodle/${this.props.track.backgrounddrop}`);
                 return (
                     <div className="backgroundDrop"
                          style={{

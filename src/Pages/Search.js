@@ -26,7 +26,7 @@ export default class Search extends React.Component {
             return (
                 <div key={user.id}>
                     <Link to={`/@${user.username}`}>
-                        <img src={getApiUrl('api', `/image/avatar/${user.username}?width=50`, false)}
+                        <img src={getApiUrl('api', `/image/avatar/${user.username}?width=50`)}
                              alt={`${user.username} icon`}/>
                         <p>{rednerHtml(user.fullName ? user.fullName : '')}</p>
                     </Link>
@@ -44,7 +44,7 @@ export default class Search extends React.Component {
             return (
                 <div key={playlist.id}>
                     <Link to={`/playlist/${playlist.id}`}>
-                        <img src={getApiUrl('api', `/image/playlist/${playlist.id}?width=100`, false)}
+                        <img src={getApiUrl('api', `/image/playlist/${playlist.id}?width=100`)}
                              alt={`${playlist.id} icon`}/>
                         <p>{rednerHtml(playlist.title ? playlist.title : '')}</p>
                     </Link>

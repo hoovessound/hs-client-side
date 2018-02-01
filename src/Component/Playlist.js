@@ -29,7 +29,7 @@ export default class Playlist extends React.Component {
 
                     <Link to={`/playlist/${playlist.id}`}>
                         <img
-                            src={getApiurl('api', `/image/playlist/${playlist.id}?width=100`, false)}
+                            src={getApiurl('api', `/image/playlist/${playlist.id}?width=100`)}
                             alt={`${playlist.title} cover art`}
                             className="coverArt"
                             style={{

@@ -39,7 +39,7 @@ export default class Doodle extends React.Component {
                 <div className="card" key={doodle.id}>
                     <img
                         className="card-img-top"
-                        src={getApiUrl('api', `/image/doodle/${doodle.id}`, false)}
+                        src={getApiUrl('api', `/image/doodle/${doodle.id}`)}
                         alt={`doodle for ${doodle.id}`}
                         style={{
                             width: '60%',

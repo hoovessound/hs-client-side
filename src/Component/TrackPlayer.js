@@ -226,27 +226,27 @@ export default class TrackPlayer extends React.Component {
                     artist: track.author_fullName,
                     artwork: [
                         {
-                            src: getApiUrl('api', `/image/coverart/${trackId}?width=96`, false),
+                            src: getApiUrl('api', `/image/coverart/${trackId}?width=96`),
                             sizes: '96x96'
                         },
                         {
-                            src: getApiUrl('api', `/image/coverart/${trackId}?width=128`, false),
+                            src: getApiUrl('api', `/image/coverart/${trackId}?width=128`),
                             sizes: '128x128'
                         },
                         {
-                            src: getApiUrl('api', `/image/coverart/${trackId}?width=192`, false),
+                            src: getApiUrl('api', `/image/coverart/${trackId}?width=192`),
                             sizes: '192x192'
                         },
                         {
-                            src: getApiUrl('api', `/image/coverart/${trackId}?width=256`, false),
+                            src: getApiUrl('api', `/image/coverart/${trackId}?width=256`),
                             sizes: '256x256'
                         },
                         {
-                            src: getApiUrl('api', `/image/coverart/${trackId}?width=384`, false),
+                            src: getApiUrl('api', `/image/coverart/${trackId}?width=384`),
                             sizes: '384x384'
                         },
                         {
-                            src: getApiUrl('api', `/image/coverart/${trackId}?width=512`, false),
+                            src: getApiUrl('api', `/image/coverart/${trackId}?width=512`),
                             sizes: '512x512'
                         },
                     ]
@@ -416,7 +416,7 @@ export default class TrackPlayer extends React.Component {
 
                 <div className="mobile backgroundImage"
                     style={{
-                        backgroundImage: `url(${getApiUrl('api', '/image/coverart/' + track.trackId, false)})`,
+                        backgroundImage: `url(${getApiUrl('api', '/image/coverart/' + track.trackId)})`,
                     }}
                 >
 

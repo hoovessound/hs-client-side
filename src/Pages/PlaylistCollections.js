@@ -26,7 +26,7 @@ export default class PlaylistCollections extends React.Component {
                 <div className="playlistContainer" key={playlist.id}>
                     <Link to={`/playlist/${playlist.id}`}>
                         <img
-                            src={getApiUrl('api', `/image/playlist/${playlist.id}?width=300`, false)}
+                            src={getApiUrl('api', `/image/playlist/${playlist.id}?width=300`)}
                             alt={`${playlist.title} cover art`}
                             className="coverArt"
                             style={{
