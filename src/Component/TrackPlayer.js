@@ -226,19 +226,19 @@ export default class TrackPlayer extends React.Component {
                     artist: track.author_fullName,
                     artwork: [
                         {
-                            src: getApiUrl('api', `/image/coverart/${trackId}?width=96`),
+                            src: getApiUrl('api', `/image/coverart/${trackId}&width=96`),
                             sizes: '96x96'
                         },
                         {
-                            src: getApiUrl('api', `/image/coverart/${trackId}?width=128`),
+                            src: getApiUrl('api', `/image/coverart/${trackId}&width=128`),
                             sizes: '128x128'
                         },
                         {
-                            src: getApiUrl('api', `/image/coverart/${trackId}?width=192`),
+                            src: getApiUrl('api', `/image/coverart/${trackId}&width=192`),
                             sizes: '192x192'
                         },
                         {
-                            src: getApiUrl('api', `/image/coverart/${trackId}?width=256`),
+                            src: getApiUrl('api', `/image/coverart/${trackId}&width=256`),
                             sizes: '256x256'
                         },
                         {
@@ -416,7 +416,7 @@ export default class TrackPlayer extends React.Component {
 
                 <div className="mobile backgroundImage"
                     style={{
-                        backgroundImage: `url(${getApiUrl('api', '/image/coverart/' + track.trackId)})`,
+                        backgroundImage: `url(${getApiUrl('api', '/image/coverart/' + track.trackId + '?')})`,
                     }}
                 >
 
