@@ -457,11 +457,16 @@ export default class TrackPlayer extends React.Component {
                 <div id="trackInfo" ref={'trackInfo'}>
 
                     <Link to={"/track/" + this.state.MusicPlayer.trackId}>
-                        <span
+                        <p
                             style={{
-                                color: '#CCC'
+                                color: '#CCC',
+                                whiteSpace: 'pre',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                position: 'absolute',
+                                width: '70vw',
                             }}
-                        >{this.state.MusicPlayer.title}</span>
+                        >{this.state.MusicPlayer.title}</p>
                     </Link>
 
                     <br/>

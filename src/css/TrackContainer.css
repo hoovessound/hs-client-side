@@ -43,7 +43,6 @@
         width: 100%;
         left: 0;
         top: 9em;
-        height: auto;
     }
 
     .TrackContainer.backgrounddrop{
@@ -56,6 +55,6 @@
         position: absolute;
         top: 0em;
         left: 9.5em;
-        width: auto;
+        width: 60%;
     }
 }

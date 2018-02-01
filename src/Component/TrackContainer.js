@@ -53,12 +53,19 @@ export default class TrackContainer extends React.Component {
         if (!this.props.notitle) {
             if (this.props.nolink) {
                 return (
-                    <div
-                        className="track_info"
+                    <p
+                        className="title"
                         style={{
-                            display: 'block'
+                            whiteSpace: 'pre',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
                         }}
-                    >
+                    >{renderHtml(this.props.track.title ? this.props.track.title : '')}</p>
+                )
+            } else {
+
+                return (
+                    <Link to={`/track/${this.props.track.id}`}>
                         <p
                             className="title"
                             style={{
@@ -67,26 +74,6 @@ export default class TrackContainer extends React.Component {
                                 textOverflow: 'ellipsis',
                             }}
                         >{renderHtml(this.props.track.title ? this.props.track.title : '')}</p>
-                    </div>
-                )
-            } else {
-                return (
-                    <Link to={`/track/${this.props.track.id}`}>
-                        <div
-                            className="track_info"
-                            style={{
-                                display: 'block'
-                            }}
-                        >
-                            <p
-                                className="title"
-                                style={{
-                                    whiteSpace: 'pre',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                }}
-                            >{renderHtml(this.props.track.title ? this.props.track.title : '')}</p>
-                        </div>
                     </Link>
                 )
             }
