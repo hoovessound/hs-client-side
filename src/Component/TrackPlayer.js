@@ -2,8 +2,7 @@
 
 import React from 'react';
 import '../css/TrackPlayer.css';
-// http://danielstern.ca/range.css/#/
-import '../css/includes/TrackPlayer_Time_Stamp.css';
+import '../css/includes/TrackPlayer_TimeStamp.css'
 import store from '../Redux/store';
 import {Link} from 'react-router-dom';
 import getApiUrl from '../Util/getApiUrl';
@@ -33,6 +32,7 @@ export default class TrackPlayer extends React.Component {
                 index: 0,
                 stack: [],
             },
+            load: 0,
         };
     }
 
@@ -139,6 +139,8 @@ export default class TrackPlayer extends React.Component {
                     audio.currentTime = User.history.playtime.currentTime;
                     this.refs.time.max = User.history.playtime.duration;
                     this.refs.time.value = User.history.playtime.currentTime;
+                    this.refs.timeLoad.max = User.history.playtime.duration;
+                    this.refs.timeLoad.value = User.history.playtime.currentTime;
                     setHistory = false;
                 }
             }
@@ -215,8 +217,10 @@ export default class TrackPlayer extends React.Component {
             // A new audio source
             audio.src = source;
             this.refs.time.value = 0;
+            this.refs.timeLoad.value = 0;
             audio.onloadedmetadata = () => {
                 this.refs.time.max = audio.duration;
+                this.refs.timeLoad.max = audio.duration;
             };
 
             // Mobile only
@@ -328,6 +332,7 @@ export default class TrackPlayer extends React.Component {
         } else {
             audio.currentTime = this.refs.time.value;
         }
+        this.refs.timeLoad.value = this.refs.time.value;
     }
 
     async updateLastPlay() {
@@ -426,7 +431,7 @@ export default class TrackPlayer extends React.Component {
                     ref={'coverArt'}
                     id={'coverArt'}
                     style={{
-                        backgroundImage: `url(${this.state.MusicPlayer.coverArt}?width=100)`,
+                        backgroundImage: `url(${getApiUrl('api', '/image/coverart/' + track.trackId + '?width=100')})`,
                         backgroundSize: 'cover',
                         backgroundRepeat: 'no-repeat',
                         width: '5em',
@@ -466,6 +471,7 @@ export default class TrackPlayer extends React.Component {
                                 position: 'absolute',
                                 width: '70vw',
                             }}
+                            className={'title'}
                         >{this.state.MusicPlayer.title}</p>
                     </Link>
 
@@ -498,6 +504,9 @@ export default class TrackPlayer extends React.Component {
                     id="time"
                     onInput={() => this.updateTimeStamp(true)}
                 />
+
+                <div className="backgroundColor"></div>
+                <input type="range" ref={'timeLoad'} id={"timeLoad"} max={100}/>
 
 
             </div>
