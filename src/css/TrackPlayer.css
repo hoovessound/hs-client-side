@@ -21,6 +21,25 @@
     margin: auto;
 }
 
+.backgroundColor{
+    position: absolute;
+    bottom: 0.5em;
+    width: 90%;
+    height: 0.2em;
+    background: #CCC;
+    left: 6em;
+    z-index: -1;
+}
+
+#timeLoad{
+    position: absolute;
+    bottom: 0.5em;
+    left: 6em;
+    width: 90%;
+    height: 0.2em;
+    border: none;
+}
+
 #volume{
     position: absolute;
     right: 1em;
@@ -85,9 +104,14 @@
         z-index: 1;
     }
 
+    #trackInfo.expand .title{
+        width: 100vw !important;
+    }
+
     #coverArt.expand{
         position: absolute !important;
         bottom: 0em;
+        display: inline;
     }
 
     #trackInfo.expand{
@@ -103,6 +127,12 @@
 
     #time.expand{
         display: block;
+        background: #CCC;
+        position: fixed;
+        bottom: 1em;
+        left: 0em;
+        width: 100%;
+        height: 1.5em;
     }
 
 }
