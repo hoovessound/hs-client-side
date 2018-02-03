@@ -273,21 +273,7 @@ export default class TrackPlayer extends React.Component {
                 playlistIndex = 0;
             }else{
                 // Play the next track from the playlist
-                playlistIndex = (playlistIndex + 1);
-                const track = localPlaylist[parseInt(playlistIndex, 10)];
-                store.dispatch({
-                    type: 'UPDATE_TRACK_DETAILS',
-                    payload: {
-                        trackId,
-                        title: track.title,
-                        author_username: track.author.username,
-                        author_fullname: track.author.fullname,
-                        coverArt: track.coverImage,
-                        playitnow: true,
-                    }
-                });
-                this.updateLastPlay();
-                this.playMusic();
+                this.goForwardPlaylist();
             }
         };
 
