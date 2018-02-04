@@ -3,8 +3,8 @@ import axios from 'axios';
 import getApiurl from '../Util/getApiUrl';
 import {url} from '../Util/textFormat';
 import {Link} from 'react-router-dom';
+import renderHtml from 'react-render-html';
 
-const token = 'e7671b56aca42828b5da68aad722f8c4f441d76dcef9f747d3aebd371dc10c18af6ac5c6297094500fe69578904c95eacca8';
 export default class Comment extends React.Component {
     constructor(){
         super();
@@ -15,7 +15,7 @@ export default class Comment extends React.Component {
 
     async componentDidMount(){
         const trackId = this.props.trackId;
-        const response = await axios.get(getApiurl('api', `/track/comment/${trackId}?offset=0&bypass=true&oauth_token=${token}`))
+        const response = await axios.get(getApiurl('api', `/track/comment/${trackId}?offset=0`))
         const body = response.data;
         this.setState({
             comments: body,
@@ -26,7 +26,7 @@ export default class Comment extends React.Component {
         return (
             <div key={comment.id}>
                 <Link to={"/@" + comment.author.username}>{"@" + comment.author.username}</Link>
-                <p>{url(comment.comment)}</p>
+                <p>{renderHtml(url(comment.comment))}</p>
             </div>
         )
     }
@@ -35,7 +35,8 @@ export default class Comment extends React.Component {
         if(event.keyCode === 13){
             const trackId = this.props.trackId;
             const value = this.refs.input.value;
-            const response = await axios.post(getApiurl('api', `/track/comment/${trackId}?offset=0&bypass=true&oauth_token=${token}`), {
+            this.refs.input.value = '';
+            const response = await axios.post(getApiurl('api', `/track/comment/${trackId}?offset=0`), {
                 comment: value,
             })
             const body = response.data;
@@ -44,7 +45,6 @@ export default class Comment extends React.Component {
             this.setState({
                 comments,
             });
-            this.refs.input.value = '';
         }
     }
 

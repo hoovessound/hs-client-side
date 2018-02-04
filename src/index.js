@@ -1,8 +1,12 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import registerServiceWorker from './registerServiceWorker';
 import Routers from './Router/Routers';
+import {Provider} from 'react-redux';
+import store from './Redux/store';
+import {unregister} from "./registerServiceWorker";
+
 const app = document.getElementById('app');
-export const apiEndPoint = 'http://api.hoovessound.app:3000/';
-ReactDom.render(<Routers />, app);
-registerServiceWorker();
+ReactDom.render(<Provider store={store}>
+    <Routers />
+</Provider>, app);
+unregister();

@@ -1,4 +1,60 @@
-.TrackContainer img{
-    width: 30em;
-    height: 30em;
+.TrackContainer{
+    width: 90%;
+    height: 15em;
+    margin: 0.5em;
+    position: relative;
+ }
+
+.TrackContainer .coverArt{
+    width: 15em;
+    height: 15em;
+}
+
+.TrackContainer .details{
+    position: absolute;
+    top: 1em;
+    left: 16em;
+}
+
+.backgroundDrop{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+    background-size: 5px;
+    background-repeat: no-repeat;
+}
+
+@media (max-width: 415px) {
+
+    .TrackContainer{
+        width: 45%;
+        display: inline-block;
+        height: auto;
+    }
+
+    .TrackContainer .coverArt{
+        width: 9em;
+        height: 9em;
+    }
+
+    .TrackContainer .details{
+        position: initial;
+        width: 100%;
+        left: 0;
+        top: 9em;
+    }
+
+    .TrackContainer.backgrounddrop{
+        display: block;
+        width: 90vw;
+    }
+
+    /* With background drop */
+    .TrackContainer.backgrounddrop .details{
+        position: absolute;
+        top: 0em;
+        left: 9.5em;
+        width: 60%;
+    }
 }
