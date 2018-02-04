@@ -60,7 +60,7 @@ export default class TrackContainer extends React.Component {
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                         }}
-                    >{renderHtml(this.props.track.title ? this.props.track.title : '')}</p>
+                    >{renderHtml(this.props.track.title ? this.props.track.title : 'ERROR: No correct track title')}</p>
                 )
             } else {
 
@@ -73,7 +73,7 @@ export default class TrackContainer extends React.Component {
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                             }}
-                        >{renderHtml(this.props.track.title ? this.props.track.title : '')}</p>
+                        >{renderHtml(this.props.track.title ? this.props.track.title : 'ERROR: No correct track title')}</p>
                     </Link>
                 )
             }
@@ -92,7 +92,7 @@ export default class TrackContainer extends React.Component {
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                             }}
-                        >{renderHtml(this.props.track.author.fullName || this.props.track.author.fullname)}</span>
+                        >{renderHtml(this.props.track.author.fullName || this.props.track.author.fullname || 'ERROR: No correct author full name')}</span>
                     </Link>
                 </div>
             )
