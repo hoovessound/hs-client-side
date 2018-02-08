@@ -27,46 +27,50 @@ import Search from "../Pages/Search";
 
 let setInitUserStack = false;
 
+let stopFetching = false;
+
 export default class Routers extends React.Component {
     async setInitialTrackState() {
 
         async function getUserHistory(trackID) {
             if (!setInitUserStack) {
-                const response = await axios.get(getApiUrl('api', `/track/${trackID}?`));
-                const track = response.data;
-                store.dispatch({
-                    type: 'UPDATE_TRACK_DETAILS',
-                    payload: {
-                        trackId: trackID,
-                        title: track.title,
-                        author_username: track.author.username,
-                        author_fullname: track.author.fullname,
-                        coverArt: track.coverImage,
-                        playitnow: false,
-                        isHistory: true,
-                    }
-                });
+                if(!stopFetching){
+                    const response = await axios.get(getApiUrl('api', `/track/${trackID}?`));
+                    const track = response.data;
+                    store.dispatch({
+                        type: 'UPDATE_TRACK_DETAILS',
+                        payload: {
+                            trackId: trackID,
+                            title: track.title,
+                            author_username: track.author.username,
+                            author_fullname: track.author.fullname,
+                            coverArt: track.coverImage,
+                            playitnow: false,
+                            isHistory: true,
+                        }
+                    });
+                }
             }
         }
 
         async function getLatestTrackInfo() {
             if (!setInitUserStack) {
-                const response = await axios.get(getApiUrl('api', '/tracks?offset=0'))
-                store.dispatch({
-                    type: 'UPDATE_TRACK_DETAILS',
-                    payload: {
-                        trackId: response.data[0].id,
-                        title: response.data[0].title,
-                        author_username: response.data[0].author.username,
-                        author_fullname: response.data[0].author.fullname,
-                        coverArt: response.data[0].coverImage,
-                        playitnow: false,
-                    }
-                });
+                if(!stopFetching){
+                    const response = await axios.get(getApiUrl('api', '/tracks?offset=0'))
+                    store.dispatch({
+                        type: 'UPDATE_TRACK_DETAILS',
+                        payload: {
+                            trackId: response.data[0].id,
+                            title: response.data[0].title,
+                            author_username: response.data[0].author.username,
+                            author_fullname: response.data[0].author.fullname,
+                            coverArt: response.data[0].coverImage,
+                            playitnow: false,
+                        }
+                    });
+                }
             }
         }
-
-        const errorMessage = 'Out service is running out of service, please contact one of our support, and we are more then welcome to help you out';
 
         if (checkLogin.isLogin()) {
 
@@ -74,6 +78,7 @@ export default class Routers extends React.Component {
                 const user = store.getState().User;
 
                 // Check if the user have an history
+
                 if (user.history) {
                     const trackID = user.history.trackID;
                     // Get the track info
@@ -86,31 +91,23 @@ export default class Routers extends React.Component {
                         getLatestTrackInfo()
                         .then(() => {
                             setInitUserStack = true;
-                        })
-                        .catch(error => {
-                            console.log(error);
-                            alert(errorMessage);
-                        })
-                    })
+                        });
+                        stopFetching = true;
+                    });
+                    stopFetching = true;
                 } else {
                     // User is new, and have no history before
                     getLatestTrackInfo()
                     .then(() => {
                         setInitUserStack = true;
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        alert(errorMessage);
-                    })
+                    });
+                    stopFetching = true;
                 }
             });
 
         } else {
             getLatestTrackInfo()
-            .catch(error => {
-                console.log(error);
-                alert(errorMessage);
-            })
+            stopFetching = true;
         }
 
 
