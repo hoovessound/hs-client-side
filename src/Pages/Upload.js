@@ -3,6 +3,7 @@ import {Redirect} from 'react-router-dom';
 import axios from 'axios';
 import getApiurl from '../Util/getApiUrl';
 
+let youtubeUrl;
 export default class Upload extends React.Component {
     constructor() {
         super();
@@ -10,6 +11,7 @@ export default class Upload extends React.Component {
             errorMessage: '',
             redirect: false,
             redirectTo: '',
+            isYoutube: true,
         }
     }
 
@@ -24,6 +26,18 @@ export default class Upload extends React.Component {
                 titleEl.value = stripFileName;
             }
         }
+    }
+
+    async askYouTubeDl(ytUrl){
+        const url = getApiurl('api', `/youtube-dl?url=${ytUrl}`);
+        youtubeUrl = ytUrl;
+        this.refs.description.value = 'Please wait, we are fetching data from YouTube...';
+        const response = await axios.get(url);
+        const youtubeData = response.data;
+        this.refs.coverArt.style.backgroundImage = `url(${youtubeData.coverImage})`;
+        this.refs.title.value = youtubeData.title;
+        this.refs.description.value = youtubeData.description;
+
     }
 
     coverArtOnChange(e){
@@ -41,8 +55,17 @@ export default class Upload extends React.Component {
         })
     }
 
+    youtubeParser(url){
+        const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#]*).*/;
+        const match = url.match(regExp);
+        return (match&&match[7].length===11)? match[7] : false;
+    }
+
     async uploadTrack(){
         const form = new FormData(this.refs.uploadForm);
+        if(this.state.isYoutube){
+            form.append('youtube-id', youtubeUrl);
+        }
         const config = {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -64,6 +87,18 @@ export default class Upload extends React.Component {
                 redirect: true,
                 redirectTo: `/track/${response.data.id}`,
             });
+        }
+    }
+
+    titleOnKeyDown(){
+        const value = this.refs.title.value;
+        if(this.state.isYoutube){
+            // Check if user input match the YouTube video ID
+            if(this.youtubeParser(value)){
+                // Is a valid YT ID
+                // Fetch some YT data
+                this.askYouTubeDl(value);
+            }
         }
     }
 
@@ -140,6 +175,7 @@ export default class Upload extends React.Component {
                                             height: '100%',
                                             cursor: 'pointer',
                                         }}
+                                       disabled={this.state.isYoutube}
                                     />
                                         <div className="placeholder"
                                             style={{
@@ -156,14 +192,38 @@ export default class Upload extends React.Component {
                                                 color: '#CCC',
                                             }}
                                         >
-                                            <div className="fa fa-camera"></div>
+                                            {
+                                                (() => {
+                                                    if(!this.state.isYoutube){
+                                                        return (
+                                                            <div className="fa fa-camera"></div>
+                                                        )
+                                                    }else{
+                                                        return (
+                                                            <div className="fa fa-youtube"></div>
+                                                        )
+                                                    }
+                                                })()
+                                            }
                                         </div>
                                 </div>
                             </div>
 
                             <div className="col-sm-9">
-                                <input type="text" className="title form-control" placeholder="Track title" ref={'title'} name={'title'} style={{margin: '0.5em 0em'}} />
-                                <textarea name="description" placeholder="Description" className="description form-control"
+                                {
+                                    (() => {
+                                        let placeHolder;
+                                        if(!this.state.isYoutube){
+                                            placeHolder = 'Track title';
+                                        }else{
+                                            placeHolder = 'YouTube URL';
+                                        }
+                                        return (
+                                            <input type="text" className="title form-control" placeholder={placeHolder} ref={'title'} name={'title'} style={{margin: '0.5em 0em'}} onInput={this.titleOnKeyDown.bind(this)}/>
+                                        )
+                                    })()
+                                }
+                                <textarea name="description" ref={'description'} placeholder="Description" className="description form-control"
                                     style={{
                                         width: '100%',
                                         height: '50%',
@@ -172,43 +232,81 @@ export default class Upload extends React.Component {
                                     }}
                                 ></textarea>
 
-                                <div className="audioContainer"
-                                    style={{
-                                        width: '100%',
-                                        height: '20%',
-                                        border: '2px dashed #161616',
-                                        position: 'relative',
-                                    }}
+                                {/*Audio track*/}
+
+                                {
+                                    (() => {
+                                        if(!this.state.isYoutube){
+                                            return (
+                                                <div className="audioContainer"
+                                                     style={{
+                                                         width: '100%',
+                                                         height: '20%',
+                                                         border: '2px dashed #161616',
+                                                         position: 'relative',
+                                                     }}
+                                                >
+                                                    <input type="file" name="audio" id="audio" onChange={this.audioFileOnChange.bind(this)} style={{
+                                                        opacity: '0',
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        cursor: 'pointer',
+                                                    }} />
+                                                    <div className="placeholder"
+                                                         style={{
+                                                             display: 'flex',
+                                                             justifyContent: 'center',
+                                                             alignItems: 'center',
+                                                             position: 'absolute',
+                                                             height: '100%',
+                                                             width: '100%',
+                                                             top: '0em',
+                                                             left: '0em',
+                                                             color: '#CCC',
+                                                             zIndex: '-1',
+                                                         }}
+                                                    >
+                                                        <span>Audio track</span>
+                                                    </div>
+                                                </div>
+                                            )
+                                        }
+                                    })()
+                                }
+
+                                <div id="youtubeImportContainer"
+                                     onClick={() => {
+                                         this.setState({
+                                             isYoutube: !this.state.isYoutube,
+                                         })
+                                     }}
+                                     style={{
+                                         cursor: 'pointer',
+                                     }}
                                 >
-                                    <input type="file" name="audio" id="audio" onChange={this.audioFileOnChange.bind(this)} style={{
-                                        opacity: '0',
-                                        width: '100%',
-                                        height: '100%',
-                                        cursor: 'pointer',
-                                    }} />
-                                    <div className="placeholder"
-                                        style={{
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            position: 'absolute',
-                                            height: '100%',
-                                            width: '100%',
-                                            top: '0em',
-                                            left: '0em',
-                                            color: '#CCC',
-                                            zIndex: '-1',
-                                        }}
-                                    >
-                                        <span>Audio track</span>
-                                    </div>
+                                    <span>Experimental* YouTube Import</span>
+                                    <input type="checkbox" name="youtube-import" ref={'youtube-import'} checked={this.state.isYoutube}/>
                                 </div>
-                                <a className="btn btn-outline-success uploadButton" onClick={this.uploadTrack.bind(this)}
-                                    style={{
-                                        display: 'block',
-                                        margin: '0.5em',
-                                    }}
-                                >Upload</a>
+
+                                {
+                                    (() => {
+                                        let text;
+                                        if(!this.state.isYoutube){
+                                            text = 'Upload';
+                                        }else{
+                                            text = 'Import';
+                                        }
+                                        return (
+                                            <a className="btn btn-outline-success uploadButton" onClick={this.uploadTrack.bind(this)}
+                                               style={{
+                                                   display: 'block',
+                                                   margin: '0.5em',
+                                               }}
+                                            >{text}</a>
+                                        )
+                                    })()
+                                }
+
                             </div>
                         </div>
                     </div>
