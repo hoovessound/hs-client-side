@@ -62,8 +62,8 @@
 @media (max-width: 415px) {
     #time{
         width: 60%;
-        display: none;
         transition: all 0.2s ease-in-out;
+        bottom: -100vh;
     }
 
     #volume{
@@ -126,7 +126,6 @@
     }
 
     #time.expand{
-        display: block;
         background: #CCC;
         position: fixed;
         bottom: 1em;

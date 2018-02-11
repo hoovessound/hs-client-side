@@ -364,7 +364,9 @@ export default class TrackPlayer extends React.Component {
             trackPlayer.classList.add('expand');
             trackInfo.classList.add('expand');
             coverArt.classList.add('expand');
-            time.classList.add('expand');
+            setTimeout(() => {
+                time.classList.add('expand');
+            }, 500);
         }
 
         function close() {
