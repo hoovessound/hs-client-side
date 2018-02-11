@@ -11,7 +11,7 @@ export default class Upload extends React.Component {
             errorMessage: '',
             redirect: false,
             redirectTo: '',
-            isYoutube: true,
+            isYoutube: false,
         }
     }
 
