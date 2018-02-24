@@ -22,6 +22,12 @@ export default class Tracks extends React.Component {
             tracks.data.map(track => {
                 return stateTracks.push(track);
             });
+            store.dispatch({
+                type: 'ADD_LOCAL_PLAYLIST',
+                payload: {
+                    tracks: tracks.data,
+                }
+            });
             this.setState({
                 tracks: stateTracks,
                 offset: (this.state.offset + tracks.data.length),
