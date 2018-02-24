@@ -34,7 +34,7 @@ export default class Upload extends React.Component {
         this.refs.description.value = 'Please wait, we are fetching data from YouTube...';
         const response = await axios.get(url);
         const youtubeData = response.data;
-        this.refs.coverArt.style.backgroundImage = `url(${youtubeData.coverImage})`;
+        this.refs.coverArt.style.backgroundImage = `url(${youtubeData.coverImage[500]})`;
         this.refs.title.value = youtubeData.title;
         this.refs.description.value = youtubeData.description;
 
