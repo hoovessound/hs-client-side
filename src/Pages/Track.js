@@ -26,6 +26,11 @@ export default class Track extends React.Component {
                 }
             },
             backgroundDropEl: [],
+            longText: 'Show More',
+            descriptionExtended: false,
+            descriptionStyle: {
+                display: 'none',
+            },
         }
     }
 
@@ -366,9 +371,79 @@ export default class Track extends React.Component {
                         />
 
                         <div className="description">
-                            {renderHTML(url(this.state.track.description.split('\n').join('<br />')))}
-                        </div>
+                            {
+                                (() => {
+                                    let a = this.state.track.description;
+                                    const b = a.split('\n');
+                                    const lines = b.length;
+                                    let preview = '';
+                                    // Genera preview text
+                                    for(let index = 0; index < 3; index++){
+                                        preview += url(a.split('\n')[index] + ' <BR />');
+                                    }
+                                    a = a.split(/\n/).join(' <BR />');
 
+                                    if(lines <= 2){
+                                        return renderHTML(
+                                            url(a)
+                                        );
+                                    }else{
+                                        return (
+                                            <div id={'readmore'}>
+                                                {
+                                                    renderHTML(preview)
+                                                }
+                                                <div ref={'dsText'} id={'dsText'} style={this.state.descriptionStyle}>
+                                                    {
+                                                        (() => {
+                                                            let text = '';
+                                                            for(let index = 3; index < lines; index++){
+                                                                text += url(`${b[index]} <BR />`);
+                                                            };
+                                                            return renderHTML(text);
+                                                        })()
+                                                    }
+                                                </div>
+                                                <a
+                                                    style={{
+                                                        display: 'block',
+                                                        background: 'rgba(204, 204, 204, 0.4)',
+                                                        cursor: 'pointer',
+                                                        textAlign: 'center',
+                                                        width: '15em',
+                                                        padding: '0.1em',
+                                                    }}
+                                                    onClick={ (() => {
+                                                        if(this.state.descriptionExtended){
+                                                            // Close
+                                                            this.setState({
+                                                                descriptionExtended: false,
+                                                                descriptionStyle: {
+                                                                    display: 'none',
+                                                                },
+                                                                longText: 'Show More',
+                                                            });
+                                                        }else{
+                                                            // Open
+                                                            this.setState({
+                                                                descriptionExtended: true,
+                                                                descriptionStyle: {
+                                                                    display: 'block',
+                                                                },
+                                                                longText: 'Show Less',
+                                                            });
+                                                        }
+                                                    })}
+                                                >{this.state.longText}</a>
+                                            </div>
+                                        )
+
+                                    }
+                                })()
+
+                            }
+                        </div>
+                        <hr />
                         {
                             (() => {
                                 if(checkLogin.isLogin()){
@@ -377,7 +452,7 @@ export default class Track extends React.Component {
                                     )
                                 }else{
                                     return (
-                                        <span></span>
+                                        <Comment trackId={this.props.match.params.id} noinput/>
                                     )
                                 }
                             })()

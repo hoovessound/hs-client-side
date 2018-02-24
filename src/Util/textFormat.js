@@ -5,8 +5,7 @@ export function url(text) {
         if(line.match(regex)){
             const urls = line.match(regex);
             urls.map(url => {
-                console.log(url);
-                line = line.split(url).join(`<a href="${url}" target="_blank">${url}</a>`)
+                return line = line.split(url).join(`<a href="${url}" target="_blank">${url}</a>`);
             });
         }
         return sendBack += line;
