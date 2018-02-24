@@ -366,7 +366,7 @@ export default class Track extends React.Component {
                         />
 
                         <div className="description">
-                            {renderHTML(url(this.state.track.description))}
+                            {renderHTML(url(this.state.track.description.split('\n').join('<br />')))}
                         </div>
 
                         {
