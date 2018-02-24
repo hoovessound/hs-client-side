@@ -38,7 +38,7 @@ export default class Comment extends React.Component {
             this.refs.input.value = '';
             const response = await axios.post(getApiurl('api', `/track/comment/${trackId}?offset=0`), {
                 comment: value,
-            })
+            });
             const body = response.data;
             const comments = this.state.comments;
             comments.push(body);
@@ -51,7 +51,15 @@ export default class Comment extends React.Component {
     render(){
         return (
             <div className="commentSession">
-                <input ref="input" onKeyDown={this.postComment.bind(this)} />
+                {
+                    (() => {
+                        if(!this.props.noinput){
+                            return (
+                                <input ref="input" onKeyDown={this.postComment.bind(this)} placeholder={'Your comment...'}/>
+                            )
+                        }
+                    })()
+                }
 
                 <div className="comments">
                     {this.state.comments.map(this.eachComment.bind(this))}
