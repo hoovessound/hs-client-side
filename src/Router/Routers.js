@@ -24,12 +24,22 @@ import DoodleSubmit from "../Pages/DoodleSubmit";
 import PlaylistPage from "../Pages/PlaylistPage";
 import PlaylistCollections from "../Pages/PlaylistCollections";
 import Search from "../Pages/Search";
+import Modal from 'react-responsive-modal';
+import cookie from 'react-cookies';
 
 let setInitUserStack = false;
 
 let stopFetching = false;
 
 export default class Routers extends React.Component {
+
+    constructor(){
+        super();
+        this.state = {
+            featureModal: true,
+        }
+    }
+
     async setInitialTrackState() {
 
         async function getUserHistory(trackID) {
@@ -115,9 +125,84 @@ export default class Routers extends React.Component {
 
     render() {
         this.setInitialTrackState();
+
         return (
             <BrowserRouter>
                 <div>
+
+                    {
+                        (() => {
+                            if(typeof cookie.load('hs_push_notification') === 'undefined'){
+                                return (
+                                    <Modal open={this.state.featureModal}
+                                           onClose={() => {
+                                               this.setState({
+                                                   featureModal: false,
+                                               });
+                                           }}
+                                    >
+                                        <div
+                                            style={{
+                                                textAlign: 'center',
+                                            }}
+                                        >
+
+                                            <span
+                                                className="fa fa-bell"
+                                                style={{
+                                                    fontSize: '2em',
+                                                    display: 'block',
+                                                    marginBottom: '1em',
+                                                }}
+                                            ></span>
+
+                                            <span
+                                                style={{
+                                                    color: '#FFF',
+                                                    padding: '0.5em',
+                                                    background: '#b20000',
+                                                }}
+                                            >NEW</span>
+
+                                            <span
+                                                style={{
+                                                    color: '#FFF',
+                                                    padding: '0.5em',
+                                                    background: '#14a6b2',
+                                                }}
+                                            >FEATURE</span>
+
+                                            <p>By enabling the real-time notification, you will receive real-time data for example, who just favorite your track, who just comment on your track</p>
+
+                                            <div className="btn btn-success"
+                                                 onClick={() => {
+                                                     this.setState({
+                                                         featureModal: false,
+                                                     });
+                                                     window.OneSignal.push(() => {
+                                                         window.OneSignal.showHttpPrompt();
+                                                     });
+                                                     cookie.save('hs_push_notification', 'yes');
+                                                 }}
+                                            >Enable</div>
+                                            <div className="btn btn-outline-danger"
+                                                 onClick={() => {
+                                                     this.setState({
+                                                         featureModal: false,
+                                                     });
+                                                     cookie.save('hs_push_notification', 'no');
+                                                 }}
+                                            >Dismiss</div>
+
+                                        </div>
+                                    </Modal>
+                                )
+                            }else{
+                                return null;
+                            }
+                        })()
+                    }
+
                     <Route component={Header}/>
                     <div
                         className="container"
